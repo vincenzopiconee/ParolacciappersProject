@@ -6,45 +6,55 @@ struct LobbyView: View {
     var body: some View {
         NavigationStack {
             VStack {
-                Text("Game Lobby").font(.largeTitle).padding()
-                
-                Image(systemName: "gamecontroller.fill")
-                    .font(.system(size: 60))
-                    .foregroundColor(.blue)
-                    .padding()
-                
-                Text("Welcome to the Multiplayer Game")
-                    .font(.title2)
-                    .padding(.bottom, 50)
-                
-                Button (action: {
+                Button(action: {
                     multipeerManager.startHosting()
                 }, label: {
-                    HStack {
-                        Image(systemName: "antenna.radiowaves.left.and.right")
-                        Text("Host a Lobby")
+                    ZStack {
+                        RoundedRectangle(cornerRadius: 12)
+                            .fill(Color.black)
+                            .frame(width: 250, height: 50)
+                            .offset(x: 5, y: 7)
+                        
+                        Text("Create Game")
+                            .font(.headline)
+                            .foregroundColor(.black)
+                            .frame(width: 250, height: 50)
+                            .background(Color.white)
+                            .cornerRadius(12)
+                            .overlay(
+                                RoundedRectangle(cornerRadius: 12)
+                                    .stroke(Color.black, lineWidth: 2)
+                            )
                     }
-                    .frame(width: 200)
                 })
-                .buttonStyle(.borderedProminent)
-                .padding()
+                .padding(.bottom)
+            
                 
                 Button(action: {
                     multipeerManager.startBrowsing()
+                    
                 }, label: {
-                    HStack {
-                        Image(systemName: "person.2.fill")
-                        Text("Join a Lobby")
+                    ZStack {
+                        RoundedRectangle(cornerRadius: 12)
+                            .fill(Color.black)
+                            .frame(width: 200, height: 50)
+                            .offset(x: 5, y: 7)
+                        
+                        Text("Join Game")
+                            .font(.body)
+                            .foregroundColor(.black)
+                            .frame(width: 200, height: 50)
+                            .background(Color.gray)
+                        //.opacity(0.7)
+                            .cornerRadius(12)
+                            .overlay(
+                                RoundedRectangle(cornerRadius: 12)
+                                    .stroke(Color.black, lineWidth: 2)
+                            )
                     }
-                    .frame(width: 200)
                 })
-                .buttonStyle(.bordered)
-                .padding()
                 
-                
-                Spacer()
             }
-            
             .navigationDestination(isPresented:  $multipeerManager.isHosting) {
                 HostLobbyView(multipeerManager: multipeerManager)
             }
