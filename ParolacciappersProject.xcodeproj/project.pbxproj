@@ -10,9 +10,22 @@
 		946FF80A2D68C2A200311AB3 /* ParolacciappersProject.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ParolacciappersProject.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		94C2636E2D70B65D00F27FD9 /* Exceptions for "ParolacciappersProject" folder in "ParolacciappersProject" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+			);
+			target = 946FF8092D68C2A200311AB3 /* ParolacciappersProject */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
+
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		946FF80C2D68C2A200311AB3 /* ParolacciappersProject */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				94C2636E2D70B65D00F27FD9 /* Exceptions for "ParolacciappersProject" folder in "ParolacciappersProject" target */,
+			);
 			path = ParolacciappersProject;
 			sourceTree = "<group>";
 		};
@@ -255,6 +268,7 @@
 				DEVELOPMENT_TEAM = R5G7KG4TJU;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = ParolacciappersProject/Info.plist;
 				INFOPLIST_KEY_NSLocalNetworkUsageDescription = "The app needs to access the local network for the AirPlay connection";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -285,6 +299,7 @@
 				DEVELOPMENT_TEAM = R5G7KG4TJU;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = ParolacciappersProject/Info.plist;
 				INFOPLIST_KEY_NSLocalNetworkUsageDescription = "The app needs to access the local network for the AirPlay connection";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
