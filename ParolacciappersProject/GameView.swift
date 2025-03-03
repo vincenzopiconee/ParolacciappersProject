@@ -62,5 +62,5 @@ struct GameView: View {
 }
 
 #Preview {
-    GameView(multipeerManager: MultipeerManager())
+    GameView(multipeerManager: MultipeerManager(displayName: "Placeholder"))
 }

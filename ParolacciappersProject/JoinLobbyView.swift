@@ -70,5 +70,5 @@ struct JoinLobbyView: View {
 }
 
 #Preview {
-    JoinLobbyView(multipeerManager: MultipeerManager())
+    JoinLobbyView(multipeerManager: MultipeerManager(displayName: "Placeholder"))
 }

@@ -1,13 +1,19 @@
 import SwiftUI
 
 struct LobbyView: View {
-    @StateObject var multipeerManager = MultipeerManager()
     
+    @StateObject private var multipeerManager = MultipeerManager(displayName: "Placeholder")
+    //@StateObject var multipeerManager = MultipeerManager(displayName: "Placeholder")
+    @State private var isHost: Bool = false
+    @State private var navigateToCreateUser = false
+
     var body: some View {
         NavigationStack {
             VStack {
                 Button(action: {
-                    multipeerManager.startHosting()
+                    //multipeerManager.startHosting()
+                    isHost = true
+                    navigateToCreateUser = true
                 }, label: {
                     ZStack {
                         RoundedRectangle(cornerRadius: 12)
@@ -31,7 +37,9 @@ struct LobbyView: View {
             
                 
                 Button(action: {
-                    multipeerManager.startBrowsing()
+                    //multipeerManager.startBrowsing()
+                    isHost = false
+                    navigateToCreateUser = true
                     
                 }, label: {
                     ZStack {
@@ -55,12 +63,16 @@ struct LobbyView: View {
                 })
                 
             }
-            .navigationDestination(isPresented:  $multipeerManager.isHosting) {
+            .navigationDestination(isPresented: $navigateToCreateUser) {
+                CreateUserView(isHost: isHost, multipeerManager: multipeerManager)
+            }
+            
+            /*.navigationDestination(isPresented:  $multipeerManager.isHosting) {
                 HostLobbyView(multipeerManager: multipeerManager)
             }
             .navigationDestination(isPresented: $multipeerManager.isBrowsing, destination: {
                 JoinLobbyView(multipeerManager: multipeerManager)
-            })
+            })*/
              
         }
     }

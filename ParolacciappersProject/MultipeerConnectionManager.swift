@@ -15,18 +15,51 @@ class MultipeerManager: NSObject, ObservableObject {
     @Published var isBrowsing = false
     @Published var shouldNavigateToGame = false
     @Published var lobbyCode: String = ""
-    
-    override init() {
-        peerID = MCPeerID(displayName: UIDevice.current.name)
-        session = MCSession(peer: peerID, securityIdentity: nil, encryptionPreference: .required)
-        advertiser = MCNearbyServiceAdvertiser(peer: peerID, discoveryInfo: nil, serviceType: serviceType)
-        browser = MCNearbyServiceBrowser(peer: peerID, serviceType: serviceType)
-        
+    @Published var displayName: String
+
+    init(displayName: String) {
+        self.displayName = displayName
+        self.peerID = MCPeerID(displayName: displayName)
+        self.session = MCSession(peer: peerID, securityIdentity: nil, encryptionPreference: .required)
+        self.advertiser = MCNearbyServiceAdvertiser(peer: peerID, discoveryInfo: nil, serviceType: serviceType)
+        self.browser = MCNearbyServiceBrowser(peer: peerID, serviceType: serviceType)
+
         super.init()
-        
         session.delegate = self
         advertiser.delegate = self
         browser.delegate = self
+    }
+    
+    
+    func updateDisplayName(_ name: String) {
+        DispatchQueue.main.async {
+            self.displayName = name
+            
+            //stop browsing and hosting before updating peerID
+            self.stopHosting()
+            self.stopBrowsing()
+
+            //new PeerID with the correct name
+            self.peerID = MCPeerID(displayName: name)
+
+            //reset the session with the new peerID
+            self.session = MCSession(peer: self.peerID, securityIdentity: nil, encryptionPreference: .required)
+            self.advertiser = MCNearbyServiceAdvertiser(peer: self.peerID, discoveryInfo: nil, serviceType: self.serviceType)
+            self.browser = MCNearbyServiceBrowser(peer: self.peerID, serviceType: self.serviceType)
+
+            self.session.delegate = self
+            self.advertiser.delegate = self
+            self.browser.delegate = self
+
+            //restart hosting or browsing with the correct name
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                if self.isHosting {
+                    self.startHosting()
+                } else {
+                    self.startBrowsing()
+                }
+            }
+        }
     }
     
     func generateLobbyCode() -> String {
@@ -102,22 +135,32 @@ extension MultipeerManager: MCSessionDelegate, MCNearbyServiceAdvertiserDelegate
     func session(_ session: MCSession, peer peerID: MCPeerID, didChange state: MCSessionState) {
         DispatchQueue.main.async {
             print("Peer \(peerID.displayName) changed state: \(state.rawValue)")
-            self.connectedPeers = session.connectedPeers
-            
-            if state == .connected {
+
+            switch state {
+            case .connected:
+                if !self.connectedPeers.contains(peerID) {
+                    self.connectedPeers.append(peerID) //Adds correct name to the list
+                }
                 self.availableLobbies.removeValue(forKey: peerID)
-                self.messages.append("System: \(peerID.displayName) joined the game")
-                
+                self.messages.append("\(peerID.displayName) joined the game")
+
                 if !self.isHosting {
                     DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
                         self.shouldNavigateToGame = true
                     }
                 }
-            } else if state == .notConnected {
+
+            case .notConnected:
+                self.connectedPeers.removeAll { $0 == peerID }
                 self.messages.append("System: \(peerID.displayName) left the game")
+                
+            default:
+                break
             }
         }
     }
+
+
     
     func session(_ session: MCSession, didReceive data: Data, fromPeer peerID: MCPeerID) {
         if let message = String(data: data, encoding: .utf8) {
@@ -129,9 +172,21 @@ extension MultipeerManager: MCSessionDelegate, MCNearbyServiceAdvertiserDelegate
     
     func advertiser(_ advertiser: MCNearbyServiceAdvertiser, didReceiveInvitationFromPeer peerID: MCPeerID, withContext context: Data?, invitationHandler: @escaping (Bool, MCSession?) -> Void) {
         DispatchQueue.main.async {
+            print("Received invitation from \(peerID.displayName), accepting...")
             invitationHandler(true, self.session)
         }
     }
+    
+    /*func browser(_ browser: MCNearbyServiceBrowser, foundPeer peerID: MCPeerID, withDiscoveryInfo info: [String : String]?) {
+        DispatchQueue.main.async {
+            if let code = info?["code"] {
+                self.availableLobbies[peerID] = code
+                print("Found lobby: \(peerID.displayName) with code: \(code)")
+            } else {
+                print("Found peer without code: \(peerID.displayName)")
+            }
+        }
+    }*/
     
     func browser(_ browser: MCNearbyServiceBrowser, foundPeer peerID: MCPeerID, withDiscoveryInfo info: [String : String]?) {
         DispatchQueue.main.async {
@@ -151,6 +206,7 @@ extension MultipeerManager: MCSessionDelegate, MCNearbyServiceAdvertiserDelegate
         }
     }
     
+
     func session(_ session: MCSession, didReceive stream: InputStream, withName streamName: String, fromPeer peerID: MCPeerID) {}
     func session(_ session: MCSession, didStartReceivingResourceWithName resourceName: String, fromPeer peerID: MCPeerID, with progress: Progress) {}
     func session(_ session: MCSession, didFinishReceivingResourceWithName resourceName: String, fromPeer peerID: MCPeerID, at localURL: URL?, withError error: Error?) {}
