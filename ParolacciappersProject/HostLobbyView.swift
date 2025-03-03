@@ -11,7 +11,7 @@ struct HostLobbyView: View {
                 Text("Hosting Lobby").font(.largeTitle).padding()
                 
                 VStack(alignment: .leading) {
-                    Text("Your Device: \(UIDevice.current.name)")
+                    Text("Your Device: \(multipeerManager.displayName)")
                         .font(.headline)
                         .padding(.vertical)
                     
@@ -61,5 +61,5 @@ struct HostLobbyView: View {
 }
 
 #Preview {
-    HostLobbyView(multipeerManager: MultipeerManager())
+    HostLobbyView(multipeerManager: MultipeerManager(displayName: "Placeholder"))
 }

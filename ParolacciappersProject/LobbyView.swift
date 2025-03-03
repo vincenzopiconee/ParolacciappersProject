@@ -1,56 +1,78 @@
 import SwiftUI
 
 struct LobbyView: View {
-    @StateObject var multipeerManager = MultipeerManager()
     
+    @StateObject private var multipeerManager = MultipeerManager(displayName: "Placeholder")
+    //@StateObject var multipeerManager = MultipeerManager(displayName: "Placeholder")
+    @State private var isHost: Bool = false
+    @State private var navigateToCreateUser = false
+
     var body: some View {
         NavigationStack {
             VStack {
-                Text("Game Lobby").font(.largeTitle).padding()
-                
-                Image(systemName: "gamecontroller.fill")
-                    .font(.system(size: 60))
-                    .foregroundColor(.blue)
-                    .padding()
-                
-                Text("Welcome to the Multiplayer Game")
-                    .font(.title2)
-                    .padding(.bottom, 50)
-                
-                Button (action: {
-                    multipeerManager.startHosting()
+                Button(action: {
+                    //multipeerManager.startHosting()
+                    isHost = true
+                    navigateToCreateUser = true
                 }, label: {
-                    HStack {
-                        Image(systemName: "antenna.radiowaves.left.and.right")
-                        Text("Host a Lobby")
+                    ZStack {
+                        RoundedRectangle(cornerRadius: 12)
+                            .fill(Color.black)
+                            .frame(width: 250, height: 50)
+                            .offset(x: 5, y: 7)
+                        
+                        Text("Create Game")
+                            .font(.headline)
+                            .foregroundColor(.black)
+                            .frame(width: 250, height: 50)
+                            .background(Color.white)
+                            .cornerRadius(12)
+                            .overlay(
+                                RoundedRectangle(cornerRadius: 12)
+                                    .stroke(Color.black, lineWidth: 2)
+                            )
                     }
-                    .frame(width: 200)
                 })
-                .buttonStyle(.borderedProminent)
-                .padding()
+                .padding(.bottom)
+            
                 
                 Button(action: {
-                    multipeerManager.startBrowsing()
+                    //multipeerManager.startBrowsing()
+                    isHost = false
+                    navigateToCreateUser = true
+                    
                 }, label: {
-                    HStack {
-                        Image(systemName: "person.2.fill")
-                        Text("Join a Lobby")
+                    ZStack {
+                        RoundedRectangle(cornerRadius: 12)
+                            .fill(Color.black)
+                            .frame(width: 200, height: 50)
+                            .offset(x: 5, y: 7)
+                        
+                        Text("Join Game")
+                            .font(.body)
+                            .foregroundColor(.black)
+                            .frame(width: 200, height: 50)
+                            .background(Color.gray)
+                        //.opacity(0.7)
+                            .cornerRadius(12)
+                            .overlay(
+                                RoundedRectangle(cornerRadius: 12)
+                                    .stroke(Color.black, lineWidth: 2)
+                            )
                     }
-                    .frame(width: 200)
                 })
-                .buttonStyle(.bordered)
-                .padding()
                 
-                
-                Spacer()
+            }
+            .navigationDestination(isPresented: $navigateToCreateUser) {
+                CreateUserView(isHost: isHost, multipeerManager: multipeerManager)
             }
             
-            .navigationDestination(isPresented:  $multipeerManager.isHosting) {
+            /*.navigationDestination(isPresented:  $multipeerManager.isHosting) {
                 HostLobbyView(multipeerManager: multipeerManager)
             }
             .navigationDestination(isPresented: $multipeerManager.isBrowsing, destination: {
                 JoinLobbyView(multipeerManager: multipeerManager)
-            })
+            })*/
              
         }
     }
