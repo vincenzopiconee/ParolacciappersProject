@@ -69,9 +69,12 @@ struct JoinLobbyView: View {
                         if let lobby = selectedLobby {
                             multipeerManager.joinLobbyWithCode(lobby, code: enteredCode)
                         }
-                        multipeerManager.shouldNavigateToGame = true
+
+                        multipeerManager.shuldNavitgateToWaitScreen = true
+
                     }) {
                         ActionButton(title: "Join Lobby")
+
                     }
                     .disabled(enteredCode.count < 4) //only enable if 4 digits are entered
                     .opacity(enteredCode.count < 4 ? 0.5 : 1.0)
@@ -81,9 +84,13 @@ struct JoinLobbyView: View {
             }
             .padding()
             .navigationBarBackButtonHidden(true)
-            .navigationDestination(isPresented: $multipeerManager.shouldNavigateToGame) {
-                GameView(multipeerManager: multipeerManager)
+
+            
+            .navigationDestination(isPresented: $multipeerManager.shuldNavitgateToWaitScreen) {
+                WaitStartGameView(multipeerManager: multipeerManager)
+
             }
+
              
         }
         
