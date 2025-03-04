@@ -5,7 +5,6 @@
 //  Created by Martha Mendoza Alfaro on 03/03/25.
 //
 
-
 import SwiftUI
 
 struct CreateUserView: View {
@@ -24,7 +23,12 @@ struct CreateUserView: View {
             VStack {
                 //Back Button
                 HStack {
-                    BackButton()
+                    Button(action: {
+                        //back action
+                        presentationMode.wrappedValue.dismiss()
+                    }) {
+                        BackButton()
+                    }
                     Spacer()
                 }
                 
@@ -71,7 +75,7 @@ struct CreateUserView: View {
                 
                 //Continue Button
                 Button(action: {
-                    multipeerManager.updateDisplayName(name)  // ✅ Fix: Use function instead of direct assignment
+                    multipeerManager.updateDisplayName(name)
 
                     DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
                         if isHost {
@@ -81,7 +85,6 @@ struct CreateUserView: View {
                         }
                         navigateToNextScreen = true
                     }
-                    
                 }) {
                     ZStack {
                         RoundedRectangle(cornerRadius: 12)
@@ -101,13 +104,15 @@ struct CreateUserView: View {
                             )
                     }
                 }
+                .disabled(name.isEmpty) //disable when name is empty
+                .opacity(name.isEmpty ? 0.5 : 1.0) //looks bad but i'll change it eventually
                 .padding(.bottom)
             }
             .padding()
             .navigationBarBackButtonHidden(true)
             .navigationDestination(isPresented: $navigateToNextScreen) {
                 if isHost {
-                    HostLobbyView(multipeerManager: multipeerManager)  // ✅ Pass same instance
+                    HostLobbyView(multipeerManager: multipeerManager)
                 } else {
                     JoinLobbyView(multipeerManager: multipeerManager)
                 }
@@ -116,35 +121,27 @@ struct CreateUserView: View {
     }
 }
 
-
 struct BackButton: View {
-    @Environment(\.presentationMode) var presentationMode
     var body: some View {
-        Button(action: {
-            //back action
-            presentationMode.wrappedValue.dismiss()
-        }) {
-            ZStack {
-                RoundedRectangle(cornerRadius: 5)
-                    .fill(Color.black)
-                    .frame(width: 50, height: 50)
-                    .offset(x: 5, y: 5)
-                
-                RoundedRectangle(cornerRadius: 5)
-                    .stroke(Color.black, lineWidth: 4)
-                    .background(Color.white)
-                    .frame(width: 50, height: 50)
-                    .cornerRadius(5)
-                    .overlay(
-                        Image(systemName: "arrowshape.backward")
-                            .font(.headline)
-                            .foregroundColor(.black)
-                    )
-            }
+        ZStack {
+            RoundedRectangle(cornerRadius: 5)
+                .fill(Color.black)
+                .frame(width: 50, height: 50)
+                .offset(x: 5, y: 5)
+            
+            RoundedRectangle(cornerRadius: 5)
+                .stroke(Color.black, lineWidth: 4)
+                .background(Color.white)
+                .frame(width: 50, height: 50)
+                .cornerRadius(5)
+                .overlay(
+                    Image(systemName: "chevron.left")
+                        .font(.headline)
+                        .foregroundColor(.black)
+                )
         }
     }
 }
-
 
 struct CustomTextField: View {
     var title: String
