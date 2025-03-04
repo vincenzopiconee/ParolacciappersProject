@@ -34,10 +34,6 @@ class MultipeerManager: NSObject, ObservableObject {
     func updateDisplayName(_ name: String) {
         DispatchQueue.main.async {
             self.displayName = name
-            
-            //stop browsing and hosting before updating peerID
-            self.stopHosting()
-            self.stopBrowsing()
 
             //new PeerID with the correct name
             self.peerID = MCPeerID(displayName: name)
@@ -51,14 +47,6 @@ class MultipeerManager: NSObject, ObservableObject {
             self.advertiser.delegate = self
             self.browser.delegate = self
 
-            //restart hosting or browsing with the correct name
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-                if self.isHosting {
-                    self.startHosting()
-                } else {
-                    self.startBrowsing()
-                }
-            }
         }
     }
     

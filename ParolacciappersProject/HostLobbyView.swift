@@ -44,17 +44,21 @@ struct HostLobbyView: View {
                     
                     Spacer()
                     
-                    NavigationLink(destination: GameView(multipeerManager: multipeerManager)) {
-                        Text("Start Game")
-                            .bold()
+                    Button("Start Game") {
+                        multipeerManager.shouldNavigateToGame = true
                     }
-                    .buttonStyle(.borderedProminent)
+                    .bold()
+                    .buttonStyle(.bordered)
                     .padding()
                     .disabled(multipeerManager.connectedPeers.isEmpty)
+                    
                      
                 }
             }
             .navigationBarBackButtonHidden(true)
+            .navigationDestination(isPresented: $multipeerManager.shouldNavigateToGame) {
+                GameView(multipeerManager: multipeerManager)
+            }
         }
         
     }

@@ -51,11 +51,6 @@ struct GameView: View {
                 .padding(.bottom)
             }
             .navigationBarBackButtonHidden(true)
-            .onDisappear {
-                if !multipeerManager.shouldNavigateToGame {
-                    multipeerManager.disconnect()
-                }
-            }
         }
         
     }

@@ -5,6 +5,7 @@
 	<key>NSBonjourServices</key>
 	<array>
 		<string>_game-lobby2._tcp</string>
+		<string>_game-lobby2._udp</string>
 	</array>
 	<key>UIBackgroundModes</key>
 	<array>
