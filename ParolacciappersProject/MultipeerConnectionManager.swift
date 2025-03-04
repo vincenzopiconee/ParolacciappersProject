@@ -16,6 +16,8 @@ class MultipeerManager: NSObject, ObservableObject {
     @Published var shouldNavigateToGame = false
     @Published var lobbyCode: String = ""
     @Published var displayName: String
+    @Published var shuldNavitgateToWaitScreen = false
+    @Published var isGameStarted = false
 
     init(displayName: String) {
         self.displayName = displayName
@@ -109,6 +111,19 @@ class MultipeerManager: NSObject, ObservableObject {
         }
     }
     
+    func startGame() {
+        DispatchQueue.main.async {
+            self.isGameStarted = true
+            self.shouldNavigateToGame = true  // Aggiorniamo la variabile in modo che la UI si aggiorni
+        }
+        
+        let message = "startGame"
+        if let data = message.data(using: .utf8) {
+            try? session.send(data, toPeers: session.connectedPeers, with: .reliable)
+            
+        }
+    }
+    
     func disconnect() {
         stopHosting()
         stopBrowsing()
@@ -131,12 +146,14 @@ extension MultipeerManager: MCSessionDelegate, MCNearbyServiceAdvertiserDelegate
                 }
                 self.availableLobbies.removeValue(forKey: peerID)
                 self.messages.append("\(peerID.displayName) joined the game")
-
+                /*
                 if !self.isHosting {
                     DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
                         self.shouldNavigateToGame = true
                     }
                 }
+                 */
+                
 
             case .notConnected:
                 self.connectedPeers.removeAll { $0 == peerID }
@@ -155,6 +172,14 @@ extension MultipeerManager: MCSessionDelegate, MCNearbyServiceAdvertiserDelegate
             DispatchQueue.main.async {
                 self.messages.append("\(peerID.displayName): \(message)")
             }
+        }
+        if let message = String(data: data, encoding: .utf8) {
+            DispatchQueue.main.async {
+                if message == "startGame" {
+                    self.shouldNavigateToGame = true
+                }
+            }
+            
         }
     }
     

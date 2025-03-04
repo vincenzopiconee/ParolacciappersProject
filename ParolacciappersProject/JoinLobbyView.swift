@@ -43,7 +43,7 @@ struct JoinLobbyView: View {
                         if let lobby = selectedLobby {
                             multipeerManager.joinLobbyWithCode(lobby, code: enteredCode)
                         }
-                        multipeerManager.shouldNavigateToGame = true
+                        multipeerManager.shuldNavitgateToWaitScreen = true
                     }
                     .buttonStyle(.borderedProminent)
                     .disabled(enteredCode.isEmpty)
@@ -60,9 +60,10 @@ struct JoinLobbyView: View {
             }
             .navigationBarBackButtonHidden(true)
             
-            .navigationDestination(isPresented: $multipeerManager.shouldNavigateToGame) {
-                GameView(multipeerManager: multipeerManager)
+            .navigationDestination(isPresented: $multipeerManager.shuldNavitgateToWaitScreen) {
+                WaitStartGameView(multipeerManager: multipeerManager)
             }
+
              
         }
         

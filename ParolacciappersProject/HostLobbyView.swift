@@ -45,7 +45,7 @@ struct HostLobbyView: View {
                     Spacer()
                     
                     Button("Start Game") {
-                        multipeerManager.shouldNavigateToGame = true
+                        multipeerManager.startGame()
                     }
                     .bold()
                     .buttonStyle(.bordered)
