@@ -89,6 +89,9 @@ class MultipeerManager: NSObject, ObservableObject {
     func joinLobbyWithCode(_ peerID: MCPeerID, code: String) {
         if let lobbyCode = availableLobbies[peerID], lobbyCode == code {
             invitePeer(peerID)
+            DispatchQueue.main.async {
+                self.shuldNavitgateToWaitScreen = true
+            }
         } else {
             print("Invalid lobby code")
         }

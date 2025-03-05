@@ -70,8 +70,6 @@ struct JoinLobbyView: View {
                             multipeerManager.joinLobbyWithCode(lobby, code: enteredCode)
                         }
 
-                        multipeerManager.shuldNavitgateToWaitScreen = true
-
                     }) {
                         ActionButton(title: "Join Lobby")
 
