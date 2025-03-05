@@ -22,6 +22,7 @@ struct WaitStartGameView: View {
         .navigationDestination(isPresented: $multipeerManager.shouldNavigateToGame) {
             GameView(multipeerManager: multipeerManager)
         }
+        .navigationBarBackButtonHidden(true)
         
     }
         
