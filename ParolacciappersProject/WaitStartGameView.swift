@@ -14,8 +14,9 @@ struct WaitStartGameView: View {
     
     var body: some View {
         NavigationStack {
-            Text("Wait for host to start the game...")
-            Text(multipeerManager.shouldNavigateToGame ? "Navigating..." : "Waiting...")
+            Text("Wait for the host to start the game...")
+                .font(.headline)
+                .foregroundColor(.black)
         }
         
         .navigationDestination(isPresented: $multipeerManager.shouldNavigateToGame) {

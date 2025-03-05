@@ -265,7 +265,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"ParolacciappersProject/Preview Content\"";
-				DEVELOPMENT_TEAM = 6299S224BY;
+				DEVELOPMENT_TEAM = R5G7KG4TJU;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = ParolacciappersProject/Info.plist;
@@ -297,7 +297,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"ParolacciappersProject/Preview Content\"";
-				DEVELOPMENT_TEAM = 6299S224BY;
+				DEVELOPMENT_TEAM = R5G7KG4TJU;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = ParolacciappersProject/Info.plist;

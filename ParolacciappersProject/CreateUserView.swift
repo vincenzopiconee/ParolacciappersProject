@@ -42,7 +42,8 @@ struct CreateUserView: View {
                 
                 //User Profile Section
                 VStack(spacing: 10) {
-                    // Photo Placeholder
+                    // Photo Placeholder // commented for TestFligth
+                    /*
                     Button(action: {
                         //Photo selection
                     }) {
@@ -55,12 +56,13 @@ struct CreateUserView: View {
                                 .foregroundColor(.black)
                         }
                     }
-                    
+                    */
                     //Input Fields
                     VStack(alignment: .leading, spacing: 10) {
                         CustomTextField(title: "Name", text: $name)
-                        CustomTextField(title: "Nationality", text: $nationality)
-                        CustomTextField(title: "Language", text: $language)
+                        // commented for TestFligth
+                        //CustomTextField(title: "Nationality", text: $nationality)
+                        //CustomTextField(title: "Language", text: $language)
                     }
                     .padding(.horizontal)
                 }
