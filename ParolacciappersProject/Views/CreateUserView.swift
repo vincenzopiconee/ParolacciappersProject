@@ -123,49 +123,7 @@ struct CreateUserView: View {
     }
 }
 
-struct BackButton: View {
-    var body: some View {
-        ZStack {
-            RoundedRectangle(cornerRadius: 5)
-                .fill(Color.black)
-                .frame(width: 50, height: 50)
-                .offset(x: 5, y: 5)
-            
-            RoundedRectangle(cornerRadius: 5)
-                .stroke(Color.black, lineWidth: 4)
-                .background(Color.white)
-                .frame(width: 50, height: 50)
-                .cornerRadius(5)
-                .overlay(
-                    Image(systemName: "chevron.left")
-                        .font(.headline)
-                        .foregroundColor(.black)
-                )
-        }
-    }
-}
 
-struct CustomTextField: View {
-    var title: String
-    @Binding var text: String
-    
-    var body: some View {
-        VStack(alignment: .leading, spacing: 5) {
-            Text(title)
-                .font(.headline)
-                .foregroundColor(.black)
-            
-            TextField("", text: $text)
-                .padding()
-                .background(Color.white)
-                .cornerRadius(5)
-                .overlay(
-                    RoundedRectangle(cornerRadius: 5)
-                        .stroke(Color.black, lineWidth: 2)
-                )
-        }
-    }
-}
 
 #Preview {
     CreateUserView(isHost: true, multipeerManager: MultipeerManager(displayName: "Preview User"))
