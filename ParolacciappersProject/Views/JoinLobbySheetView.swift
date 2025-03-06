@@ -13,44 +13,68 @@ struct JoinLobbySheetView: View {
     var selectedLobby: MCPeerID
     @Binding var enteredCode: String
     var onDismiss: () -> Void
+    
+    @State private var showInvalidCodeAlert = false  // Variabile per mostrare l'alert personalizzato
 
     var body: some View {
-        NavigationStack {
-            VStack {
-                HStack {
-                    Button(action: {
-                        onDismiss()
-                    }) {
-                        CancelButton()
+        ZStack {
+            NavigationStack {
+                VStack {
+                    HStack {
+                        Button(action: {
+                            onDismiss()
+                        }) {
+                            CancelButton()
+                        }
+                        Spacer()
                     }
+
+                    Text("Enter Lobby Code")
+                        .font(.title)
+                        .fontWeight(.bold)
+                        .padding(.top, 15)
+
+                    ManualCodeEntryView(enteredCode: $enteredCode)
+                        .padding(.vertical)
+
+                    Button(action: {
+                        multipeerManager.joinLobbyWithCode(selectedLobby, code: enteredCode)
+                        
+                        // Dopo 1 secondo, verifica se bisogna chiudere lo sheet o mostrare l'alert
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+                            if multipeerManager.shuldNavitgateToWaitScreen {
+                                onDismiss()
+                            } else {
+                                showInvalidCodeAlert = true
+                            }
+                        }
+                    }) {
+                        ActionButton(title: "Join Lobby")
+                    }
+                    .disabled(enteredCode.count < 4)
+                    .opacity(enteredCode.count < 4 ? 0.5 : 1.0)
+
                     Spacer()
                 }
-
-                Text("Enter Lobby Code")
-                    .font(.title)
-                    .fontWeight(.bold)
-                    .padding(.top, 15)
-
-                ManualCodeEntryView(enteredCode: $enteredCode)
-                    .padding(.vertical)
-
-                Button(action: {
-                    multipeerManager.joinLobbyWithCode(selectedLobby, code: enteredCode)
-                    
-                    if multipeerManager.shuldNavitgateToWaitScreen{
-                        onDismiss()
-                    }
-                }) {
-                    ActionButton(title: "Join Lobby")
-                }
-                .disabled(enteredCode.count < 4)
-                .opacity(enteredCode.count < 4 ? 0.5 : 1.0)
-
-                Spacer()
+                .padding()
+                .navigationBarBackButtonHidden(true)
             }
-            .padding()
-            .navigationBarBackButtonHidden(true)
+            
+            // Mostra l'alert personalizzato sopra la UI principale
+            if showInvalidCodeAlert {
+                Color.black.opacity(0.5) // Sfondo scuro semi-trasparente
+                    .edgesIgnoringSafeArea(.all)
+                
+                CustomAlert(
+                    title: "Invalid Code",
+                    message: "The code you entered is incorrect. Please try again."
+                ) {
+                    showInvalidCodeAlert = false
+                }
+                .transition(.scale)
+            }
         }
+        .animation(.easeInOut, value: showInvalidCodeAlert)
     }
 }
 
