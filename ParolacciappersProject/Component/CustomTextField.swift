@@ -16,8 +16,10 @@ struct CustomTextField: View {
             Text(title)
                 .font(.headline)
                 .foregroundColor(.black)
+                .accessibilityHidden(true)
             
-            TextField("", text: $text)
+            
+            TextField("", text: $text, prompt: Text("Required"))
                 .padding()
                 .background(Color.white)
                 .cornerRadius(5)
@@ -25,6 +27,9 @@ struct CustomTextField: View {
                     RoundedRectangle(cornerRadius: 5)
                         .stroke(Color.black, lineWidth: 2)
                 )
+             
+                .accessibilityLabel(title)
+            
         }
     }
 }

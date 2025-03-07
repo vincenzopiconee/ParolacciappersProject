@@ -10,13 +10,33 @@ import SwiftUI
 struct WaitStartGameView: View {
     
     @ObservedObject var multipeerManager: MultipeerManager
+    @Environment(\.presentationMode) var presentationMode
     
     
     var body: some View {
         NavigationStack {
-            Text("Wait for the host to start the game...")
-                .font(.headline)
-                .foregroundColor(.black)
+            VStack {
+                
+                HStack {
+                    Button(action: {
+                        multipeerManager.disconnect()
+                        presentationMode.wrappedValue.dismiss()
+                    }) {
+                        CancelButton()
+                    }
+                    Spacer()
+                }
+                
+                Spacer()
+                
+                Text("Wait for the host to start the game...")
+                    .font(.headline)
+                    .foregroundColor(.black)
+                
+                Spacer()
+            }
+            .padding()
+            
         }
         
         .navigationDestination(isPresented: $multipeerManager.shouldNavigateToGame) {

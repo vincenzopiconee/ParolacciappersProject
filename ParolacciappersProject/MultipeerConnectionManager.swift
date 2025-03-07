@@ -133,6 +133,9 @@ class MultipeerManager: NSObject, ObservableObject {
         session.disconnect()
         connectedPeers = []
         shouldNavigateToGame = false
+        isHosting = false
+        isBrowsing = false
+        isGameStarted = false
     }
 }
 

@@ -37,6 +37,7 @@ struct CreateUserView: View {
                     .fontWeight(.bold)
                     .multilineTextAlignment(.leading)
                     .padding(.top, 15)
+                    .accessibilityLabel("Who the fuck are you?")
                 
                 Spacer()
                 
@@ -109,6 +110,7 @@ struct CreateUserView: View {
                 .disabled(name.isEmpty) //disable when name is empty
                 .opacity(name.isEmpty ? 0.5 : 1.0) //looks bad but i'll change it eventually
                 .padding(.bottom)
+                
             }
             .padding()
             .navigationBarBackButtonHidden(true)

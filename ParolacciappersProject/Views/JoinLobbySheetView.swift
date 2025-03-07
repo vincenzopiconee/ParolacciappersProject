@@ -13,6 +13,7 @@ struct JoinLobbySheetView: View {
     var selectedLobby: MCPeerID
     @Binding var enteredCode: String
     var onDismiss: () -> Void
+    @FocusState private var isTextFieldFocused: Bool
     
     @State private var showInvalidCodeAlert = false  // Variabile per mostrare l'alert personalizzato
 
@@ -36,12 +37,16 @@ struct JoinLobbySheetView: View {
 
                     ManualCodeEntryView(enteredCode: $enteredCode)
                         .padding(.vertical)
+                        .focused($isTextFieldFocused)
 
                     Button(action: {
+                        
+                        isTextFieldFocused = false
+                        
                         multipeerManager.joinLobbyWithCode(selectedLobby, code: enteredCode)
                         
-                        // Dopo 1 secondo, verifica se bisogna chiudere lo sheet o mostrare l'alert
-                        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+                        
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
                             if multipeerManager.shuldNavitgateToWaitScreen {
                                 onDismiss()
                             } else {
@@ -72,6 +77,7 @@ struct JoinLobbySheetView: View {
                     showInvalidCodeAlert = false
                 }
                 .transition(.scale)
+                .accessibilityAddTraits(.isModal)
             }
         }
         .animation(.easeInOut, value: showInvalidCodeAlert)
