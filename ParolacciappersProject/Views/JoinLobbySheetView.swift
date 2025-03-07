@@ -2,8 +2,9 @@
 //  JoinLobbySheetView.swift
 //  ParolacciappersProject
 //
-//  Created by Vincenzo Picone on 06/03/25.
+//  Created by Martha Mendoza Alfaro on 07/03/25.
 //
+
 
 import SwiftUI
 import MultipeerConnectivity

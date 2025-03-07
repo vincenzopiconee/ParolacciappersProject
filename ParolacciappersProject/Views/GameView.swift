@@ -20,7 +20,31 @@ struct GameView: View {
                         .padding(.trailing)
                 }
                 
-                List {
+  
+                if multipeerManager.submittedWords[multipeerManager.myPeerID] == nil {
+                    TextField("Enter your word", text: $message)
+                        .textFieldStyle(.roundedBorder)
+                    
+                    Button("Submit") {
+                        if !message.isEmpty {
+                            multipeerManager.sendWord(message)
+                            message = ""
+                        }
+                    }
+                    .buttonStyle(.borderedProminent)
+                    .disabled(message.isEmpty)
+                } else if !multipeerManager.allWordsSubmitted {
+                    Text("Waiting for other players to send their words...")
+                } else if multipeerManager.isHosting {
+                    Button("Next") {
+                        multipeerManager.advanceToNextPhase()
+                        //multipeerManager.advanceToNextScreen()
+                    }
+                    .buttonStyle(.borderedProminent)
+                    .disabled(!multipeerManager.allWordsSubmitted)
+                }
+                
+                /*List {
                     ForEach(multipeerManager.messages, id: \.self) { msg in
                         Text(msg)
                             .padding(4)
@@ -42,6 +66,8 @@ struct GameView: View {
                     .disabled(message.isEmpty || multipeerManager.connectedPeers.isEmpty)
                 }
                 .padding()
+                 
+                */
                 
                 Button("Leave Game") {
                     multipeerManager.disconnect()
@@ -51,6 +77,14 @@ struct GameView: View {
                 .padding(.bottom)
             }
             .navigationBarBackButtonHidden(true)
+            /*.navigationDestination(isPresented: $multipeerManager.shouldNavigateToWordReveal) {
+                    WordRevealView(multipeerManager: multipeerManager)
+                }*/
+            .navigationDestination(isPresented: Binding(
+                get: { multipeerManager.gamePhase == .wordReveal },
+                set: { _ in })) {
+                    WordRevealView(multipeerManager: multipeerManager)
+                }
         }
         
     }
