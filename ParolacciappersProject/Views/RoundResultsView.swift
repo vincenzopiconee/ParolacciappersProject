@@ -13,9 +13,17 @@ struct RoundResultsView: View {
 
     var body: some View {
         VStack {
-            Text("Round Results")
-                .font(.largeTitle)
-                .padding()
+            
+            HStack {
+                Text("Round Results")
+                    .font(.title)
+                    .bold()
+                    .padding()
+
+                Spacer()
+            }
+            
+            Spacer()
 
             if multipeerManager.winner.isEmpty {
                 Text("No votes cast!")
@@ -34,9 +42,11 @@ struct RoundResultsView: View {
                         .cornerRadius(10)
                 }
             }
+            
+            Spacer()
 
             if multipeerManager.isHosting {
-                Button("Next Round") {
+                Button("Continue") {
                     multipeerManager.advanceToNextPhase()
                 }
                 .buttonStyle(.borderedProminent)
@@ -44,4 +54,8 @@ struct RoundResultsView: View {
             }
         }
     }
+}
+
+#Preview {
+    RoundResultsView(multipeerManager: MultipeerManager(displayName: "Placeholder"))
 }

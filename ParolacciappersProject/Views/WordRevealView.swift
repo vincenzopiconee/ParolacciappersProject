@@ -14,17 +14,19 @@ struct WordRevealView: View {
             Text("Selected Word")
                 .font(.largeTitle)
                 .padding()
-
+            
+            Spacer()
+            
             Text(multipeerManager.chosenWord ?? "Waiting for word...")
                 .font(.title)
                 .padding()
                 .frame(maxWidth: .infinity)
-                .multilineTextAlignment(.center)
                 .background(Color.gray.opacity(0.2))
                 .cornerRadius(10)
+                .padding()
 
             if multipeerManager.isHosting {
-                Button("Next Round") {
+                Button("Continue") {
                     //print("🟢 Host clicked Next in Word Reveal")
                     multipeerManager.advanceToNextPhase()
                     
@@ -32,7 +34,13 @@ struct WordRevealView: View {
                 .buttonStyle(.borderedProminent)
                 .padding()
             }
+            
+            Spacer()
         }
     }
+}
+
+#Preview {
+    WordRevealView(multipeerManager: MultipeerManager(displayName: "Placeholder"))
 }
 
