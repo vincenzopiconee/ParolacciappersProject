@@ -78,3 +78,9 @@ struct SentenceSubmissionView: View {
         .navigationBarBackButtonHidden(true)
     }
 }
+
+
+#Preview {
+    SentenceSubmissionView(multipeerManager: MultipeerManager(displayName: "Placeholder")
+    )
+}

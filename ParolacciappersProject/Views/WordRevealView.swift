@@ -36,3 +36,7 @@ struct WordRevealView: View {
     }
 }
 
+#Preview {
+    WordRevealView(multipeerManager: MultipeerManager(displayName: "Placeholder")
+    )
+}

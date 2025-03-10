@@ -14,7 +14,7 @@ struct ScenarioRevealView: View {
     var body: some View {
         VStack {
             
-            Text("Write a Sentence Using the Word \(multipeerManager.chosenWord ?? "No Word Selected") in This Scenario:")
+            Text("Write a sentence using the Word: \(multipeerManager.chosenWord ?? "No Word Selected") in this scenario:")
                 .font(.largeTitle)
                 .padding()
 
