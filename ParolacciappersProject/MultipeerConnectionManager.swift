@@ -41,10 +41,8 @@ class MultipeerManager: NSObject, ObservableObject {
     // For the rounds of the game
     @Published var gamePhase: GamePhase = .wordSubmission
     
-    
     //For the chosen scenario
     @Published var chosenScenario: String? // Scenario selected for the round
-    
     
     //For the sending of sentences part 1
     @Published var submittedSentences: [MCPeerID: String] = [:]
@@ -184,17 +182,6 @@ class MultipeerManager: NSObject, ObservableObject {
         }
     }
     
-    // send word part 4
-    /*func advanceToNextScreen() {
-        if allWordsSubmitted {
-            let message = "nextScreen"
-            if let data = message.data(using: .utf8) {
-                try? session.send(data, toPeers: session.connectedPeers, with: .reliable)
-            }
-            shouldNavigateToWordReveal = true
-        }
-    }*/
-    
     // Send sentences part 2
     func sendSentence(_ sentence: String) {
         guard !session.connectedPeers.isEmpty else { return }
@@ -211,6 +198,7 @@ class MultipeerManager: NSObject, ObservableObject {
             }
         }
     }
+
     
     func checkAllSentencesSubmitted() {
         DispatchQueue.main.async {
@@ -239,8 +227,6 @@ class MultipeerManager: NSObject, ObservableObject {
         }
     }
 
-    
-    
     /*func submitVote(for peer: MCPeerID) {
         guard !hasVoted else { return } // Prevent multiple votes
         
@@ -257,15 +243,13 @@ class MultipeerManager: NSObject, ObservableObject {
         }
     }*/
 
-
-
     func determineOverallWinner() -> [MCPeerID] {
         let maxWins = totalWins.values.max() ?? 0
         return totalWins.filter { $0.value == maxWins }.map { $0.key }
     }
     
     
-    func calculateWinner() {
+    /*func calculateWinner() {
         let maxVotes = votes.values.max() ?? 0
         winner = votes.filter { $0.value == maxVotes }.map { $0.key } // Handle ties
 
@@ -283,15 +267,33 @@ class MultipeerManager: NSObject, ObservableObject {
         if let data = message.data(using: .utf8) {
             try? session.send(data, toPeers: session.connectedPeers, with: .reliable)
         }
+    }*/
+
+    func calculateWinner() {
+        let maxVotes = votes.values.max() ?? 0
+        winner = votes.filter { $0.value == maxVotes }.map { $0.key } // Handle ties
+
+        // Update total wins for each round winner
+        for winPeer in winner {
+            totalWins[winPeer, default: 0] += 1
+        }
+
+        print("🏆 Round Winner(s): \(winner.map { $0.displayName }.joined(separator: ", "))")
+        print("🏅 Total Wins: \(totalWins.map { "\($0.key.displayName): \($0.value)" }.joined(separator: ", "))")
+
+        // ✅ Broadcast winner list to all players
+        let winnerNames = winner.map { $0.displayName }.joined(separator: ",")
+        let message = "roundWinner:\(winnerNames)"
+        if let data = message.data(using: .utf8) {
+            try? session.send(data, toPeers: session.connectedPeers, with: .reliable)
+        }
     }
 
 
-    
     // computed property to have the peerID in the dictionary without safety risks
     var myPeerID: MCPeerID {
         return peerID
     }
-    
     
     private func resetRoundData() {
         DispatchQueue.main.async {
@@ -333,8 +335,8 @@ class MultipeerManager: NSObject, ObservableObject {
                 self.broadcastPhaseChange()
             case .voting:
                 self.calculateWinner()
-                self.votes = [:] // ✅ Clear votes before the next round
-                self.hasVoted = false
+                //self.votes = [:] // ✅ Clear votes before the next round
+                //self.hasVoted = false
                 self.gamePhase = .roundResults
                 self.broadcastPhaseChange()
             case .roundResults:
@@ -344,6 +346,8 @@ class MultipeerManager: NSObject, ObservableObject {
                 } else {
                     print("🔄 Starting New Round!")
                     self.resetRoundData() // ✅ Reset round-specific data
+                    self.broadcastRoundReset() // ✅ Notify all players to reset too
+                    
                     self.selectRandomWord() // ✅ Select a new word
                     self.selectRandomScenario() // ✅ Select a new scenario
                     self.gamePhase = .wordReveal // ✅ Restart game at word reveal
@@ -358,26 +362,19 @@ class MultipeerManager: NSObject, ObservableObject {
         }
     }
 
-    
     private func broadcastPhaseChange() {
         let message = "phase:\(gamePhase.rawValue)"
         if let data = message.data(using: .utf8) {
             try? session.send(data, toPeers: session.connectedPeers, with: .reliable)
         }
     }
-
-    // random word for the round
-    /*private func selectRandomWord() {
-        if let randomWord = submittedWords.values.randomElement() {
-            chosenWord = randomWord
-            submittedWords = submittedWords.filter { $0.value != randomWord }
-            
-            let message = "chosenWord:\(randomWord)"
-            if let data = message.data(using: .utf8) {
-                try? session.send(data, toPeers: session.connectedPeers, with: .reliable)
-            }
+    
+    private func broadcastRoundReset() {
+        let message = "resetRound"
+        if let data = message.data(using: .utf8) {
+            try? session.send(data, toPeers: session.connectedPeers, with: .reliable)
         }
-    }*/
+    }
     
     private func selectRandomWord() {
         if let randomEntry = submittedWords.randomElement() {
@@ -399,7 +396,6 @@ class MultipeerManager: NSObject, ObservableObject {
         }
     }
 
-    
     // random scenario for the round
     private func selectRandomScenario() {
         if let randomScenario = scenarios.randomElement() {
@@ -412,7 +408,6 @@ class MultipeerManager: NSObject, ObservableObject {
         }
     }
 
-    
     func startGame() {
         DispatchQueue.main.async {
             self.isGameStarted = true
@@ -445,9 +440,14 @@ class MultipeerManager: NSObject, ObservableObject {
             self.broadcastPhaseChange()
             print("🔄 Game reset!")
         }
+        
+        let message = "resetGame"
+        if let data = message.data(using: .utf8) {
+            try? session.send(data, toPeers: session.connectedPeers, with: .reliable)
+            
+        }
     }
 
-    
     func disconnect() {
         stopHosting()
         stopBrowsing()
@@ -477,8 +477,6 @@ extension MultipeerManager: MCSessionDelegate, MCNearbyServiceAdvertiserDelegate
                     }
                 }
                  */
-                
-
             case .notConnected:
                 self.connectedPeers.removeAll { $0 == peerID }
                 self.messages.append("System: \(peerID.displayName) left the game")
@@ -488,22 +486,6 @@ extension MultipeerManager: MCSessionDelegate, MCNearbyServiceAdvertiserDelegate
             }
         }
     }
-
-    /*func session(_ session: MCSession, didReceive data: Data, fromPeer peerID: MCPeerID) {
-        if let message = String(data: data, encoding: .utf8) {
-            DispatchQueue.main.async {
-                self.messages.append("\(peerID.displayName): \(message)")
-            }
-        }
-        if let message = String(data: data, encoding: .utf8) {
-            DispatchQueue.main.async {
-                if message == "startGame" {
-                    self.shouldNavigateToGame = true
-                }
-            }
-            
-        }
-    }*/
     
     // Sending words part 3
     func session(_ session: MCSession, didReceive data: Data, fromPeer peerID: MCPeerID) {
@@ -529,14 +511,16 @@ extension MultipeerManager: MCSessionDelegate, MCNearbyServiceAdvertiserDelegate
                     }
                 } else if message.starts(with: "sentence:") {
                     let sentence = String(message.dropFirst(9))
-                    self.submittedSentences[peerID] = sentence
-                    print("📝 Received sentence from \(peerID.displayName): \(sentence)")
-                    self.checkAllSentencesSubmitted()
+                    DispatchQueue.main.async {
+                        self.submittedSentences[peerID] = sentence
+                        print("📝 Received new sentence from \(peerID.displayName): \(sentence)")
+                        self.checkAllSentencesSubmitted()
+                    }
                 } else if message.starts(with: "vote:") {
                     let votedPlayerName = String(message.dropFirst(5))
-                    if let votedPeer = self.connectedPeers.first(where: { $0.displayName == votedPlayerName }) {
-                        DispatchQueue.main.async {
-                            self.votes[votedPeer, default: 0] += 1
+                    DispatchQueue.main.async {
+                        if let votedPeer = self.connectedPeers.first(where: { $0.displayName == votedPlayerName }) {
+                            self.votes[votedPeer, default: 0] += 1  // ✅ Update votes locally for all players
                             print("🗳️ Vote received for \(votedPlayerName), Total votes: \(self.votes[votedPeer]!)")
                         }
                     }
@@ -546,25 +530,24 @@ extension MultipeerManager: MCSessionDelegate, MCNearbyServiceAdvertiserDelegate
                         self.winner = self.connectedPeers.filter { winnerNames.contains($0.displayName) }
                         print("🎉 Winners updated: \(self.winner.map { $0.displayName }.joined(separator: ", "))")
                     }
+                } else if message.starts(with: "roundWinner:") {
+                    let winnerNames = String(message.dropFirst(12)).components(separatedBy: ",")
+                    DispatchQueue.main.async {
+                        self.winner = self.connectedPeers.filter { winnerNames.contains($0.displayName) }
+                        print("🎉 Round Winners Updated: \(self.winner.map { $0.displayName }.joined(separator: ", "))")
+                    }
+                } else if message == "resetRound" {
+                    DispatchQueue.main.async {
+                        print("🔄 Received resetRound message, resetting round data!")
+                        self.resetRoundData() // ✅ All players reset round data now
+                    }
+                } else if message == "resetGame" {
+                    DispatchQueue.main.async {
+                        print("🔄 Resetting game data!")
+                        self.resetGame() // ✅ All players reset round data now
+                    }
                 }
 
-                /*else if message.starts(with: "vote:") {
-                    let votedPlayerName = String(message.dropFirst(5))
-                    if let votedPeer = self.connectedPeers.first(where: { $0.displayName == votedPlayerName }) {
-                        self.votes[votedPeer, default: 0] += 1
-                        print("🗳️ Vote for \(votedPlayerName), total votes: \(self.votes[votedPeer]!)")
-                    }
-                }*/
-                
-                /*else if message.starts(with: "phase:") {
-                    let newPhase = String(message.dropFirst(6))
-                    if let phase = GamePhase(rawValue: newPhase) {
-                        self.gamePhase = phase
-                    }
-                }*/
-                /*else if message == "nextScreen" {
-                    self.shouldNavigateToWordReveal = true
-                }*/
             }
         }
     }
@@ -575,17 +558,6 @@ extension MultipeerManager: MCSessionDelegate, MCNearbyServiceAdvertiserDelegate
             invitationHandler(true, self.session)
         }
     }
-    
-    /*func browser(_ browser: MCNearbyServiceBrowser, foundPeer peerID: MCPeerID, withDiscoveryInfo info: [String : String]?) {
-        DispatchQueue.main.async {
-            if let code = info?["code"] {
-                self.availableLobbies[peerID] = code
-                print("Found lobby: \(peerID.displayName) with code: \(code)")
-            } else {
-                print("Found peer without code: \(peerID.displayName)")
-            }
-        }
-    }*/
     
     func browser(_ browser: MCNearbyServiceBrowser, foundPeer peerID: MCPeerID, withDiscoveryInfo info: [String : String]?) {
         DispatchQueue.main.async {
@@ -604,7 +576,6 @@ extension MultipeerManager: MCSessionDelegate, MCNearbyServiceAdvertiserDelegate
             print("Lost lobby: \(peerID.displayName)")
         }
     }
-    
 
     func session(_ session: MCSession, didReceive stream: InputStream, withName streamName: String, fromPeer peerID: MCPeerID) {}
     func session(_ session: MCSession, didStartReceivingResourceWithName resourceName: String, fromPeer peerID: MCPeerID, with progress: Progress) {}

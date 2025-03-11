@@ -58,7 +58,7 @@ struct VotingView: View {
 
             if multipeerManager.isHosting {
                 Button("See Results") {
-                    multipeerManager.calculateWinner()
+                    //multipeerManager.calculateWinner()
                     multipeerManager.advanceToNextPhase()
                 }
                 .buttonStyle(.borderedProminent)
