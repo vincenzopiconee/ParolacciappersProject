@@ -405,12 +405,6 @@ class MultipeerManager: NSObject, ObservableObject {
             //self.broadcastPhaseChange()
             print("🔄 Game reset!")
         }
-        
-        let message = "resetGame"
-        if let data = message.data(using: .utf8) {
-            try? session.send(data, toPeers: session.connectedPeers, with: .reliable)
-            
-        }
     }
 
     func disconnect() {
