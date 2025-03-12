@@ -192,9 +192,9 @@ class MultipeerManager: NSObject, ObservableObject {
                 try session.send(data, toPeers: session.connectedPeers, with: .reliable)
                 submittedSentences[peerID] = sentence // Store locally
                 checkAllSentencesSubmitted()
-                print("📝 Sent sentence: \(sentence)")
+                print(" Sent sentence: \(sentence)")
             } catch {
-                print("❌ Error sending sentence: \(error.localizedDescription)")
+                print(" Error sending sentence: \(error.localizedDescription)")
             }
         }
     }
@@ -203,7 +203,7 @@ class MultipeerManager: NSObject, ObservableObject {
     func checkAllSentencesSubmitted() {
         DispatchQueue.main.async {
             self.allSentencesSubmitted = self.submittedSentences.count == self.connectedPeers.count + 1
-            print("✅ All sentences submitted: \(self.allSentencesSubmitted)")
+            print("All sentences submitted: \(self.allSentencesSubmitted)")
         }
     }
     
@@ -216,13 +216,13 @@ class MultipeerManager: NSObject, ObservableObject {
             do {
                 try session.send(data, toPeers: session.connectedPeers, with: .reliable)
                 
-                // ✅ Update votes locally
+                // Update votes locally
                 votes[peer, default: 0] += 1
                 hasVoted = true
                 
-                print("✅ Voted for: \(peer.displayName), Total votes: \(votes[peer]!)")
+                print("Voted for: \(peer.displayName), Total votes: \(votes[peer]!)")
             } catch {
-                print("❌ Error sending vote: \(error.localizedDescription)")
+                print("Error sending vote: \(error.localizedDescription)")
             }
         }
     }
@@ -236,9 +236,9 @@ class MultipeerManager: NSObject, ObservableObject {
                 try session.send(data, toPeers: session.connectedPeers, with: .reliable)
                 hasVoted = true
                 //votes[peerID] = 
-                print("✅ Voted for: \(peer.displayName)")
+                print("Voted for: \(peer.displayName)")
             } catch {
-                print("❌ Error sending vote: \(error.localizedDescription)")
+                print("Error sending vote: \(error.localizedDescription)")
             }
         }
     }*/
@@ -248,26 +248,6 @@ class MultipeerManager: NSObject, ObservableObject {
         return totalWins.filter { $0.value == maxWins }.map { $0.key }
     }
     
-    
-    /*func calculateWinner() {
-        let maxVotes = votes.values.max() ?? 0
-        winner = votes.filter { $0.value == maxVotes }.map { $0.key } // Handle ties
-
-        // Update total wins for each round winner
-        for winPeer in winner {
-            totalWins[winPeer, default: 0] += 1
-        }
-
-        print("🏆 Round Winner(s): \(winner.map { $0.displayName }.joined(separator: ", "))")
-        print("🏅 Total Wins: \(totalWins.map { "\($0.key.displayName): \($0.value)" }.joined(separator: ", "))")
-
-        // ✅ Broadcast winner list to all players
-        let winnerNames = winner.map { $0.displayName }.joined(separator: ",")
-        let message = "winner:\(winnerNames)"
-        if let data = message.data(using: .utf8) {
-            try? session.send(data, toPeers: session.connectedPeers, with: .reliable)
-        }
-    }*/
 
     func calculateWinner() {
         let maxVotes = votes.values.max() ?? 0
@@ -278,10 +258,10 @@ class MultipeerManager: NSObject, ObservableObject {
             totalWins[winPeer, default: 0] += 1
         }
 
-        print("🏆 Round Winner(s): \(winner.map { $0.displayName }.joined(separator: ", "))")
-        print("🏅 Total Wins: \(totalWins.map { "\($0.key.displayName): \($0.value)" }.joined(separator: ", "))")
+        print("Round Winner(s): \(winner.map { $0.displayName }.joined(separator: ", "))")
+        print("Total Wins: \(totalWins.map { "\($0.key.displayName): \($0.value)" }.joined(separator: ", "))")
 
-        // ✅ Broadcast winner list to all players
+        // Broadcast winner list to all players
         let winnerNames = winner.map { $0.displayName }.joined(separator: ",")
         let message = "roundWinner:\(winnerNames)"
         if let data = message.data(using: .utf8) {
@@ -298,10 +278,10 @@ class MultipeerManager: NSObject, ObservableObject {
     private func resetRoundData() {
         DispatchQueue.main.async {
             print("🔄 Resetting round data...")
-            self.votes = [:]  // ✅ Clear votes
-            self.hasVoted = false // ✅ Allow new voting
-            self.submittedSentences = [:]  // ✅ Clear previous sentences
-            self.allSentencesSubmitted = false // ✅ Reset flag for new submissions
+            self.votes = [:]
+            self.hasVoted = false
+            self.submittedSentences = [:]
+            self.allSentencesSubmitted = false
         }
     }
     
@@ -335,7 +315,7 @@ class MultipeerManager: NSObject, ObservableObject {
                 self.broadcastPhaseChange()
             case .voting:
                 self.calculateWinner()
-                //self.votes = [:] // ✅ Clear votes before the next round
+                //self.votes = [:]
                 //self.hasVoted = false
                 self.gamePhase = .roundResults
                 self.broadcastPhaseChange()
@@ -345,16 +325,15 @@ class MultipeerManager: NSObject, ObservableObject {
                     self.gamePhase = .gameOver
                 } else {
                     print("🔄 Starting New Round!")
-                    self.resetRoundData() // ✅ Reset round-specific data
-                    self.broadcastRoundReset() // ✅ Notify all players to reset too
-                    
-                    self.selectRandomWord() // ✅ Select a new word
-                    self.selectRandomScenario() // ✅ Select a new scenario
-                    self.gamePhase = .wordReveal // ✅ Restart game at word reveal
+                    self.resetRoundData()
+                    self.broadcastRoundReset()
+                    self.selectRandomWord()
+                    self.selectRandomScenario()
+                    self.gamePhase = .wordReveal
                 }
                 self.broadcastPhaseChange()
             case .gameOver:
-                print("🎮 Game Over.")
+                print("Game Over.")
                 break // Game is finished
             }
             
@@ -381,18 +360,18 @@ class MultipeerManager: NSObject, ObservableObject {
             let (peer, randomWord) = randomEntry // Get the peer and their word
             chosenWord = randomWord
             
-            // ✅ Remove the word from the dictionary
+            // Remove the word from the dictionary
             submittedWords.removeValue(forKey: peer)
 
-            // ✅ Broadcast the new word
+            // Broadcast the new word
             let message = "chosenWord:\(randomWord)"
             if let data = message.data(using: .utf8) {
                 try? session.send(data, toPeers: session.connectedPeers, with: .reliable)
             }
 
-            print("🔠 New Word Selected: \(randomWord) (Removed from list)")
+            print("New Word Selected: \(randomWord) (Removed from list)")
         } else {
-            print("⚠️ No words left to select.")
+            print("No words left to select.")
         }
     }
 
@@ -412,8 +391,8 @@ class MultipeerManager: NSObject, ObservableObject {
         DispatchQueue.main.async {
             self.isGameStarted = true
             self.shouldNavigateToGame = true  // Aggiorniamo la variabile in modo che la UI si aggiorni
-            self.gamePhase = .wordSubmission  // ✅ Set the initial game phase
-            self.broadcastPhaseChange()       // ✅ Notify all players
+            self.gamePhase = .wordSubmission  // Set the initial game phase
+            self.broadcastPhaseChange()       // Notify all players
         }
         
         let message = "startGame"
@@ -426,6 +405,8 @@ class MultipeerManager: NSObject, ObservableObject {
     // reset game if you want to start again
     func resetGame() {
         DispatchQueue.main.async {
+            self.shuldNavitgateToWaitScreen = false
+            self.shouldNavigateToGame = false
             self.submittedWords = [:]
             self.submittedSentences = [:]
             self.allWordsSubmitted = false
@@ -433,11 +414,11 @@ class MultipeerManager: NSObject, ObservableObject {
             self.votes = [:]
             self.hasVoted = false
             self.winner = []
-            self.totalWins = [:] // ✅ Reset total wins
+            self.totalWins = [:] // Reset total wins
             self.chosenWord = nil
             self.chosenScenario = nil
-            self.gamePhase = .wordSubmission // ✅ Reset to first phase
-            self.broadcastPhaseChange()
+            //self.gamePhase = .wordSubmission // Reset to first phase
+            //self.broadcastPhaseChange()
             print("🔄 Game reset!")
         }
         
@@ -520,7 +501,7 @@ extension MultipeerManager: MCSessionDelegate, MCNearbyServiceAdvertiserDelegate
                     let votedPlayerName = String(message.dropFirst(5))
                     DispatchQueue.main.async {
                         if let votedPeer = self.connectedPeers.first(where: { $0.displayName == votedPlayerName }) {
-                            self.votes[votedPeer, default: 0] += 1  // ✅ Update votes locally for all players
+                            self.votes[votedPeer, default: 0] += 1  // Update votes locally for all players
                             print("🗳️ Vote received for \(votedPlayerName), Total votes: \(self.votes[votedPeer]!)")
                         }
                     }
@@ -539,12 +520,12 @@ extension MultipeerManager: MCSessionDelegate, MCNearbyServiceAdvertiserDelegate
                 } else if message == "resetRound" {
                     DispatchQueue.main.async {
                         print("🔄 Received resetRound message, resetting round data!")
-                        self.resetRoundData() // ✅ All players reset round data now
+                        self.resetRoundData() // All players reset round data now
                     }
                 } else if message == "resetGame" {
                     DispatchQueue.main.async {
                         print("🔄 Resetting game data!")
-                        self.resetGame() // ✅ All players reset round data now
+                        self.resetGame() // All players reset round data now
                     }
                 }
 

@@ -41,15 +41,16 @@ struct GameOverView: View {
 
             Spacer()
 
-            if multipeerManager.isHosting {
+            /*if multipeerManager.isHosting {
                 Button("Restart Game") {
                     multipeerManager.resetGame()
                 }
                 .buttonStyle(.borderedProminent)
                 .padding()
-            }
+            }*/
 
             Button("Exit") {
+                multipeerManager.resetGame()
                 multipeerManager.disconnect()
                 presentationMode.wrappedValue.dismiss()
             }
