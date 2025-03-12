@@ -227,22 +227,6 @@ class MultipeerManager: NSObject, ObservableObject {
         }
     }
 
-    /*func submitVote(for peer: MCPeerID) {
-        guard !hasVoted else { return } // Prevent multiple votes
-        
-        let message = "vote:\(peer.displayName)"
-        if let data = message.data(using: .utf8) {
-            do {
-                try session.send(data, toPeers: session.connectedPeers, with: .reliable)
-                hasVoted = true
-                //votes[peerID] = 
-                print("Voted for: \(peer.displayName)")
-            } catch {
-                print("Error sending vote: \(error.localizedDescription)")
-            }
-        }
-    }*/
-
     func determineOverallWinner() -> [MCPeerID] {
         let maxWins = totalWins.values.max() ?? 0
         return totalWins.filter { $0.value == maxWins }.map { $0.key }
@@ -451,13 +435,6 @@ extension MultipeerManager: MCSessionDelegate, MCNearbyServiceAdvertiserDelegate
                 }
                 self.availableLobbies.removeValue(forKey: peerID)
                 self.messages.append("\(peerID.displayName) joined the game")
-                /*
-                if !self.isHosting {
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-                        self.shouldNavigateToGame = true
-                    }
-                }
-                 */
             case .notConnected:
                 self.connectedPeers.removeAll { $0 == peerID }
                 self.messages.append("System: \(peerID.displayName) left the game")

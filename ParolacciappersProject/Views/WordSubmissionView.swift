@@ -53,30 +53,6 @@ struct WordSubmissionView: View {
                 
                 Spacer()
                 
-                /*List {
-                    ForEach(multipeerManager.messages, id: \.self) { msg in
-                        Text(msg)
-                            .padding(4)
-                    }
-                }
-                
-                HStack {
-                    TextField("Type a message", text: $message)
-                        .textFieldStyle(.roundedBorder)
-                        .disabled(multipeerManager.connectedPeers.isEmpty)
-                    
-                    Button("Send") {
-                        if !message.isEmpty {
-                            multipeerManager.sendMessage(message)
-                            message = ""
-                        }
-                    }
-                    .buttonStyle(.borderedProminent)
-                    .disabled(message.isEmpty || multipeerManager.connectedPeers.isEmpty)
-                }
-                .padding()
-                 
-                */
                 
                 Button("Leave Game") {
                     multipeerManager.disconnect()
@@ -86,14 +62,7 @@ struct WordSubmissionView: View {
                 .padding(.bottom)
             }
             .navigationBarBackButtonHidden(true)
-            /*.navigationDestination(isPresented: $multipeerManager.shouldNavigateToWordReveal) {
-                    WordRevealView(multipeerManager: multipeerManager)
-                }*/
-            /*.navigationDestination(isPresented: Binding(
-                get: { multipeerManager.gamePhase == .wordReveal },
-                set: { _ in })) {
-                    WordRevealView(multipeerManager: multipeerManager)
-                }*/
+
         }
         
     }

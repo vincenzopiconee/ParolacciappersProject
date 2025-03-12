@@ -3,7 +3,6 @@ import SwiftUI
 struct LobbyView: View {
     
     @StateObject private var multipeerManager = MultipeerManager(displayName: "Placeholder")
-    //@StateObject var multipeerManager = MultipeerManager(displayName: "Placeholder")
     @State private var isHost: Bool = false
     @State private var navigateToCreateUser = false
 
@@ -66,13 +65,6 @@ struct LobbyView: View {
             .navigationDestination(isPresented: $navigateToCreateUser) {
                 CreateUserView(isHost: isHost, multipeerManager: multipeerManager)
             }
-            
-            /*.navigationDestination(isPresented:  $multipeerManager.isHosting) {
-                HostLobbyView(multipeerManager: multipeerManager)
-            }
-            .navigationDestination(isPresented: $multipeerManager.isBrowsing, destination: {
-                JoinLobbyView(multipeerManager: multipeerManager)
-            })*/
              
         }
     }
