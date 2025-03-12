@@ -42,16 +42,19 @@ struct JoinLobbyView: View {
                         VStack {
                             List {
                                 ForEach(Array(multipeerManager.availableLobbies.keys), id: \.self) { peer in
-                                    LobbySelectionView(peer: peer)
-                                        .onTapGesture {
-                                            selectedLobby = peer
-                                            isLobbySelected = true // Attiva il sheet
-                                        }
-                                        .listRowSeparator(.hidden)
-                                        .background(
-                                            RoundedRectangle(cornerRadius: 12)
-                                                .fill(selectedLobby == peer ? Color.black.opacity(0.2) : Color.clear)
-                                        )
+                                    Button(action: {
+                                                selectedLobby = peer
+                                                isLobbySelected = true // Attiva il fullScreenCover
+                                    }) {
+                                        LobbySelectionView(peer: peer)
+                                            .background(
+                                                RoundedRectangle(cornerRadius: 12)
+                                                    .fill(selectedLobby == peer ? Color.black.opacity(0.2) : Color.clear)
+                                            )
+                                        
+                                    }
+                                    .listRowSeparator(.hidden)
+                                    
                                 }
                             }
                             .scrollContentBackground(.hidden)
@@ -70,7 +73,7 @@ struct JoinLobbyView: View {
             .navigationDestination(isPresented: $multipeerManager.shuldNavitgateToWaitScreen) {
                 WaitStartGameView(multipeerManager: multipeerManager)
             }
-            .sheet(isPresented: $isLobbySelected) {
+            .fullScreenCover(isPresented: $isLobbySelected) {
                 JoinLobbySheetView(multipeerManager: multipeerManager, selectedLobby: selectedLobby!, enteredCode: $enteredCode) {
                     isLobbySelected = false // Chiude il sheet
                     selectedLobby = nil // Resetta selectedLobby
@@ -97,6 +100,10 @@ struct LobbySelectionView: View {
         }
         .padding()
         .background(RoundedRectangle(cornerRadius: 12).stroke(Color.black, lineWidth: 3))
+        .accessibilityElement(children: .combine)
+        .accessibilityLabel("Lobby of \(peer.displayName)")
+        .accessibilityAddTraits(.isButton)
+     
     }
 }
 

@@ -14,9 +14,18 @@ struct VotingView: View {
 
     var body: some View {
         VStack {
-            Text("Vote for the Funniest Sentence!")
-                .font(.largeTitle)
-                .padding()
+            
+            HStack {
+                Text("Vote for the funniest sentence!")
+                    .font(.title)
+                    .bold()
+                    .padding()
+
+                Spacer()
+            }
+            
+            
+            Spacer()
 
             List {
                 ForEach(Array(multipeerManager.submittedSentences.keys).sorted(by: { $0.displayName < $1.displayName }), id: \.self) { peer in
@@ -30,6 +39,7 @@ struct VotingView: View {
                         .padding()
                         .frame(maxWidth: .infinity, alignment: .leading)
                         .background(selectedPeer == peer ? Color.blue.opacity(0.2) : Color.clear) // Highlight selected
+
                         .cornerRadius(10)
 
                         Button(action: {
@@ -55,6 +65,8 @@ struct VotingView: View {
                 .padding()
                 .disabled(multipeerManager.hasVoted) // Prevent resubmitting
             }
+            
+            Spacer()
 
             if multipeerManager.isHosting {
                 Button("See Results") {
@@ -94,5 +106,4 @@ struct VotingView_Preview: View {
 #Preview {
     VotingView_Preview()
 }
-
 

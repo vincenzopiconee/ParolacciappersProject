@@ -18,10 +18,12 @@ struct SentenceSubmissionView: View {
             HStack {
                 Text("Write a Sentence Using:")
                     .font(.title)
+                    .bold()
                     .padding()
 
                 Spacer()
             }
+            Spacer()
 
             // Display the word and scenario
             VStack(spacing: 15) {
@@ -57,13 +59,15 @@ struct SentenceSubmissionView: View {
                 .disabled(message.isEmpty)
             } else if !multipeerManager.allSentencesSubmitted {
                 Text("Waiting for other players to submit their sentences...")
+                    .padding()
             } else if multipeerManager.isHosting {
-                Button("Next") {
+                Button("Continue") {
                     print("🎭 Moving to Sentence Reveal phase")
                     multipeerManager.advanceToNextPhase()
                 }
                 .buttonStyle(.borderedProminent)
                 .disabled(!multipeerManager.allSentencesSubmitted)
+                .padding()
             }
 
             Spacer()
@@ -81,6 +85,5 @@ struct SentenceSubmissionView: View {
 
 
 #Preview {
-    SentenceSubmissionView(multipeerManager: MultipeerManager(displayName: "Placeholder")
-    )
+    SentenceSubmissionView(multipeerManager: MultipeerManager(displayName: "Placeholder"))
 }

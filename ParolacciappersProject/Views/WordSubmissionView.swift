@@ -2,7 +2,6 @@
 //  WordSubmissionView.swift
 //  ParolacciappersProject
 //
-//  Created by Martha Mendoza Alfaro on 10/03/25.
 //
 
 import SwiftUI
@@ -27,10 +26,15 @@ struct WordSubmissionView: View {
                         .padding(.trailing)
                 }
                 
+
+                Spacer()
+
   
                 if multipeerManager.submittedWords[multipeerManager.myPeerID] == nil {
                     TextField("Enter your word", text: $message)
                         .textFieldStyle(.roundedBorder)
+
+                        .padding(.horizontal)
                     
                     Button("Submit") {
                         if !message.isEmpty {
@@ -40,10 +44,12 @@ struct WordSubmissionView: View {
                     }
                     .buttonStyle(.borderedProminent)
                     .disabled(message.isEmpty)
+
+                    .padding()
                 } else if !multipeerManager.allWordsSubmitted {
                     Text("Waiting for other players to send their words...")
                 } else if multipeerManager.isHosting {
-                    Button("Next") {
+                    Button("Continue") {
                         multipeerManager.advanceToNextPhase()
                         //multipeerManager.advanceToNextScreen()
                     }
@@ -70,6 +76,6 @@ struct WordSubmissionView: View {
 
 
 #Preview {
-    WordSubmissionView(multipeerManager: MultipeerManager(displayName: "Placeholder")
-    )
+    WordSubmissionView(multipeerManager: MultipeerManager(displayName: "Placeholder"))
+
 }

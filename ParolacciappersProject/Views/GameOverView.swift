@@ -41,6 +41,17 @@ struct GameOverView: View {
 
             Spacer()
 
+           
+            /*
+            if multipeerManager.isHosting {
+                Button("Restart Game") {
+                    multipeerManager.resetGame()
+                }
+                .buttonStyle(.borderedProminent)
+                .padding()
+            }
+            */
+
             Button("Exit") {
                 multipeerManager.resetGame()
                 multipeerManager.disconnect()
@@ -51,4 +62,8 @@ struct GameOverView: View {
         }
         .navigationBarBackButtonHidden(true)
     }
+}
+
+#Preview {
+    GameOverView(multipeerManager: MultipeerManager(displayName: "Placeholder"))
 }
