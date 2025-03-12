@@ -5,7 +5,6 @@
 //  Created by Martha Mendoza Alfaro on 07/03/25.
 //
 
-
 import SwiftUI
 
 struct RoundResultsView: View {

@@ -79,13 +79,6 @@ struct JoinLobbyView: View {
                     selectedLobby = nil // Resetta selectedLobby
                     enteredCode = ""
                 }
-
-                /*JoinLobbySheetView(multipeerManager: multipeerManager, selectedLobby: selectedLobby!, enteredCode: $enteredCode) {
-                    isLobbySelected = false // Chiude il sheet
-                    selectedLobby = nil // Resetta selectedLobby
-                    enteredCode = ""
-                }*/
-
             }
         }
     }

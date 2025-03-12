@@ -14,6 +14,7 @@ struct ScenarioRevealView: View {
     var body: some View {
         VStack {
             
+
             HStack {
                 Text("Write a sentence using the word \"\(multipeerManager.chosenWord ?? "no word selected")\" in this scenario:")
                     .font(.title)
@@ -24,6 +25,7 @@ struct ScenarioRevealView: View {
             }
             
             Spacer()
+
 
             Text(multipeerManager.chosenScenario ?? "Selecting a scenario...")
                 .font(.title)

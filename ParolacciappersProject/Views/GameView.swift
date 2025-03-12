@@ -1,9 +1,5 @@
 import SwiftUI
 
-
-
-import SwiftUI
-
 struct GameView: View {
     @ObservedObject var multipeerManager: MultipeerManager
 

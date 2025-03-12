@@ -83,6 +83,7 @@ struct SentenceSubmissionView: View {
     }
 }
 
+
 #Preview {
     SentenceSubmissionView(multipeerManager: MultipeerManager(displayName: "Placeholder"))
 }

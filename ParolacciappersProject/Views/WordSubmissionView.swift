@@ -2,7 +2,6 @@
 //  WordSubmissionView.swift
 //  ParolacciappersProject
 //
-//  Created by Vincenzo Picone on 07/03/25.
 //
 
 import SwiftUI
@@ -27,12 +26,14 @@ struct WordSubmissionView: View {
                         .padding(.trailing)
                 }
                 
+
                 Spacer()
-                
+
   
                 if multipeerManager.submittedWords[multipeerManager.myPeerID] == nil {
                     TextField("Enter your word", text: $message)
                         .textFieldStyle(.roundedBorder)
+
                         .padding(.horizontal)
                     
                     Button("Submit") {
@@ -43,6 +44,7 @@ struct WordSubmissionView: View {
                     }
                     .buttonStyle(.borderedProminent)
                     .disabled(message.isEmpty)
+
                     .padding()
                 } else if !multipeerManager.allWordsSubmitted {
                     Text("Waiting for other players to send their words...")
@@ -57,30 +59,6 @@ struct WordSubmissionView: View {
                 
                 Spacer()
                 
-                /*List {
-                    ForEach(multipeerManager.messages, id: \.self) { msg in
-                        Text(msg)
-                            .padding(4)
-                    }
-                }
-                
-                HStack {
-                    TextField("Type a message", text: $message)
-                        .textFieldStyle(.roundedBorder)
-                        .disabled(multipeerManager.connectedPeers.isEmpty)
-                    
-                    Button("Send") {
-                        if !message.isEmpty {
-                            multipeerManager.sendMessage(message)
-                            message = ""
-                        }
-                    }
-                    .buttonStyle(.borderedProminent)
-                    .disabled(message.isEmpty || multipeerManager.connectedPeers.isEmpty)
-                }
-                .padding()
-                 
-                */
                 
                 Button("Leave Game") {
                     multipeerManager.disconnect()
@@ -90,19 +68,14 @@ struct WordSubmissionView: View {
                 .padding(.bottom)
             }
             .navigationBarBackButtonHidden(true)
-            /*.navigationDestination(isPresented: $multipeerManager.shouldNavigateToWordReveal) {
-                    WordRevealView(multipeerManager: multipeerManager)
-                }*/
-            /*.navigationDestination(isPresented: Binding(
-                get: { multipeerManager.gamePhase == .wordReveal },
-                set: { _ in })) {
-                    WordRevealView(multipeerManager: multipeerManager)
-                }*/
+
         }
         
     }
 }
 
+
 #Preview {
     WordSubmissionView(multipeerManager: MultipeerManager(displayName: "Placeholder"))
+
 }
