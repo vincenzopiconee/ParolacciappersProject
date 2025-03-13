@@ -12,23 +12,34 @@ struct CustomTextField: View {
     @Binding var text: String
     
     var body: some View {
-        VStack(alignment: .leading, spacing: 5) {
+        VStack(alignment: .leading, spacing: 4) {
             Text(title)
-                .font(.headline)
+                .font(.title3)
+                .fontDesign(.rounded)
+                .bold()
                 .foregroundColor(.black)
                 .accessibilityHidden(true)
             
             
-            TextField("", text: $text, prompt: Text("Required"))
-                .padding()
-                .background(Color.white)
-                .cornerRadius(5)
-                .overlay(
-                    RoundedRectangle(cornerRadius: 5)
-                        .stroke(Color.black, lineWidth: 2)
-                )
-             
-                .accessibilityLabel(title)
+            ZStack {
+                // Bordo nero spostato per creare l'effetto brutalista
+                RoundedRectangle(cornerRadius: 12)
+                    .fill(Color.black)
+                    .offset(x: 6, y: 6) // Sposta il bordo nero verso il basso e destra
+                    .frame(height: 57) // Altezza fissa, larghezza dinamica
+                
+                TextField("", text: $text, prompt: Text("Required"))
+                    .bold()
+                    .fontDesign(.rounded)
+                    .padding()
+                    .background(Color.white)
+                    .cornerRadius(12)
+                    .overlay(
+                        RoundedRectangle(cornerRadius: 12)
+                            .stroke(Color.black, lineWidth: 1.5)
+                    )
+                
+            }
             
         }
     }

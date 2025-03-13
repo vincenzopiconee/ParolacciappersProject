@@ -9,21 +9,37 @@ import SwiftUI
 struct WordSubmissionView: View {
     @ObservedObject var multipeerManager: MultipeerManager
     @State private var message = ""
+    @State private var definition = ""
     @Environment(\.presentationMode) var presentationMode
     
     var body: some View {
         NavigationStack {
             VStack {
+                
                 HStack {
-                    Text("Game Session")
-                        .font(.title)
-                        .padding()
-                    
                     Spacer()
                     
+                    Button(action: {
+                        multipeerManager.disconnect()
+                        presentationMode.wrappedValue.dismiss()
+                    }) {
+                        CancelButton()
+                    }
+                    
+                }
+                
+                HStack {
+                    Text("Add your curse word!")
+                        .font(.title)
+                        .bold()
+                        .fontDesign(.rounded)
+                    
+                    Spacer()
+                    /*
                     Text("Connected: \(multipeerManager.connectedPeers.count)")
                         .foregroundColor(multipeerManager.connectedPeers.isEmpty ? .red : .green)
                         .padding(.trailing)
+                     */
                 }
                 
 
@@ -31,23 +47,42 @@ struct WordSubmissionView: View {
 
   
                 if multipeerManager.submittedWords[multipeerManager.myPeerID] == nil {
-                    TextField("Enter your word", text: $message)
-                        .textFieldStyle(.roundedBorder)
-
-                        .padding(.horizontal)
                     
-                    Button("Submit") {
+                    VStack(alignment: .leading, spacing: 10) {
+                        CustomTextField(title: "Word", text: $message)
+                        CustomTextField(title: "Definition", text: $definition)
+                        // commented for TestFligth
+                        //CustomTextField(title: "Nationality", text: $nationality)
+                        //CustomTextField(title: "Language", text: $language)
+                    }
+                    .padding()
+                    .background(Color.accentColor)
+                    .clipShape(RoundedRectangle(cornerRadius: 12))
+                    .overlay(
+                        RoundedRectangle(cornerRadius: 12)
+                            .stroke(Color.black, lineWidth: 3)
+                    )
+                    
+                    Spacer()
+                    
+                    
+                    Button(action: {
                         if !message.isEmpty {
                             multipeerManager.sendWord(message)
                             message = ""
                         }
-                    }
-                    .buttonStyle(.borderedProminent)
+                    }, label: {
+                        ActionButton(title: "Submit", isDisabled: message.isEmpty)
+                    })
                     .disabled(message.isEmpty)
 
                     .padding()
                 } else if !multipeerManager.allWordsSubmitted {
                     Text("Waiting for other players to send their words...")
+                        .font(.title3)
+                        .bold()
+                        .fontDesign(.rounded)
+                    Spacer()
                 } else if multipeerManager.isHosting {
                     Button("Continue") {
                         multipeerManager.advanceToNextPhase()
@@ -56,6 +91,8 @@ struct WordSubmissionView: View {
                     .buttonStyle(.borderedProminent)
                     .disabled(!multipeerManager.allWordsSubmitted)
                 }
+                
+                /*
                 
                 Spacer()
                 
@@ -66,7 +103,10 @@ struct WordSubmissionView: View {
                 }
                 .buttonStyle(.bordered)
                 .padding(.bottom)
+                 
+                 */
             }
+            .padding()
             .navigationBarBackButtonHidden(true)
 
         }

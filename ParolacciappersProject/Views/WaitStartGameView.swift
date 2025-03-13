@@ -18,19 +18,22 @@ struct WaitStartGameView: View {
             VStack {
                 
                 HStack {
+                    Spacer()
                     Button(action: {
                         multipeerManager.disconnect()
                         presentationMode.wrappedValue.dismiss()
                     }) {
                         CancelButton()
                     }
-                    Spacer()
+                    
                 }
                 
                 Spacer()
                 
                 Text("Wait for the host to start the game...")
-                    .font(.headline)
+                    .font(.title3)
+                    .bold()
+                    .fontDesign(.rounded)
                     .foregroundColor(.black)
                 
                 Spacer()

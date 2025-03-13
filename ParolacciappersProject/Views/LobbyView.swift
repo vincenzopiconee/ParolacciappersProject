@@ -14,6 +14,9 @@ struct LobbyView: View {
                     isHost = true
                     navigateToCreateUser = true
                 }, label: {
+                    
+                    ActionButton(title: "Create Game", isDisabled: false)
+                    /*
                     ZStack {
                         RoundedRectangle(cornerRadius: 12)
                             .fill(Color.black)
@@ -31,6 +34,7 @@ struct LobbyView: View {
                                     .stroke(Color.black, lineWidth: 2)
                             )
                     }
+                     */
                 })
                 .padding(.bottom)
             
@@ -41,6 +45,7 @@ struct LobbyView: View {
                     navigateToCreateUser = true
                     
                 }, label: {
+                    
                     ZStack {
                         RoundedRectangle(cornerRadius: 12)
                             .fill(Color.black)
@@ -48,17 +53,19 @@ struct LobbyView: View {
                             .offset(x: 5, y: 7)
                         
                         Text("Join Game")
-                            .font(.body)
+                            .font(.title2)
+                            .bold()
+                            .fontDesign(.rounded)
                             .foregroundColor(.black)
                             .frame(width: 200, height: 50)
-                            .background(Color.gray)
-                        //.opacity(0.7)
+                            .background(Color.accentColor)
                             .cornerRadius(12)
                             .overlay(
                                 RoundedRectangle(cornerRadius: 12)
                                     .stroke(Color.black, lineWidth: 2)
                             )
                     }
+                    
                 })
                 
             }
