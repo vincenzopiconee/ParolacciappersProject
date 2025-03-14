@@ -1,3 +1,10 @@
+//
+//  CreateUserView.swift
+//  ParolacciappersProject
+//
+//  Created by Frida Perez Perfecto on 13/03/25.
+//
+
 import SwiftUI
 import MultipeerConnectivity
 
@@ -7,63 +14,120 @@ struct HostLobbyView: View {
     
     var body: some View {
         NavigationStack {
-            VStack {
-                Text("Hosting Lobby").font(.largeTitle).padding()
+            ZStack {
+                // background
+                Image("background")
+                    .resizable()
+                    .scaledToFill()
+                    .edgesIgnoringSafeArea(.all)
                 
-                VStack(alignment: .leading) {
-                    Text("Your Device: \(multipeerManager.displayName)")
-                        .font(.headline)
-                        .padding(.vertical)
-                    
-                    Text("Lobby Code: \(multipeerManager.lobbyCode)")
-                        .font(.headline)
-                        .padding(.vertical)
-                    
-                    Text("Connected players (\(multipeerManager.connectedPeers.count)):")
-                        .font(.headline)
-                        .padding(.top)
-                    
-                    List {
-                        ForEach(multipeerManager.connectedPeers, id: \.self) { peer in
-                            Text(peer.displayName)
+                VStack {
+                    HStack {
+                        Button(action: {
+                            //back action
+                            presentationMode.wrappedValue.dismiss()
+                        }) {
+                            BackButton()
                         }
+                        Spacer()
                     }
-                    .frame(height: 200)
-                }
-                .padding()
-                
-                Spacer()
-                
-                HStack {
-                    Button("Cancel") {
-                        multipeerManager.stopHosting()
-                        presentationMode.wrappedValue.dismiss()
-                    }
-                    .buttonStyle(.bordered)
-                    .padding()
                     
+                    Text("Hosting a %@#! Lobby")
+                        .font(.title)
+                        .fontWeight(.bold)
+                        .multilineTextAlignment(.leading)
+                        .padding(.top, 60)
+                        .padding(.bottom, 20)
+                        .foregroundColor(.black)
+                    
+                    VStack(spacing: 20) {
+                        infoBox(title: "Your Device:", content: multipeerManager.displayName)
+                            .padding(.bottom, 10)
+
+                        
+                        infoBox(title: "Lobby Code:", content: multipeerManager.lobbyCode)
+                            .padding(.bottom, 10)
+
+                        VStack(alignment: .leading) {
+                            Text("Connected players (\(multipeerManager.connectedPeers.count)):")
+                                .font(.headline)
+                                .foregroundColor(.white)
+                            
+                            List {
+                                ForEach(multipeerManager.connectedPeers, id: \.self) { peer in
+                                    Text(peer.displayName)
+                                        .foregroundColor(.black)
+                                }
+                            }
+                            .cornerRadius(12)
+                            .frame(maxWidth: .infinity)
+
+                        }
+                        .padding()
+                        .background(Color(hex: "#A3E636"))
+                        .cornerRadius(12)
+                        .frame(maxWidth: .infinity)
+                        .overlay(
+                            RoundedRectangle(cornerRadius: 12)
+                                .stroke(Color.black, lineWidth: 3)
+                        )
+                    }
+
                     Spacer()
                     
-                    Button("Start Game") {
-                        multipeerManager.startGame()
+                    HStack {
+                        Button("Cancel") {
+                            multipeerManager.stopHosting()
+                            presentationMode.wrappedValue.dismiss()
+                        }
+                        .buttonStyle(.bordered)
+                        .padding()
+                        .foregroundColor(.black)
+                        
+                        Spacer()
+                        
+                        Button("Start Game") {
+                            multipeerManager.startGame()
+                        }
+                        .bold()
+                        .buttonStyle(.bordered)
+                        .padding()
+                        .disabled(multipeerManager.connectedPeers.isEmpty)
+                        .foregroundColor(.black)
                     }
-                    .bold()
-                    .buttonStyle(.bordered)
-                    .padding()
-                    .disabled(multipeerManager.connectedPeers.isEmpty)
-                    
-                     
+                }
+                .padding()
+                .navigationBarBackButtonHidden(true)
+                .navigationDestination(isPresented: $multipeerManager.shouldNavigateToGame) {
+                    GameView(multipeerManager: multipeerManager)
                 }
             }
-            .navigationBarBackButtonHidden(true)
-            .navigationDestination(isPresented: $multipeerManager.shouldNavigateToGame) {
-                GameView(multipeerManager: multipeerManager)
-            }
         }
-        
+    }
+    
+    private func infoBox(title: String, content: String) -> some View {
+        VStack(alignment: .leading) {
+            Text(title)
+                .font(.headline)
+                .foregroundColor(.white)
+            
+            Text(content)
+                .font(.subheadline)
+                .foregroundColor(.black)
+                .padding(.top, 5)
+        }
+        .padding()
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .background(Color(hex: "#A3E636"))
+        .cornerRadius(12)
+        .overlay(
+            RoundedRectangle(cornerRadius: 12)
+                .stroke(Color.black, lineWidth: 3)
+        )
     }
 }
 
 #Preview {
     HostLobbyView(multipeerManager: MultipeerManager(displayName: "Placeholder"))
 }
+

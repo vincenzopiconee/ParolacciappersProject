@@ -17,9 +17,12 @@ struct GameOverView: View {
 
     var body: some View {
         VStack {
-            Text("Game Over!")
+            Text("Game Over %@#!")
                 .font(.largeTitle)
-                .padding()
+                .font(.title)
+                .fontWeight(.bold)
+                .multilineTextAlignment(.leading)
+                .padding(.top, 60)
 
             Text("🏆 Overall Winner(s):")
                 .font(.headline)

@@ -34,7 +34,7 @@ struct JoinLobbySheetView: View {
                     Text("Enter Lobby Code")
                         .font(.title)
                         .fontWeight(.bold)
-                        .padding(.top, 15)
+                        .padding(.top, 20)
 
                     ManualCodeEntryView(enteredCode: $enteredCode)
                         .padding(.vertical)
@@ -56,6 +56,8 @@ struct JoinLobbySheetView: View {
                         }
                     }) {
                         ActionButton(title: "Join Lobby")
+                            .padding(.top, 20)
+
                     }
                     .disabled(enteredCode.count < 4)
                     .opacity(enteredCode.count < 4 ? 0.5 : 1.0)
