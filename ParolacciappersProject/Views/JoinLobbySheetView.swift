@@ -16,74 +16,94 @@ struct JoinLobbySheetView: View {
     var onDismiss: () -> Void
     @FocusState private var isTextFieldFocused: Bool
     
-    @State private var showInvalidCodeAlert = false  // Variabile per mostrare l'alert personalizzato
-
+    @State private var showInvalidCodeAlert = false
+    
     var body: some View {
         ZStack {
             NavigationStack {
-                VStack {
-                    HStack {
-                        Button(action: {
-                            onDismiss()
-                        }) {
-                            CancelButton()
-                        }
-                        Spacer()
-                    }
-
-                    Text("Enter Lobby Code")
-                        .font(.title)
-                        .fontWeight(.bold)
-                        .padding(.top, 20)
-
-                    ManualCodeEntryView(enteredCode: $enteredCode)
-                        .padding(.vertical)
-                        .focused($isTextFieldFocused)
-
-                    Button(action: {
-                        
-                        isTextFieldFocused = false
-                        
-                        multipeerManager.joinLobbyWithCode(selectedLobby, code: enteredCode)
-                        
-                        
-                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
-                            if multipeerManager.shuldNavitgateToWaitScreen {
+                ZStack {
+                    Image("background")
+                        .resizable()
+                        .scaledToFill()
+                        .edgesIgnoringSafeArea(.all)
+                    VStack {
+                        HStack {
+                            Button(action: {
                                 onDismiss()
-                            } else {
-                                showInvalidCodeAlert = true
+                            }) {
+                                CancelButton()
+                            }
+                            Spacer()
+                        }
+                        
+                        Text("Enter the %@#! Lobby Code")
+                            .font(.title)
+                            .fontWeight(.bold)
+                            .padding(.top, 45)
+                        
+                        ManualCodeEntryView(enteredCode: $enteredCode)
+                            .padding(.vertical)
+                            .focused($isTextFieldFocused)
+                        
+                        Button(action: {
+                            isTextFieldFocused = false
+                            multipeerManager.joinLobbyWithCode(selectedLobby, code: enteredCode)
+                            
+                            DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
+                                if multipeerManager.shuldNavitgateToWaitScreen {
+                                    onDismiss()
+                                } else {
+                                    showInvalidCodeAlert = true
+                                }
+                            }
+                        }) {
+                            ZStack {
+                                RoundedRectangle(cornerRadius: 12)
+                                    .fill(Color.black)
+                                    .frame(width: 250, height: 50)
+                                    .offset(x: 5, y: 7)
+                                
+                                RoundedRectangle(cornerRadius: 12)
+                                    .fill(Color(hex: "#BAE575"))
+                                    .frame(width: 250, height: 50)
+                                
+                                Text("Join Lobby")
+                                    .font(.headline)
+                                    .foregroundColor(.black)
+                                    .frame(width: 250, height: 50)
+                                    .cornerRadius(12)
+                                    .overlay(
+                                        RoundedRectangle(cornerRadius: 12)
+                                            .stroke(Color.black, lineWidth: 3)
+                                    )
                             }
                         }
-                    }) {
-                        ActionButton(title: "Join Lobby")
-                            .padding(.top, 20)
-
+                        .padding(.top, 20)
+                        .disabled(enteredCode.count < 4)
+                        
+                        Spacer()
                     }
-                    .disabled(enteredCode.count < 4)
-                    .opacity(enteredCode.count < 4 ? 0.5 : 1.0)
-
-                    Spacer()
+                    .padding()
+                    .navigationBarBackButtonHidden(true)
                 }
-                .padding()
-                .navigationBarBackButtonHidden(true)
-            }
-            
-            // Mostra l'alert personalizzato sopra la UI principale
-            if showInvalidCodeAlert {
-                Color.black.opacity(0.5) // Sfondo scuro semi-trasparente
-                    .edgesIgnoringSafeArea(.all)
                 
-                CustomAlert(
-                    title: "Invalid Code",
-                    message: "The code you entered is incorrect. Please try again."
-                ) {
-                    showInvalidCodeAlert = false
+                // Mostra l'alert personalizzato sopra la UI principale
+                if showInvalidCodeAlert {
+                    Color.black.opacity(0.5) // Sfondo scuro semi-trasparente
+                        .edgesIgnoringSafeArea(.all)
+                    
+                    CustomAlert(
+                        title: "Invalid Code",
+                        message: "The code you entered is incorrect. Please try again."
+                    ) {
+                        showInvalidCodeAlert = false
+                    }
+                    .transition(.scale)
+                    .accessibilityAddTraits(.isModal)
                 }
-                .transition(.scale)
-                .accessibilityAddTraits(.isModal)
             }
+            .animation(.easeInOut, value: showInvalidCodeAlert)
         }
-        .animation(.easeInOut, value: showInvalidCodeAlert)
     }
 }
 

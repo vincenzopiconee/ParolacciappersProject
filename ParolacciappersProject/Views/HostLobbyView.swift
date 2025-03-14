@@ -36,7 +36,7 @@ struct HostLobbyView: View {
                         .font(.title)
                         .fontWeight(.bold)
                         .multilineTextAlignment(.leading)
-                        .padding(.top, 60)
+                        .padding(.top, 15)
                         .padding(.bottom, 20)
                         .foregroundColor(.black)
                     
@@ -125,7 +125,32 @@ struct HostLobbyView: View {
                 .stroke(Color.black, lineWidth: 3)
         )
     }
-}
+    
+    private func customButton(title: String, action: @escaping () -> Void) -> some View {
+            Button(action: action) {
+                ZStack {
+                    RoundedRectangle(cornerRadius: 12)
+                        .fill(Color.black)
+                        .frame(width: 250, height: 50)
+                        .offset(x: 5, y: 7) // Sombra desplazada
+                    
+                    RoundedRectangle(cornerRadius: 12)
+                        .fill(Color(hex: "#BAE575"))
+                        .frame(width: 250, height: 50)
+                    
+                    Text(title)
+                        .font(.headline)
+                        .foregroundColor(.black)
+                        .frame(width: 250, height: 50)
+                        .cornerRadius(12)
+                        .overlay(
+                            RoundedRectangle(cornerRadius: 12)
+                                .stroke(Color.black, lineWidth: 3)
+                        )
+                }
+            }
+        }
+    }
 
 #Preview {
     HostLobbyView(multipeerManager: MultipeerManager(displayName: "Placeholder"))

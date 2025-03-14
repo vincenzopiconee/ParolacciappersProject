@@ -17,7 +17,7 @@ struct CancelButton: View {
             
             RoundedRectangle(cornerRadius: 5)
                 .stroke(Color.black, lineWidth: 4)
-                .background(Color.white)
+                .background(Color(hex: "#BAE575"))
                 .frame(width: 50, height: 50)
                 .cornerRadius(5)
                 .overlay(
