@@ -105,6 +105,12 @@ struct VotingView: View {
                     })
                     
                 }
+
+                .buttonStyle(.borderedProminent)
+                .padding()
+                //.disabled(multipeerManager.votes.isEmpty)
+                .disabled(!multipeerManager.allVotesSubmitted)
+
             }
             .padding()
             .background(Image("background"))

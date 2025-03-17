@@ -51,7 +51,9 @@ class MultipeerManager: NSObject, ObservableObject {
     //for voting and winning
     @Published var votes: [MCPeerID: Int] = [:]  // Tracks votes received per player
     @Published var hasVoted = false  // Prevents multiple votes
+    @Published var totalVotes: Int = 0  // Counts Votes
     @Published var winner: [MCPeerID] = []  // Stores the player(s) with the most votes
+    @Published var allVotesSubmitted = false
     
     //for final winner
     @Published var totalWins: [MCPeerID: Int] = [:] // Tracks total wins per player
@@ -210,6 +212,30 @@ class MultipeerManager: NSObject, ObservableObject {
     // Vote submission form players
     func submitVote(for peer: MCPeerID) {
         guard !hasVoted else { return } // Prevent multiple votes
+
+        let message = "vote:\(peer.displayName)"
+        if let data = message.data(using: .utf8) {
+            do {
+                try session.send(data, toPeers: session.connectedPeers, with: .reliable)
+                
+                // Update votes locally, making sure the host is included
+                votes[peer, default: 0] += 1
+                hasVoted = true
+                
+                totalVotes += 1
+                
+                checkAllVotesSubmitted()
+                
+                print("✅ Voted for: \(peer.displayName), Total votes now: \(votes[peer]!)")
+            } catch {
+                print("⚠️ Error sending vote: \(error.localizedDescription)")
+            }
+        }
+    }
+
+    
+    /*func submitVote(for peer: MCPeerID) {
+        guard !hasVoted else { return } // Prevent multiple votes
         
         let message = "vote:\(peer.displayName)"
         if let data = message.data(using: .utf8) {
@@ -219,20 +245,44 @@ class MultipeerManager: NSObject, ObservableObject {
                 // Update votes locally
                 votes[peer, default: 0] += 1
                 hasVoted = true
+                checkAllVotesSubmitted()
                 
                 print("Voted for: \(peer.displayName), Total votes: \(votes[peer]!)")
             } catch {
                 print("Error sending vote: \(error.localizedDescription)")
             }
         }
+    }*/
+    
+    /*func checkAllVotesSubmitted() {
+        DispatchQueue.main.async {
+            let totalPlayers = self.connectedPeers.count + 1 // Including the host
+            let uniqueVoters = Set(self.votes.keys).count // Count of unique people who have voted
+            
+            print("🔍 Checking votes: \(uniqueVoters) out of \(totalPlayers) players have voted.")
+            
+            self.allVotesSubmitted = uniqueVoters == totalPlayers
+        }
+    }*/
+    
+    func checkAllVotesSubmitted() {
+        DispatchQueue.main.async {
+            let totalPlayers = self.connectedPeers.count + 1 // Including the host
+            let voters = self.totalVotes //self.votes.values.reduce(0) { $0 + $1 } // Count total number of votes cast
+            
+            self.allVotesSubmitted = voters == totalPlayers
+            
+            print("🔍 Checking votes: \(voters) out of \(totalPlayers) players have voted. ✅ All Votes Submitted: \(self.allVotesSubmitted)")
+        }
     }
+
 
     func determineOverallWinner() -> [MCPeerID] {
         let maxWins = totalWins.values.max() ?? 0
         return totalWins.filter { $0.value == maxWins }.map { $0.key }
+        
     }
     
-
     func calculateWinner() {
         let maxVotes = votes.values.max() ?? 0
         winner = votes.filter { $0.value == maxVotes }.map { $0.key } // Handle ties
@@ -266,6 +316,8 @@ class MultipeerManager: NSObject, ObservableObject {
             self.hasVoted = false
             self.submittedSentences = [:]
             self.allSentencesSubmitted = false
+            self.allVotesSubmitted = false
+            self.totalVotes = 0
         }
     }
     
@@ -395,6 +447,8 @@ class MultipeerManager: NSObject, ObservableObject {
             self.submittedSentences = [:]
             self.allWordsSubmitted = false
             self.allSentencesSubmitted = false
+            self.allVotesSubmitted = false
+            self.totalVotes = 0
             self.votes = [:]
             self.hasVoted = false
             self.winner = []
@@ -472,13 +526,26 @@ extension MultipeerManager: MCSessionDelegate, MCNearbyServiceAdvertiserDelegate
                         self.checkAllSentencesSubmitted()
                     }
                 } else if message.starts(with: "vote:") {
+                    print("✅ Vote message detected")
                     let votedPlayerName = String(message.dropFirst(5))
                     DispatchQueue.main.async {
-                        if let votedPeer = self.connectedPeers.first(where: { $0.displayName == votedPlayerName }) {
-                            self.votes[votedPeer, default: 0] += 1  // Update votes locally for all players
-                            print("🗳️ Vote received for \(votedPlayerName), Total votes: \(self.votes[votedPeer]!)")
+                        if votedPlayerName == self.myPeerID.displayName {
+                            self.votes[self.myPeerID, default: 0] += 1  // ✅ Count votes for the host properly
+                            self.totalVotes += 1
+                            self.checkAllVotesSubmitted()
+                            print("🗳️ Vote received for \(votedPlayerName) (HOST), Total votes: \(self.votes[self.myPeerID]!)")
+                            return
                         }
-                    }
+                        
+                        //search in connectedPeers if its not the host
+                        if let votedPeer = self.connectedPeers.first(where: { $0.displayName == votedPlayerName }) {
+                            self.votes[votedPeer, default: 0] += 1
+                            self.totalVotes += 1
+                            self.checkAllVotesSubmitted()
+                            print("🗳️ Vote received for \(votedPlayerName), Total votes: \(self.votes[votedPeer]!)")
+                        } else {
+                            print("❌ Could not find peer with name \(votedPlayerName) in connectedPeers OR as the host.")
+                        }                    }
                 } else if message.starts(with: "winner:") {
                     let winnerNames = String(message.dropFirst(7)).components(separatedBy: ",")
                     DispatchQueue.main.async {
@@ -488,10 +555,25 @@ extension MultipeerManager: MCSessionDelegate, MCNearbyServiceAdvertiserDelegate
                 } else if message.starts(with: "roundWinner:") {
                     let winnerNames = String(message.dropFirst(12)).components(separatedBy: ",")
                     DispatchQueue.main.async {
+                        var winnersFromPeers = self.connectedPeers.filter { winnerNames.contains($0.displayName) }
+
+                        // ✅ Include the player themselves if they are in the winner list
+                        if winnerNames.contains(self.myPeerID.displayName) {
+                            winnersFromPeers.append(self.myPeerID)
+                        }
+
+                        self.winner = winnersFromPeers
+                        print("🎉 Round Winners Updated: \(self.winner.map { $0.displayName }.joined(separator: ", "))")
+                    }
+                }
+
+                /*else if message.starts(with: "roundWinner:") {
+                    let winnerNames = String(message.dropFirst(12)).components(separatedBy: ",")
+                    DispatchQueue.main.async {
                         self.winner = self.connectedPeers.filter { winnerNames.contains($0.displayName) }
                         print("🎉 Round Winners Updated: \(self.winner.map { $0.displayName }.joined(separator: ", "))")
                     }
-                } else if message == "resetRound" {
+                }*/ else if message == "resetRound" {
                     DispatchQueue.main.async {
                         print("🔄 Received resetRound message, resetting round data!")
                         self.resetRoundData() // All players reset round data now
