@@ -14,72 +14,110 @@ struct SentenceSubmissionView: View {
     @Environment(\.presentationMode) var presentationMode
     
     var body: some View {
-        VStack {
-            HStack {
-                Text("Write a Sentence Using:")
-                    .font(.title)
-                    .bold()
-                    .padding()
+        NavigationStack {
+            VStack {
+                
+                HStack {
+                    Spacer()
+                    
+                    Button(action: {
+                        multipeerManager.disconnect()
+                        presentationMode.wrappedValue.dismiss()
+                    }) {
+                        CancelButton()
+                    }
+                    
+                }
+                
+                HStack {
+                    Text("Write your sentence")
+                        .font(.title)
+                        .bold()
+                        .fontDesign(.rounded)
 
+                    Spacer()
+                }
                 Spacer()
-            }
-            Spacer()
 
-            // Display the word and scenario
-            VStack(spacing: 15) {
-                Text("Word: \(multipeerManager.chosenWord ?? "No Word Selected")")
-                    .font(.headline)
-                    .padding()
-                    .frame(maxWidth: .infinity)
-                    .background(Color.gray.opacity(0.2))
-                    .cornerRadius(10)
-
-                Text("Scenario: \(multipeerManager.chosenScenario ?? "No Scenario Selected")")
-                    .font(.headline)
-                    .padding()
-                    .frame(maxWidth: .infinity)
-                    .background(Color.orange.opacity(0.2))
-                    .cornerRadius(10)
-            }
-            .padding(.horizontal)
-
-            // Input field for submitting the sentence
-            if multipeerManager.submittedSentences[multipeerManager.myPeerID] == nil {
-                TextField("Type your sentence...", text: $message)
-                    .textFieldStyle(.roundedBorder)
-                    .padding()
-
-                Button("Submit") {
-                    if !message.isEmpty {
-                        multipeerManager.sendSentence(message)
-                        message = ""
+                // Display the word and scenario
+                VStack(alignment: .leading) {
+                    
+                    Text("Current curse word\n")
+                        .fontDesign(.rounded)
+                        .padding(.bottom, -30)
+                    Text("\(multipeerManager.chosenWord ?? "No Word Selected")")
+                        .font(.title)
+                        .bold()
+                        .fontDesign(.rounded)
+                        .padding(.bottom, 10)
+                                        
+                    Text("Scenario\n")
+                        .fontDesign(.rounded)
+                        .padding(.bottom, -30)
+                    Text("\(multipeerManager.chosenScenario ?? "No Scenario Selected")")
+                        .font(.title)
+                        .bold()
+                        .fontDesign(.rounded)
+                    
+                    if multipeerManager.submittedSentences[multipeerManager.myPeerID] == nil {
+                        
+                        
+                        
+                        CustomTextField(title: "Your sentence", text: $message)
+                            .padding(.top, 10)
+                        
+                    } else if !multipeerManager.allSentencesSubmitted {
+                        Text("Waiting for other players to submit their sentences...")
+                            .bold()
+                            .fontDesign(.rounded)
+                            .padding()
                     }
                 }
-                .buttonStyle(.borderedProminent)
-                .disabled(message.isEmpty)
-            } else if !multipeerManager.allSentencesSubmitted {
-                Text("Waiting for other players to submit their sentences...")
+                .padding(30)
+                .background(Color.accentColor)
+                .clipShape(RoundedRectangle(cornerRadius: 12))
+                .overlay(
+                    RoundedRectangle(cornerRadius: 12)
+                        .stroke(Color.black, lineWidth: 3)
+                )
+                
+                Spacer()
+
+                
+                // Input field for submitting the sentence
+                if multipeerManager.submittedSentences[multipeerManager.myPeerID] == nil {
+                    
+                    Button(action: {
+                        
+                        if !message.isEmpty {
+                            multipeerManager.sendSentence(message)
+                            message = ""
+                        }
+                        
+                    }, label: {
+                        
+                        ActionButton(title: "Submit", isDisabled: message.isEmpty)
+                        
+                    })
                     .padding()
-            } else if multipeerManager.isHosting {
-                Button("Continue") {
-                    print("🎭 Moving to Sentence Reveal phase")
-                    multipeerManager.advanceToNextPhase()
+                    
+                    
+                } else if multipeerManager.isHosting {
+                    
+                    Button(action: {
+                        multipeerManager.advanceToNextPhase()
+                    }, label: {
+                        ActionButton(title: "Continue", isDisabled: !multipeerManager.allSentencesSubmitted)
+                    })
+                    
+                    
                 }
-                .buttonStyle(.borderedProminent)
-                .disabled(!multipeerManager.allSentencesSubmitted)
-                .padding()
             }
-
-            Spacer()
-
-            Button("Leave Game") {
-                multipeerManager.disconnect()
-                presentationMode.wrappedValue.dismiss()
-            }
-            .buttonStyle(.bordered)
-            .padding(.bottom)
+            .padding()
+            .background(Image("background"))
+            .navigationBarBackButtonHidden(true)
         }
-        .navigationBarBackButtonHidden(true)
+        
     }
 }
 

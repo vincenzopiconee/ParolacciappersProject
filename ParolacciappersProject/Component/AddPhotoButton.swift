@@ -1,41 +1,41 @@
 //
-//  ActionButton.swift
+//  AddPhotoButton.swift
 //  ParolacciappersProject
 //
-//  Created by Vincenzo Picone on 06/03/25.
+//  Created by Vincenzo Picone on 13/03/25.
 //
 
 import SwiftUI
 
-struct ActionButton: View {
-    var title: String
-    var isDisabled: Bool
-    
+struct AddPhotoButton: View {
     var body: some View {
         ZStack {
             RoundedRectangle(cornerRadius: 12)
-                .fill(isDisabled ? Color.gray.opacity(0.2) : Color.black)
-                .frame(width: 250, height: 50)
+                .fill(Color.black)
+                .frame(width: 200, height: 200)
                 .offset(x: 5, y: 7)
             
             RoundedRectangle(cornerRadius: 12)
-                .fill(Color.accentColor)
-                .frame(width: 250, height: 50)
+                .fill(Color.white)
+                .frame(width: 200, height: 200)
                 .overlay(
                     RoundedRectangle(cornerRadius: 12)
                         .stroke(Color.black, lineWidth: 3)
                 )
             
-            Text(title)
+            Text("\"Add photo\"")
                 .font(.title2)
                 .bold()
                 .fontDesign(.rounded)
-                .foregroundColor(.black)
+                .foregroundStyle(.black)
                 .cornerRadius(12)
+                .padding()
+             
+            
         }
     }
 }
 
 #Preview {
-    ActionButton(title: "Join Lobby", isDisabled: true)
+    AddPhotoButton()
 }

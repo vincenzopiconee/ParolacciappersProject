@@ -21,24 +21,32 @@ struct JoinLobbySheetView: View {
     var body: some View {
         ZStack {
             NavigationStack {
-                VStack {
+                VStack (){
                     HStack {
+                        Spacer()
+                        
                         Button(action: {
                             onDismiss()
                         }) {
                             CancelButton()
                         }
-                        Spacer()
+                        
                     }
 
                     Text("Enter Lobby Code")
                         .font(.title)
-                        .fontWeight(.bold)
+                        .bold()
+                        .fontDesign(.rounded)
                         .padding(.top, 15)
+                    
+                    
+                    Spacer()
 
                     ManualCodeEntryView(enteredCode: $enteredCode)
                         .padding(.vertical)
                         .focused($isTextFieldFocused)
+                    
+                    Spacer()
 
                     Button(action: {
                         
@@ -55,15 +63,14 @@ struct JoinLobbySheetView: View {
                             }
                         }
                     }) {
-                        ActionButton(title: "Join Lobby")
+                        ActionButton(title: "Join Lobby", isDisabled: enteredCode.count < 4)
                     }
                     .disabled(enteredCode.count < 4)
-                    .opacity(enteredCode.count < 4 ? 0.5 : 1.0)
 
-                    Spacer()
                 }
                 .padding()
                 .navigationBarBackButtonHidden(true)
+                .background(Image("background"))
             }
             
             // Mostra l'alert personalizzato sopra la UI principale

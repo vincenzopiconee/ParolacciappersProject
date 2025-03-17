@@ -10,47 +10,81 @@ import SwiftUI
 
 struct ScenarioRevealView: View {
     @ObservedObject var multipeerManager: MultipeerManager
+    @Environment(\.presentationMode) var presentationMode
 
     var body: some View {
-        VStack {
-            
-
-            HStack {
-                Text("Write a sentence using the word \"\(multipeerManager.chosenWord ?? "no word selected")\" in this scenario:")
-                    .font(.title)
-                    .bold()
-                    .padding()
-
-                Spacer()
-            }
-            
-            Spacer()
-
-
-            Text(multipeerManager.chosenScenario ?? "Selecting a scenario...")
-                .font(.title)
-                .padding()
-                .frame(maxWidth: .infinity)
-                .multilineTextAlignment(.center)
-                .background(Color.gray.opacity(0.2))
-                .cornerRadius(10)
-                .padding()
-            
-            Spacer()
-            
-            if multipeerManager.isHosting {
-                Button("Start Writing!") {
-                    multipeerManager.advanceToNextPhase()
+        NavigationStack {
+            VStack {
+                
+                HStack {
+                    Spacer()
+                    
+                    Button(action: {
+                        multipeerManager.disconnect()
+                        presentationMode.wrappedValue.dismiss()
+                    }) {
+                        CancelButton()
+                    }
+                    
                 }
-                .buttonStyle(.borderedProminent)
-                .padding()
+                
+                HStack {
+                    
+                    Text("Write a sentence using the word \"\(multipeerManager.chosenWord ?? "no word selected")\" in this scenario:")
+                        .font(.title)
+                        .bold()
+                        .fontDesign(.rounded)
+                    
+                    Spacer()
+                    
+                }
+                
+                Spacer()
+
+
+                Text(multipeerManager.chosenScenario ?? "Selecting a scenario...")
+                    .font(.title)
+                    .padding()
+                    .bold()
+                    .fontDesign(.rounded)
+                    .frame(maxWidth: .infinity)
+                    .background(Color.accentColor)
+                    .cornerRadius(12)
+                    .padding()
+                
+                Spacer()
+                
+                if multipeerManager.isHosting {
+                    
+                    Button(action: {
+                        multipeerManager.advanceToNextPhase()
+                    }, label: {
+                        ActionButton(title: "Continue", isDisabled: false)
+                    })
+                    
+                }
+                
             }
-            
-            Spacer()
+            .padding()
+            .background(Image("background"))
+            .navigationBarBackButtonHidden(true)
         }
+        
+    }
+}
+
+struct ScenarioRevealView_Preview: View {
+    @StateObject private var multipeerManager = MultipeerManager(displayName: "Placeholder")
+
+    var body: some View {
+        ScenarioRevealView(multipeerManager: multipeerManager)
+            .onAppear {
+                // Simulating available lobbies
+                multipeerManager.isHosting = true
+            }
     }
 }
 
 #Preview {
-    ScenarioRevealView(multipeerManager: MultipeerManager(displayName: "Placeholder"))
+    ScenarioRevealView_Preview()
 }

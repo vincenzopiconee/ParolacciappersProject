@@ -25,18 +25,24 @@ struct JoinLobbyView: View {
                     Spacer()
                 }
                 
-                Text("Choose a Lobby")
-                    .font(.title)
-                    .fontWeight(.bold)
-                    .multilineTextAlignment(.leading)
-                    .padding(.top, 15)
+                HStack {
+                    Text("Choose a Lobby")
+                        .font(.title)
+                        .bold()
+                        .fontDesign(.rounded)
+                    
+                    Spacer()
+                    
+                }
+                
                 
                 // Lobby Selection Section
                 VStack {
                     if multipeerManager.availableLobbies.isEmpty {
                         Text("Searching for lobbies...")
                             .foregroundColor(.gray)
-                            .italic()
+                            .bold()
+                            .fontDesign(.rounded)
                             .padding()
                     } else {
                         VStack {
@@ -54,21 +60,23 @@ struct JoinLobbyView: View {
                                         
                                     }
                                     .listRowSeparator(.hidden)
+                                    .listRowBackground(Color.accentColor)
                                     
                                 }
                             }
                             .scrollContentBackground(.hidden)
-                            .background(Color.clear)
+                            .background(Color.accentColor)
                             .clipShape(RoundedRectangle(cornerRadius: 12))
                             .overlay(RoundedRectangle(cornerRadius: 12).stroke(Color.black, lineWidth: 3))
                         }
                     }
                 }
-                .padding()
+                .padding(.horizontal)
                 
                 Spacer()
             }
             .padding()
+            .background(Image("background"))
             .navigationBarBackButtonHidden(true)
             .navigationDestination(isPresented: $multipeerManager.shuldNavitgateToWaitScreen) {
                 WaitStartGameView(multipeerManager: multipeerManager)
@@ -81,29 +89,6 @@ struct JoinLobbyView: View {
                 }
             }
         }
-    }
-}
-
-
-
-struct LobbySelectionView: View {
-    var peer: MCPeerID
-    
-    var body: some View {
-        HStack {
-            VStack(alignment: .leading) {
-                Text(peer.displayName)
-                    .font(.headline)
-                    .foregroundColor(.black)
-            }
-            Spacer()
-        }
-        .padding()
-        .background(RoundedRectangle(cornerRadius: 12).stroke(Color.black, lineWidth: 3))
-        .accessibilityElement(children: .combine)
-        .accessibilityLabel("Lobby of \(peer.displayName)")
-        .accessibilityAddTraits(.isButton)
-     
     }
 }
 

@@ -23,12 +23,14 @@ struct CustomAlert: View {
             VStack(spacing: 20) {
                 Text(title)
                     .font(.title)
-                    .fontWeight(.bold)
+                    .bold()
+                    .fontDesign(.rounded)
                     .foregroundColor(.black)
                     .padding(.top, 10)
 
                 Text(message)
-                    .font(.headline)
+                    .bold()
+                    .fontDesign(.rounded)
                     .foregroundColor(.black)
                     .multilineTextAlignment(.center)
                     .padding(.horizontal, 20)
@@ -36,7 +38,7 @@ struct CustomAlert: View {
                 Button(action: {
                     onDismiss()
                 }) {
-                    ActionButton(title: "Try Again")
+                    ActionButton(title: "Try Again", isDisabled: false)
                 }
                 .padding(.bottom, 20)
             }
