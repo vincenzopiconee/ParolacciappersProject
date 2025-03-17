@@ -101,15 +101,12 @@ struct VotingView: View {
                     Button(action: {
                         multipeerManager.advanceToNextPhase()
                     }, label: {
-                        ActionButton(title: "See Results", isDisabled: multipeerManager.votes.isEmpty)
+                        ActionButton(title: "See Results", isDisabled: !multipeerManager.allVotesSubmitted)
                     })
                     
                 }
 
-                .buttonStyle(.borderedProminent)
-                .padding()
-                //.disabled(multipeerManager.votes.isEmpty)
-                .disabled(!multipeerManager.allVotesSubmitted)
+                
 
             }
             .padding()
