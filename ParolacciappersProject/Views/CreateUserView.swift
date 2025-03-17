@@ -45,7 +45,6 @@ struct CreateUserView: View {
                         .fontDesign(.rounded)
                         .fontWeight(.bold)
                         .multilineTextAlignment(.leading)
-                        .padding(.top, 15)
                         .accessibilityLabel("Who the fuck are you?")
                     Spacer()
                 }
@@ -116,6 +115,7 @@ struct CreateUserView: View {
                 .padding(.bottom)
                 
             }
+            .background(Image("background"))
             .padding()
             .navigationBarBackButtonHidden(true)
             .navigationDestination(isPresented: $navigateToNextScreen) {

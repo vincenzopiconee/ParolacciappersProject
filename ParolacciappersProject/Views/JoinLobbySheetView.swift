@@ -70,6 +70,7 @@ struct JoinLobbySheetView: View {
                 }
                 .padding()
                 .navigationBarBackButtonHidden(true)
+                .background(Image("background"))
             }
             
             // Mostra l'alert personalizzato sopra la UI principale

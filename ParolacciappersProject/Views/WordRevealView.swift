@@ -8,39 +8,84 @@ import SwiftUI
 
 struct WordRevealView: View {
     @ObservedObject var multipeerManager: MultipeerManager
+    @Environment(\.presentationMode) var presentationMode
 
     var body: some View {
-        VStack {
-            Text("Selected Word")
-                .font(.largeTitle)
-                .padding()
-            
-            Spacer()
-            
-            Text(multipeerManager.chosenWord ?? "Waiting for word...")
-                .font(.title)
-                .padding()
-                .frame(maxWidth: .infinity)
-                .background(Color.gray.opacity(0.2))
-                .cornerRadius(10)
-                .padding()
-
-            if multipeerManager.isHosting {
-                Button("Continue") {
-                    //print("🟢 Host clicked Next in Word Reveal")
-                    multipeerManager.advanceToNextPhase()
+        NavigationStack {
+            VStack {
+                
+                HStack {
+                    Spacer()
+                    
+                    Button(action: {
+                        multipeerManager.disconnect()
+                        presentationMode.wrappedValue.dismiss()
+                    }) {
+                        CancelButton()
+                    }
                     
                 }
-                .buttonStyle(.borderedProminent)
-                .padding()
+                
+                HStack {
+                    
+                    Text("Chosen course word")
+                        .font(.title)
+                        .bold()
+                        .fontDesign(.rounded)
+                    
+                    Spacer()
+                    
+                }
+                
+                
+                Spacer()
+                
+                Text(multipeerManager.chosenWord ?? "Waiting for word...")
+                    .font(.title)
+                    .padding()
+                    .bold()
+                    .fontDesign(.rounded)
+                    .frame(maxWidth: .infinity)
+                    .background(Color.accentColor)
+                    .cornerRadius(12)
+                    .padding()
+                
+                Spacer()
+
+                if multipeerManager.isHosting {
+                    
+                    Button(action: {
+                        multipeerManager.advanceToNextPhase()
+                    }, label: {
+                        ActionButton(title: "Continue", isDisabled: false)
+                    })
+                }
+                
             }
+            .padding()
+            .background(Image("background"))
+            .navigationBarBackButtonHidden(true)
             
-            Spacer()
         }
+        
+        
     }
 }
 
+struct WordRevealView_Preview: View {
+    @StateObject private var multipeerManager = MultipeerManager(displayName: "Placeholder")
+
+    var body: some View {
+        WordRevealView(multipeerManager: multipeerManager)
+            .onAppear {
+                // Simulating available lobbies
+                multipeerManager.isHosting = true
+            }
+    }
+}
+
+
 #Preview {
-    WordRevealView(multipeerManager: MultipeerManager(displayName: "Placeholder"))
+    WordRevealView_Preview()
 }
 

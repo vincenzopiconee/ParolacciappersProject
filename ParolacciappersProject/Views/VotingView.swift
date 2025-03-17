@@ -11,73 +11,106 @@ import MultipeerConnectivity
 struct VotingView: View {
     @ObservedObject var multipeerManager: MultipeerManager
     @State private var selectedPeer: MCPeerID? // Track the currently selected peer
+    @Environment(\.presentationMode) var presentationMode
+    
 
     var body: some View {
-        VStack {
-            
-            HStack {
-                Text("Vote for the funniest sentence!")
-                    .font(.title)
-                    .bold()
-                    .padding()
+        
+        NavigationStack {
+            VStack {
+                
+                HStack {
+                    Spacer()
+                    
+                    Button(action: {
+                        multipeerManager.disconnect()
+                        presentationMode.wrappedValue.dismiss()
+                    }) {
+                        CancelButton()
+                    }
+                    
+                }
+                
+                HStack {
+                    Text("Vote for your favorite one")
+                        .font(.title)
+                        .bold()
+                        .fontDesign(.rounded)
 
+                    Spacer()
+                }
+                
+                
                 Spacer()
-            }
-            
-            
-            Spacer()
 
-            List {
-                ForEach(Array(multipeerManager.submittedSentences.keys).sorted(by: { $0.displayName < $1.displayName }), id: \.self) { peer in
-                    HStack {
-                        VStack(alignment: .leading) {
-                            Text("\(peer.displayName)")
-                                .font(.headline)
-                            Text("\"\(multipeerManager.submittedSentences[peer] ?? "")\"")
-                                .italic()
+                List {
+                    ForEach(Array(multipeerManager.submittedSentences.keys).sorted(by: { $0.displayName < $1.displayName }), id: \.self) { peer in
+                        HStack {
+                            VStack(alignment: .leading) {
+                                Text("\(peer.displayName)'s phrase")
+                                    .font(.headline)
+                                    .bold()
+                                    .fontDesign(.rounded)
+                                Text("\"\(multipeerManager.submittedSentences[peer] ?? "")\"")
+                                    .italic()
+                                    .fontDesign(.rounded)
+                            }
+                            .padding()
+                            .background(selectedPeer == peer ? Color.blue.opacity(0.2) : Color.clear) // Highlight selected
+
+                            .cornerRadius(12)
+
+                            Button(action: {
+                                selectedPeer = peer // Select the chosen sentence
+                            }) {
+                                Image(systemName: selectedPeer == peer ? "checkmark.circle.fill" : "circle")
+                                    .contentShape(Rectangle())
+                            }
+                            .disabled(multipeerManager.hasVoted)
                         }
-                        .padding()
-                        .frame(maxWidth: .infinity, alignment: .leading)
-                        .background(selectedPeer == peer ? Color.blue.opacity(0.2) : Color.clear) // Highlight selected
-
-                        .cornerRadius(10)
-
-                        Button(action: {
-                            selectedPeer = peer // Select the chosen sentence
-                        }) {
-                            Image(systemName: selectedPeer == peer ? "checkmark.circle.fill" : "circle")
-                                .contentShape(Rectangle())
-                        }
-                        .disabled(multipeerManager.hasVoted)
+                        .listRowSeparator(.hidden)
                     }
                 }
-            }
+                .scrollContentBackground(.hidden)
+                .background(Color.accentColor)
+                .clipShape(RoundedRectangle(cornerRadius: 12))
+                .overlay(RoundedRectangle(cornerRadius: 12).stroke(Color.black, lineWidth: 3))
 
-            // "Send Vote" button appears only if a selection is made
-            if selectedPeer != nil {
-                Button("Send Vote") {
-                    if let selected = selectedPeer {
-                        multipeerManager.submitVote(for: selected) // Submit the selected vote
-                        multipeerManager.hasVoted = true
-                    }
+                // "Send Vote" button appears only if a selection is made
+                
+                Spacer()
+                
+                if selectedPeer != nil {
+                    
+                    Button(action: {
+                        if let selected = selectedPeer {
+                            multipeerManager.submitVote(for: selected) // Submit the selected vote
+                            multipeerManager.hasVoted = true
+                        }
+                    }, label: {
+                        ActionButton(title: "Send vote", isDisabled: multipeerManager.hasVoted)
+                    })
+                    
+                    
                 }
-                .buttonStyle(.borderedProminent)
-                .padding()
-                .disabled(multipeerManager.hasVoted) // Prevent resubmitting
-            }
-            
-            Spacer()
+                
+                Spacer()
 
-            if multipeerManager.isHosting {
-                Button("See Results") {
-                    //multipeerManager.calculateWinner()
-                    multipeerManager.advanceToNextPhase()
+                if multipeerManager.isHosting {
+                    
+                    Button(action: {
+                        multipeerManager.advanceToNextPhase()
+                    }, label: {
+                        ActionButton(title: "See Results", isDisabled: multipeerManager.votes.isEmpty)
+                    })
+                    
                 }
-                .buttonStyle(.borderedProminent)
-                .padding()
-                .disabled(multipeerManager.votes.isEmpty)
             }
+            .padding()
+            .background(Image("background"))
+            .navigationBarBackButtonHidden(true)
         }
+        
     }
 }
 

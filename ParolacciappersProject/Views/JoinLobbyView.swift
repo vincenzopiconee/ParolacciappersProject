@@ -76,6 +76,7 @@ struct JoinLobbyView: View {
                 Spacer()
             }
             .padding()
+            .background(Image("background"))
             .navigationBarBackButtonHidden(true)
             .navigationDestination(isPresented: $multipeerManager.shuldNavitgateToWaitScreen) {
                 WaitStartGameView(multipeerManager: multipeerManager)

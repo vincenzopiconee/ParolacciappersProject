@@ -78,6 +78,7 @@ struct HostLobbyView: View {
                     
             }
             .padding()
+            .background(Image("background"))
             .navigationBarBackButtonHidden(true)
             .navigationDestination(isPresented: $multipeerManager.shouldNavigateToGame) {
                 GameView(multipeerManager: multipeerManager)

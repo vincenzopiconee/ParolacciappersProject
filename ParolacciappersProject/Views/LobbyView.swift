@@ -72,7 +72,7 @@ struct LobbyView: View {
             .navigationDestination(isPresented: $navigateToCreateUser) {
                 CreateUserView(isHost: isHost, multipeerManager: multipeerManager)
             }
-             
+            .background(Image("background"))
         }
     }
 }

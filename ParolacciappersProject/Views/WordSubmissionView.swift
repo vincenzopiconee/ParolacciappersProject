@@ -108,6 +108,7 @@ struct WordSubmissionView: View {
             }
             .padding()
             .navigationBarBackButtonHidden(true)
+            .background(Image("background"))
 
         }
         
