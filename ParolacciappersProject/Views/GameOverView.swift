@@ -16,51 +16,71 @@ struct GameOverView: View {
     }
 
     var body: some View {
-        VStack {
-            Text("Game Over!")
-                .font(.largeTitle)
-                .padding()
-
-            Text("🏆 Overall Winner(s):")
-                .font(.headline)
-                .padding(.top)
-
-            if overallWinners.isEmpty {
-                Text("No overall winner")
-                    .font(.title)
-                    .padding()
-            } else {
-                ForEach(overallWinners, id: \.self) { peer in
-                    Text("\(peer.displayName) - \(multipeerManager.totalWins[peer] ?? 0) Wins")
+        NavigationStack {
+            VStack {
+                
+                
+                HStack {
+                    Text("Final Results")
                         .font(.title)
+                        .bold()
+                        .fontDesign(.rounded)
+                    
+                    Spacer()
+                }
+                
+
+                if overallWinners.isEmpty {
+                    Spacer()
+                    Text("No overall winner")
+                        .font(.title)
+                        .bold()
+                        .fontDesign(.rounded)
+                } else {
+                    ForEach(overallWinners, id: \.self) { peer in
+                        
+                        HStack {
+                            
+                            //PHOTO
+                            
+                            Text("\(peer.displayName)")
+                                .font(.title3)
+                                .bold()
+                                .fontDesign(.rounded)
+                                .foregroundColor(.black)
+                            
+                            Spacer()
+                            
+                            Text("\(multipeerManager.totalWins[peer] ?? 0)pt")
+                                .font(.title3)
+                                .bold()
+                                .fontDesign(.rounded)
+                                .foregroundColor(.black)
+                        }
                         .padding()
-                        .background(Color.yellow.opacity(0.5))
-                        .cornerRadius(10)
+                        .background(Color.white)
+                        .clipShape(RoundedRectangle(cornerRadius: 12))
+                        .overlay(RoundedRectangle(cornerRadius: 12).stroke(Color.black, lineWidth: 3))
+                    }
                 }
-            }
 
-            Spacer()
-
-           
-            /*
-            if multipeerManager.isHosting {
-                Button("Restart Game") {
+                Spacer()
+                
+                Button(action: {
                     multipeerManager.resetGame()
+                    multipeerManager.disconnect()
+                    presentationMode.wrappedValue.dismiss()
+                }) {
+                    ActionButton(title: "Go back home", isDisabled: false)
                 }
-                .buttonStyle(.borderedProminent)
-                .padding()
-            }
-            */
 
-            Button("Exit") {
-                multipeerManager.resetGame()
-                multipeerManager.disconnect()
-                presentationMode.wrappedValue.dismiss()
+
             }
-            .buttonStyle(.bordered)
-            .padding(.bottom)
+            .padding()
+            .navigationBarBackButtonHidden(true)
+            .background(Image("Background"))
         }
-        .navigationBarBackButtonHidden(true)
+        
     }
 }
 

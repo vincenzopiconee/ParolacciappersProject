@@ -66,7 +66,7 @@ struct ScenarioRevealView: View {
                 
             }
             .padding()
-            .background(Image("background"))
+            .background(Image("Background"))
             .navigationBarBackButtonHidden(true)
         }
         
