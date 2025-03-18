@@ -10,12 +10,15 @@ import MultipeerConnectivity
 
 struct VotingView: View {
     @ObservedObject var multipeerManager: MultipeerManager
-    @State private var selectedPeer: MCPeerID? // Track the currently selected peer
+    @State private var selectedPeer: MCPeerID?
+    @State private var currentIndex: Int = 0
     @Environment(\.presentationMode) var presentationMode
     
+    var peers: [MCPeerID] {
+        Array(multipeerManager.submittedSentences.keys).sorted(by: { $0.displayName < $1.displayName })
+    }
 
     var body: some View {
-        
         NavigationStack {
             VStack {
                 
@@ -29,94 +32,75 @@ struct VotingView: View {
                     }) {
                         CancelButton()
                     }
-                    
                 }
                 
-                HStack {
+                HStack{
+                    
                     Text("Vote for your favorite one")
                         .font(.title)
                         .bold()
                         .fontDesign(.rounded)
-
+                    
                     Spacer()
                 }
+
                 
                 
                 Spacer()
 
-                List {
-                    ForEach(Array(multipeerManager.submittedSentences.keys).sorted(by: { $0.displayName < $1.displayName }), id: \.self) { peer in
-                        HStack {
-                            VStack(alignment: .leading) {
-                                Text("\(peer.displayName)'s phrase")
-                                    .font(.headline)
-                                    .bold()
-                                    .fontDesign(.rounded)
-                                Text("\"\(multipeerManager.submittedSentences[peer] ?? "")\"")
-                                    .italic()
-                                    .fontDesign(.rounded)
-                            }
-                            .padding(.vertical, 5)
-                            .background(selectedPeer == peer ? Color.blue.opacity(0.2) : Color.clear) // Highlight selected
+                TabView(selection: $currentIndex) {
+                    ForEach(0..<peers.count, id: \.self) { index in
+                        let peer = peers[index]
+                        VStack {
+                            Text("\(peer.displayName)'s phrase")
+                                .font(.title2)
+                                .bold()
+                                .fontDesign(.rounded)
                             
-                            Spacer()
+                            Text("\"\(multipeerManager.submittedSentences[peer] ?? "")\"")
+                                .font(.title3)
+                                .fontDesign(.rounded)
+                                .padding(.vertical, 2)
                             
-                            Button(action: {
-                                selectedPeer = peer // Select the chosen sentence
-                            }) {
-                                Image(systemName: selectedPeer == peer ? "checkmark.circle.fill" : "circle")
-                                    .contentShape(Rectangle())
-                            }
-                            .disabled(multipeerManager.hasVoted)
                         }
-                        .listRowSeparator(.hidden)
+                        .padding(24)
+                        .background(Color.accentColor)
+                        .clipShape(RoundedRectangle(cornerRadius: 12))
+                        .overlay(RoundedRectangle(cornerRadius: 12).stroke(Color.black, lineWidth: 3))
+                        .padding()
+                        .tag(index)
                     }
                 }
-                .scrollContentBackground(.hidden)
-                .background(Color.accentColor)
-                .clipShape(RoundedRectangle(cornerRadius: 12))
-                .overlay(RoundedRectangle(cornerRadius: 12).stroke(Color.black, lineWidth: 3))
-
-                // "Send Vote" button appears only if a selection is made
+                .tabViewStyle(.page)
+                .indexViewStyle(PageIndexViewStyle(backgroundDisplayMode: .always))
                 
                 Spacer()
-                
-                if selectedPeer != nil {
-                    
+
+                // Vote button
+                if peers.indices.contains(currentIndex) {
+                    let peer = peers[currentIndex]
                     Button(action: {
-                        if let selected = selectedPeer {
-                            multipeerManager.submitVote(for: selected) // Submit the selected vote
-                            multipeerManager.hasVoted = true
-                        }
-                    }, label: {
-                        ActionButton(title: "Send vote", isDisabled: multipeerManager.hasVoted)
-                    })
+                        selectedPeer = peer
+                        multipeerManager.submitVote(for: peer)
+                        multipeerManager.hasVoted = true
+                    }) {
+                        ActionButton(title: "Vote", isDisabled: multipeerManager.hasVoted)
+                    }
                     .disabled(multipeerManager.hasVoted)
-                    
-                    
-                }
-                
-                Spacer()
-
-                if multipeerManager.isHosting && multipeerManager.allVotesSubmitted {
-                    
+                } else if multipeerManager.isHosting && multipeerManager.allVotesSubmitted {
                     Button(action: {
                         multipeerManager.advanceToNextPhase()
-                    }, label: {
+                    }) {
                         ActionButton(title: "See Results", isDisabled: !multipeerManager.allVotesSubmitted)
-                    })
+                    }
                     .disabled(!multipeerManager.allVotesSubmitted)
-                    
                 }
-
-                
 
             }
             .padding()
             .background(Image("Background"))
             .navigationBarBackButtonHidden(true)
         }
-        
     }
 }
 
