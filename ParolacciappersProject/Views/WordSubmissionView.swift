@@ -89,6 +89,14 @@ struct WordSubmissionView: View {
                         .fontDesign(.rounded)
                     Spacer()
                 } else if multipeerManager.isHosting {
+                    if multipeerManager.allWordsSubmitted {
+                        Text("All players have submitted their words. Let's F*ing Go!")
+                            .font(.title3)
+                            .bold()
+                            .multilineTextAlignment(.center)
+                            .fontDesign(.rounded)
+                    }
+                    Spacer()
                     
                     Button(action: {
                         multipeerManager.advanceToNextPhase()

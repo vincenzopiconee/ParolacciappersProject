@@ -13,6 +13,10 @@ enum GamePhase: String {
     case gameOver
 }
 
+struct ScenarioList: Codable {
+    let scenarios: [String]
+}
+
 class MultipeerManager: NSObject, ObservableObject {
     private let serviceType = "game-lobby2"
     private var peerID: MCPeerID
@@ -46,6 +50,8 @@ class MultipeerManager: NSObject, ObservableObject {
     
     //For the chosen scenario
     @Published var chosenScenario: String? // Scenario selected for the round
+    private var scenarios: [String] = [] // Lista de escenarios
+
     
     //For the sending of sentences part 1
     @Published var submittedSentences: [MCPeerID: String] = [:]
@@ -61,14 +67,6 @@ class MultipeerManager: NSObject, ObservableObject {
     //for final winner
     @Published var totalWins: [MCPeerID: Int] = [:] // Tracks total wins per player
 
-    let scenarios: [String] = [
-        "At a doctor's appointment",
-        "During a breakup",
-        "Eating at a restaurant with your in-laws",
-        "Giving a birthday gift to your grandma",
-        "Asking a mentor for help with your app"
-    ]
-
     init(displayName: String) {
         self.displayName = displayName
         self.peerID = MCPeerID(displayName: displayName)
@@ -80,8 +78,19 @@ class MultipeerManager: NSObject, ObservableObject {
         session.delegate = self
         advertiser.delegate = self
         browser.delegate = self
+        loadScenarios()
+
     }
     
+    private func loadScenarios() {
+        if let url = Bundle.main.url(forResource: "scenarios", withExtension: "json"),
+           let data = try? Data(contentsOf: url) {
+            let decoder = JSONDecoder()
+            if let decodedData = try? decoder.decode(ScenarioList.self, from: data) {
+                self.scenarios = decodedData.scenarios
+            }
+        }
+    }
     
     func updateDisplayName(_ name: String) {
         DispatchQueue.main.async {
