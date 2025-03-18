@@ -7,80 +7,83 @@ struct HostLobbyView: View {
     
     var body: some View {
         NavigationStack {
-            VStack {
-                
-                HStack {
-                    Button (action: {
-                        //multipeerManager.stopHosting()
-                        multipeerManager.resetGame()
-                        multipeerManager.disconnect()
-                        //presentationMode.wrappedValue.dismiss()
-                    }, label: {
-                        BackButton()
-                    })
-                    Spacer()
-                }
-                
-                HStack {
-                    Text("\(multipeerManager.displayName)'s Lobby")
-                        .font(.title)
-                        .bold()
-                        .fontDesign(.rounded)
-                    
-                    Spacer()
-                }
-                
-                HStack(spacing: 10) {
-                    ForEach(0..<4, id: \.self) { index in
-                        Text(getDigit(at: index))
-                            .font(.largeTitle)
-                            .fontWeight(.bold)
-                            .frame(width: 60, height: 80)
-                            .background(Color.white)
-                            .cornerRadius(12)
-                            .overlay(
-                                RoundedRectangle(cornerRadius: 12)
-                                    .stroke(Color.black, lineWidth: 3)
-                            )
-                            .accessibilityHidden(true) // Prevents VoiceOver from reading each digit separately
+            ZStack {
+                Image("Background")
+                    .resizable()
+                    .ignoresSafeArea()
+                VStack {
+                    HStack {
+                        Button (action: {
+                            //multipeerManager.stopHosting()
+                            multipeerManager.resetGame()
+                            multipeerManager.disconnect()
+                            //presentationMode.wrappedValue.dismiss()
+                        }, label: {
+                            BackButton()
+                        })
+                        Spacer()
                     }
-                }
-                .contentShape(Rectangle())
-                .padding()
-                
-                VStack(alignment: .leading) {
                     
-                    Text("Connected players (\(multipeerManager.connectedPeers.count)):")
-                        .font(.title2)
-                        .bold()
-                        .fontDesign(.rounded)
+                    HStack {
+                        Text("\(multipeerManager.displayName)'s Lobby")
+                            .font(.title)
+                            .bold()
+                            .fontDesign(.rounded)
+                        
+                        Spacer()
+                    }
                     
-                    List {
-                        ForEach(multipeerManager.connectedPeers, id: \.self) { peer in
-                            HostLobbyPlayers(peer: peer)
+                    HStack(spacing: 10) {
+                        ForEach(0..<4, id: \.self) { index in
+                            Text(getDigit(at: index))
+                                .font(.largeTitle)
+                                .fontWeight(.bold)
+                                .frame(width: 60, height: 80)
+                                .background(Color.white)
+                                .cornerRadius(12)
+                                .overlay(
+                                    RoundedRectangle(cornerRadius: 12)
+                                        .stroke(Color.black, lineWidth: 3)
+                                )
+                                .accessibilityHidden(true) // Prevents VoiceOver from reading each digit separately
                         }
-                        .listRowSeparator(.hidden)
-                        .listRowBackground(Color.accentColor)
                     }
-                    .scrollContentBackground(.hidden)
-                    .background(Color.accentColor)
-                    .clipShape(RoundedRectangle(cornerRadius: 12))
-                    .overlay(RoundedRectangle(cornerRadius: 12).stroke(Color.black, lineWidth: 3))
-                }
-                .padding(.vertical)
-                
-                Spacer()
-                
-                Button(action: {
-                    multipeerManager.startGame()
-                }, label: {
-                    ActionButton(title: "Let's F*ing Play!", isDisabled: multipeerManager.connectedPeers.isEmpty)
-                })
-                .disabled(multipeerManager.connectedPeers.isEmpty)
+                    .contentShape(Rectangle())
+                    .padding()
                     
+                    VStack(alignment: .leading) {
+                        
+                        Text("Connected players (\(multipeerManager.connectedPeers.count)):")
+                            .font(.title2)
+                            .bold()
+                            .fontDesign(.rounded)
+                        
+                        List {
+                            ForEach(multipeerManager.connectedPeers, id: \.self) { peer in
+                                HostLobbyPlayers(peer: peer)
+                            }
+                            .listRowSeparator(.hidden)
+                            .listRowBackground(Color.accentColor)
+                        }
+                        .scrollContentBackground(.hidden)
+                        .background(Color.accentColor)
+                        .clipShape(RoundedRectangle(cornerRadius: 12))
+                        .overlay(RoundedRectangle(cornerRadius: 12).stroke(Color.black, lineWidth: 3))
+                    }
+                    .padding(.vertical)
+                    
+                    Spacer()
+                    
+                    Button(action: {
+                        multipeerManager.startGame()
+                    }, label: {
+                        ActionButton(title: "Let's F*ing Play!", isDisabled: multipeerManager.connectedPeers.isEmpty)
+                    })
+                    .disabled(multipeerManager.connectedPeers.isEmpty)
+                    
+                }
+                .padding()
             }
-            .padding()
-            .background(Image("Background"))
             .navigationBarBackButtonHidden(true)
             .navigationDestination(isPresented: $multipeerManager.shouldNavigateToGame) {
                 GameView(multipeerManager: multipeerManager)

@@ -14,61 +14,65 @@ struct RoundResultsView: View {
 
     var body: some View {
         NavigationStack {
-            VStack {
-                
-                HStack {
-                    Spacer()
+            ZStack {
+                Image("Background")
+                    .resizable()
+                    .ignoresSafeArea()
+                VStack {
                     
-                    Button(action: {
-                        multipeerManager.disconnect()
-                        presentationMode.wrappedValue.dismiss()
-                    }) {
-                        CancelButton()
+                    HStack {
+                        Spacer()
+                        
+                        Button(action: {
+                            multipeerManager.disconnect()
+                            presentationMode.wrappedValue.dismiss()
+                        }) {
+                            CancelButton()
+                        }
+                        
                     }
                     
-                }
-                
-                HStack {
-                    Text("Round Results")
-                        .font(.title)
-                        .bold()
-                        .fontDesign(.rounded)
-
+                    HStack {
+                        Text("Round Results")
+                            .font(.title)
+                            .bold()
+                            .fontDesign(.rounded)
+                        
+                        Spacer()
+                    }
+                    
                     Spacer()
-                }
-                
-                Spacer()
-
-                if multipeerManager.winner.isEmpty {
-                    Text("No votes cast!")
-                        .font(.title)
-                        .padding()
-                } else {
-                    Text("The Winner is:")
-                        .font(.title)
-                        .bold()
-                        .fontDesign(.rounded)
-
-                    ForEach(multipeerManager.winner, id: \.self) { peer in
-                        HostLobbyPlayers(peer: peer)
+                    
+                    if multipeerManager.winner.isEmpty {
+                        Text("No votes cast!")
+                            .font(.title)
                             .padding()
+                    } else {
+                        Text("The Winner is:")
+                            .font(.title)
+                            .bold()
+                            .fontDesign(.rounded)
+                        
+                        ForEach(multipeerManager.winner, id: \.self) { peer in
+                            HostLobbyPlayers(peer: peer)
+                                .padding()
+                        }
+                    }
+                    
+                    Spacer()
+                    
+                    if multipeerManager.isHosting {
+                        
+                        Button(action: {
+                            multipeerManager.advanceToNextPhase()
+                        }, label: {
+                            ActionButton(title: "Continue", isDisabled: false)
+                        })
+                        
                     }
                 }
-                
-                Spacer()
-
-                if multipeerManager.isHosting {
-                    
-                    Button(action: {
-                        multipeerManager.advanceToNextPhase()
-                    }, label: {
-                        ActionButton(title: "Continue", isDisabled: false)
-                    })
-                    
-                }
+                .padding()
             }
-            .padding()
-            .background(Image("Background"))
             .navigationBarBackButtonHidden(true)
         }
 

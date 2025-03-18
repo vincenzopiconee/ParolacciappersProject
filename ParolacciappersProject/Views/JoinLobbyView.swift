@@ -13,70 +13,74 @@ struct JoinLobbyView: View {
     
     var body: some View {
         NavigationStack {
-            VStack {
-                
-                HStack {
-                    Button(action: {
-                        multipeerManager.stopBrowsing()
-                        presentationMode.wrappedValue.dismiss()
-                    }) {
-                        BackButton()
-                    }
-                    Spacer()
-                }
-                
-                HStack {
-                    Text("Choose a Lobby")
-                        .font(.title)
-                        .bold()
-                        .fontDesign(.rounded)
-                    
-                    Spacer()
-                    
-                }
-                
-                
-                // Lobby Selection Section
+            ZStack {
+                Image("Background")
+                    .resizable()
+                    .ignoresSafeArea()
                 VStack {
-                    if multipeerManager.availableLobbies.isEmpty {
-                        Text("Searching for lobbies...")
-                            .foregroundColor(.gray)
+                    
+                    HStack {
+                        Button(action: {
+                            multipeerManager.stopBrowsing()
+                            presentationMode.wrappedValue.dismiss()
+                        }) {
+                            BackButton()
+                        }
+                        Spacer()
+                    }
+                    
+                    HStack {
+                        Text("Choose a Lobby")
+                            .font(.title)
                             .bold()
                             .fontDesign(.rounded)
-                            .padding()
-                    } else {
-                        VStack {
-                            List {
-                                ForEach(Array(multipeerManager.availableLobbies.keys), id: \.self) { peer in
-                                    Button(action: {
-                                                selectedLobby = peer
-                                                isLobbySelected = true // Attiva il fullScreenCover
-                                    }) {
-                                        LobbySelectionView(peer: peer)
-                                            .background(
-                                                RoundedRectangle(cornerRadius: 12)
-                                                    .fill(selectedLobby == peer ? Color.black.opacity(0.2) : Color.clear)
-                                            )
+                        
+                        Spacer()
+                        
+                    }
+                    
+                    
+                    // Lobby Selection Section
+                    VStack {
+                        if multipeerManager.availableLobbies.isEmpty {
+                            Text("Searching for lobbies...")
+                                .foregroundColor(.gray)
+                                .bold()
+                                .fontDesign(.rounded)
+                                .padding()
+                        } else {
+                            VStack {
+                                List {
+                                    ForEach(Array(multipeerManager.availableLobbies.keys), id: \.self) { peer in
+                                        Button(action: {
+                                            selectedLobby = peer
+                                            isLobbySelected = true // Attiva il fullScreenCover
+                                        }) {
+                                            LobbySelectionView(peer: peer)
+                                                .background(
+                                                    RoundedRectangle(cornerRadius: 12)
+                                                        .fill(selectedLobby == peer ? Color.black.opacity(0.2) : Color.clear)
+                                                )
+                                            
+                                        }
+                                        .listRowSeparator(.hidden)
+                                        .listRowBackground(Color.accentColor)
                                         
                                     }
-                                    .listRowSeparator(.hidden)
-                                    .listRowBackground(Color.accentColor)
-                                    
                                 }
+                                .scrollContentBackground(.hidden)
+                                .background(Color.accentColor)
+                                .clipShape(RoundedRectangle(cornerRadius: 12))
+                                .overlay(RoundedRectangle(cornerRadius: 12).stroke(Color.black, lineWidth: 3))
                             }
-                            .scrollContentBackground(.hidden)
-                            .background(Color.accentColor)
-                            .clipShape(RoundedRectangle(cornerRadius: 12))
-                            .overlay(RoundedRectangle(cornerRadius: 12).stroke(Color.black, lineWidth: 3))
                         }
                     }
+                    .padding(.horizontal)
+                    
+                    Spacer()
                 }
-                .padding(.horizontal)
-                
-                Spacer()
+                .padding()
             }
-            .padding()
-            .background(Image("Background"))
             .navigationBarBackButtonHidden(true)
             .navigationDestination(isPresented: $multipeerManager.shuldNavitgateToWaitScreen) {
                 WaitStartGameView(multipeerManager: multipeerManager)

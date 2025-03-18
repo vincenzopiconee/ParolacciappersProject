@@ -12,59 +12,62 @@ struct WordRevealView: View {
 
     var body: some View {
         NavigationStack {
-            VStack {
-                
-                HStack {
+            ZStack {
+                Image("Background")
+                    .resizable()
+                    .ignoresSafeArea()
+                VStack {
+                    HStack {
+                        Spacer()
+                        
+                        Button(action: {
+                            multipeerManager.resetGame()
+                            multipeerManager.disconnect()
+                            presentationMode.wrappedValue.dismiss()
+                        }) {
+                            CancelButton()
+                        }
+                        
+                    }
+                    
+                    HStack {
+                        
+                        Text("Chosen course word")
+                            .font(.title)
+                            .bold()
+                            .fontDesign(.rounded)
+                        
+                        Spacer()
+                        
+                    }
+                    
+                    
                     Spacer()
                     
-                    Button(action: {
-                        multipeerManager.resetGame()
-                        multipeerManager.disconnect()
-                        presentationMode.wrappedValue.dismiss()
-                    }) {
-                        CancelButton()
+                    Text(multipeerManager.chosenWord ?? "Waiting for word...")
+                        .font(.title)
+                        .padding()
+                        .bold()
+                        .fontDesign(.rounded)
+                        .frame(maxWidth: .infinity)
+                        .background(Color.accentColor)
+                        .cornerRadius(12)
+                        .padding()
+                    
+                    Spacer()
+                    
+                    if multipeerManager.isHosting {
+                        
+                        Button(action: {
+                            multipeerManager.advanceToNextPhase()
+                        }, label: {
+                            ActionButton(title: "Continue", isDisabled: false)
+                        })
                     }
                     
                 }
-                
-                HStack {
-                    
-                    Text("Chosen course word")
-                        .font(.title)
-                        .bold()
-                        .fontDesign(.rounded)
-                    
-                    Spacer()
-                    
-                }
-                
-                
-                Spacer()
-                
-                Text(multipeerManager.chosenWord ?? "Waiting for word...")
-                    .font(.title)
-                    .padding()
-                    .bold()
-                    .fontDesign(.rounded)
-                    .frame(maxWidth: .infinity)
-                    .background(Color.accentColor)
-                    .cornerRadius(12)
-                    .padding()
-                
-                Spacer()
-
-                if multipeerManager.isHosting {
-                    
-                    Button(action: {
-                        multipeerManager.advanceToNextPhase()
-                    }, label: {
-                        ActionButton(title: "Continue", isDisabled: false)
-                    })
-                }
-                
+                .padding()
             }
-            .padding()
-            .background(Image("Background"))
             .navigationBarBackButtonHidden(true)
             
         }

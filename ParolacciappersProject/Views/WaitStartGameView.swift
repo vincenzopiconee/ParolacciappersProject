@@ -15,32 +15,36 @@ struct WaitStartGameView: View {
     
     var body: some View {
         NavigationStack {
-            VStack {
-                
-                HStack {
-                    Spacer()
-                    Button(action: {
-                        multipeerManager.resetGame()
-                        multipeerManager.disconnect()
-                        presentationMode.wrappedValue.dismiss()
-                    }) {
-                        CancelButton()
+            ZStack {
+                Image("Background")
+                    .resizable()
+                    .ignoresSafeArea()
+                VStack {
+                    
+                    HStack {
+                        Spacer()
+                        Button(action: {
+                            multipeerManager.resetGame()
+                            multipeerManager.disconnect()
+                            presentationMode.wrappedValue.dismiss()
+                        }) {
+                            CancelButton()
+                        }
+                        
                     }
                     
+                    Spacer()
+                    
+                    Text("Wait for the host to start the game...")
+                        .font(.title3)
+                        .bold()
+                        .fontDesign(.rounded)
+                        .foregroundColor(.black)
+                    
+                    Spacer()
                 }
-                
-                Spacer()
-                
-                Text("Wait for the host to start the game...")
-                    .font(.title3)
-                    .bold()
-                    .fontDesign(.rounded)
-                    .foregroundColor(.black)
-                
-                Spacer()
+                .padding()
             }
-            .padding()
-            .background(Image("Background"))
             .navigationBarBackButtonHidden(true)
             
         }
