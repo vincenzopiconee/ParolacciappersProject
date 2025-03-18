@@ -68,14 +68,18 @@ struct WordSubmissionView: View {
                     
                     
                     Button(action: {
-                        if !message.isEmpty {
-                            multipeerManager.sendWord(message)
+                        if !message.isEmpty && !definition.isEmpty {
+                            //multipeerManager.sendWord(message)
+                            multipeerManager.sendWord(message, definition: definition)
+
                             message = ""
+                            definition = ""
+
                         }
                     }, label: {
-                        ActionButton(title: "Submit", isDisabled: message.isEmpty)
+                        ActionButton(title: "Submit", isDisabled: message.isEmpty || definition.isEmpty)
                     })
-                    .disabled(message.isEmpty)
+                    .disabled(message.isEmpty || definition.isEmpty)
 
                     .padding()
                 } else if !multipeerManager.allWordsSubmitted {
