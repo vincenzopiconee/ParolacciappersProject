@@ -11,66 +11,85 @@ import MultipeerConnectivity
 struct RoundResultsView: View {
     @ObservedObject var multipeerManager: MultipeerManager
     @Environment(\.presentationMode) var presentationMode
+    @State private var showAlert: Bool = false
 
     var body: some View {
-        NavigationStack {
-            VStack {
+        ZStack {
+            NavigationStack {
                 
-                HStack {
-                    Spacer()
+                ZStack {
+                    Image("Background")
+                        .resizable()
+                        .ignoresSafeArea()
                     
-                    Button(action: {
-                        multipeerManager.disconnect()
-                        presentationMode.wrappedValue.dismiss()
-                    }) {
-                        CancelButton()
+                    VStack {
+                        
+                        HStack {
+                            Spacer()
+                            
+                            Button(action: {
+                                showAlert = true
+                            }) {
+                                CancelButton()
+                            }
+                            
+                        }
+                        
+                        HStack {
+                            Text("Round Results")
+                                .font(.title)
+                                .bold()
+                                .fontDesign(.rounded)
+
+                            Spacer()
+                        }
+                        
+                        Spacer()
+
+                        if multipeerManager.winner.isEmpty {
+                            Text("No votes cast!")
+                                .font(.title)
+                                .padding()
+                        } else {
+                            Text("The Winner is:")
+                                .font(.title)
+                                .bold()
+                                .fontDesign(.rounded)
+
+                            ForEach(multipeerManager.winner, id: \.self) { peer in
+                                HostLobbyPlayers(peer: peer)
+                                    .padding()
+                            }
+                        }
+                        
+                        Spacer()
+
+                        if multipeerManager.isHosting {
+                            
+                            Button(action: {
+                                multipeerManager.advanceToNextPhase()
+                            }, label: {
+                                ActionButton(title: "Continue", isDisabled: false)
+                            })
+                            
+                        }
                     }
-                    
+                    .padding()
                 }
                 
-                HStack {
-                    Text("Round Results")
-                        .font(.title)
-                        .bold()
-                        .fontDesign(.rounded)
-
-                    Spacer()
-                }
-                
-                Spacer()
-
-                if multipeerManager.winner.isEmpty {
-                    Text("No votes cast!")
-                        .font(.title)
-                        .padding()
-                } else {
-                    Text("The Winner is:")
-                        .font(.title)
-                        .bold()
-                        .fontDesign(.rounded)
-
-                    ForEach(multipeerManager.winner, id: \.self) { peer in
-                        HostLobbyPlayers(peer: peer)
-                            .padding()
-                    }
-                }
-                
-                Spacer()
-
-                if multipeerManager.isHosting {
-                    
-                    Button(action: {
-                        multipeerManager.advanceToNextPhase()
-                    }, label: {
-                        ActionButton(title: "Continue", isDisabled: false)
-                    })
-                    
-                }
+                .navigationBarBackButtonHidden(true)
             }
-            .padding()
-            .background(Image("Background"))
-            .navigationBarBackButtonHidden(true)
+            if showAlert {
+                Color.black.opacity(0.5) // Sfondo scuro semi-trasparente
+                    .edgesIgnoringSafeArea(.all)
+                
+                CustomExitAlert(multipeerManager: multipeerManager, title: "Why the #@%! are you leaving?", message: "You won’t partecipate to the game anymore. Are you sure?", isPresented: $showAlert
+               )
+                .transition(.scale)
+                .accessibilityAddTraits(.isModal)
+            }
         }
+        
 
         
     }

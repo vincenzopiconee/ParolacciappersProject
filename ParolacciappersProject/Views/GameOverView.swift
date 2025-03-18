@@ -23,65 +23,70 @@ struct GameOverView: View {
 
     var body: some View {
         NavigationStack {
-            VStack {
-                HStack {
-                    Text("Final Results")
-                        .font(.title)
-                        .bold()
-                        .fontDesign(.rounded)
-                    
-                    Spacer()
-                }
+            ZStack {
+                Image("Background")
+                    .resizable()
+                    .ignoresSafeArea()
                 
-                if overallWinners.isEmpty {
-                    Spacer()
-                    Text("No winners")
-                        .font(.title)
-                        .bold()
-                        .fontDesign(.rounded)
-                } else {
-                    ForEach(overallWinners, id: \.0) { (peer,wins) in
+                VStack {
+                    HStack {
+                        Text("Final Results")
+                            .font(.title)
+                            .bold()
+                            .fontDesign(.rounded)
                         
-                        HStack {
-                            
-                            //PHOTO
-                            
-                            Text("\(peer.displayName)")
-                                .font(.title3)
-                                .bold()
-                                .fontDesign(.rounded)
-                                .foregroundColor(.black)
-                            
-                            Spacer()
-                            
-                            Text("\(wins) pts")
-                                .font(.title3)
-                                .bold()
-                                .fontDesign(.rounded)
-                                .foregroundColor(.black)
-                        }
-                        .padding()
-                        .background(Color.white)
-                        .clipShape(RoundedRectangle(cornerRadius: 12))
-                        .overlay(RoundedRectangle(cornerRadius: 12).stroke(Color.black, lineWidth: 3))
+                        Spacer()
                     }
+                    
+                    if overallWinners.isEmpty {
+                        Spacer()
+                        Text("No winners")
+                            .font(.title)
+                            .bold()
+                            .fontDesign(.rounded)
+                    } else {
+                        ForEach(overallWinners, id: \.0) { (peer,wins) in
+                            
+                            HStack {
+                                
+                                //PHOTO
+                                
+                                Text("\(peer.displayName)")
+                                    .font(.title3)
+                                    .bold()
+                                    .fontDesign(.rounded)
+                                    .foregroundColor(.black)
+                                
+                                Spacer()
+                                
+                                Text("\(wins) pts")
+                                    .font(.title3)
+                                    .bold()
+                                    .fontDesign(.rounded)
+                                    .foregroundColor(.black)
+                            }
+                            .padding()
+                            .background(Color.white)
+                            .clipShape(RoundedRectangle(cornerRadius: 12))
+                            .overlay(RoundedRectangle(cornerRadius: 12).stroke(Color.black, lineWidth: 3))
+                        }
+                    }
+
+                    Spacer()
+                    
+                    Button(action: {
+                        multipeerManager.resetGame()
+                        multipeerManager.disconnect()
+                        presentationMode.wrappedValue.dismiss()
+                    }) {
+                        ActionButton(title: "Go back home", isDisabled: false)
+                    }
+
+
                 }
-
-                Spacer()
-                
-                Button(action: {
-                    multipeerManager.resetGame()
-                    multipeerManager.disconnect()
-                    presentationMode.wrappedValue.dismiss()
-                }) {
-                    ActionButton(title: "Go back home", isDisabled: false)
-                }
-
-
+                .padding()
             }
-            .padding()
             .navigationBarBackButtonHidden(true)
-            .background(Image("Background"))
         }
         
     }
