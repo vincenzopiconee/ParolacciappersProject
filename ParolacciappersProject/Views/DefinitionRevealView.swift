@@ -4,9 +4,6 @@
 //
 //  Created by Martha Mendoza Alfaro on 17/03/25.
 //
-
-
-
 import SwiftUI
 
 struct DefinitionRevealView: View {
@@ -67,7 +64,7 @@ struct DefinitionRevealView: View {
                 
             }
             .padding()
-            .background(Image("background"))
+            .background(Image("Background"))
             .navigationBarBackButtonHidden(true)
             
         }
@@ -80,7 +77,7 @@ struct DefinitionRevealView_Preview: View {
     @StateObject private var multipeerManager = MultipeerManager(displayName: "Placeholder")
 
     var body: some View {
-        WordRevealView(multipeerManager: multipeerManager)
+        DefinitionRevealView(multipeerManager: multipeerManager)
             .onAppear {
                 // Simulating available lobbies
                 multipeerManager.isHosting = true

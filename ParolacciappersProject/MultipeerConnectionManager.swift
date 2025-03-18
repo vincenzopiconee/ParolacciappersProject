@@ -50,6 +50,7 @@ class MultipeerManager: NSObject, ObservableObject {
     //For the sending of sentences part 1
     @Published var submittedSentences: [MCPeerID: String] = [:]
     @Published var allSentencesSubmitted = false
+    @Published var currentIndex: Int = 0
     
     //for voting and winning
     @Published var votes: [MCPeerID: Int] = [:]  // Tracks votes received per player
@@ -270,6 +271,14 @@ class MultipeerManager: NSObject, ObservableObject {
         }
     }
     
+    func broadcastPhraseIndex(_ index: Int) {
+        let message = "phraseIndex:\(index)"
+        if let data = message.data(using: .utf8) {
+            try? session.send(data, toPeers: session.connectedPeers, with: .reliable)
+        }
+    }
+
+    
     // Vote submission form players
     func submitVote(for peer: MCPeerID) {
         guard !hasVoted else { return } // Prevent multiple votes
@@ -392,6 +401,7 @@ class MultipeerManager: NSObject, ObservableObject {
             self.allSentencesSubmitted = false
             self.allVotesSubmitted = false
             self.totalVotes = 0
+            self.currentIndex = 0
         }
     }
     
@@ -417,11 +427,11 @@ class MultipeerManager: NSObject, ObservableObject {
             case .sentenceSubmission:
                 if self.allSentencesSubmitted {
                     //self.gamePhase = .sentenceReveal
-                    self.gamePhase = .voting
+                    self.gamePhase = .sentenceReveal
                     self.broadcastPhaseChange()
                 }
             case .sentenceReveal: //THE ONE VINCENZO IS WORKING ON
-                self.gamePhase = .voting
+                self.gamePhase = .definitionReveal
                 self.broadcastPhaseChange()
             case .definitionReveal:
                 self.gamePhase = .voting
@@ -513,6 +523,7 @@ class MultipeerManager: NSObject, ObservableObject {
             self.chosenWord = nil
             self.chosenDefinition = nil
             self.chosenScenario = nil
+            self.currentIndex = 0
             //self.gamePhase = .wordSubmission // Reset to first phase
             //self.broadcastPhaseChange()
             print("🔄 Game reset!")
@@ -606,6 +617,17 @@ extension MultipeerManager: MCSessionDelegate, MCNearbyServiceAdvertiserDelegate
                         self.checkAllSentencesSubmitted()
                     }
                 }
+                
+                else if message.starts(with: "phraseIndex:") {
+                    let indexString = String(message.dropFirst(12))
+                    if let newIndex = Int(indexString) {
+                        DispatchQueue.main.async {
+                            self.currentIndex = newIndex
+                            print("🔄 Updated phrase index: \(self.currentIndex)")
+                        }
+                    }
+                }
+
                 else if message.starts(with: "vote:") {
                     print("✅ Vote message detected")
                     let votedPlayerName = String(message.dropFirst(5))

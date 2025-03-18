@@ -1,17 +1,18 @@
 //
-//  VotingView.swift
+//  SentenceRevealView.swift
 //  ParolacciappersProject
 //
-//  Created by Martha Mendoza Alfaro on 07/03/25.
+//  Created by Martha Mendoza Alfaro on 18/03/25.
 //
+
 
 import SwiftUI
 import MultipeerConnectivity
 
-struct VotingView: View {
+struct SentenceRevealView: View {
     @ObservedObject var multipeerManager: MultipeerManager
     @State private var selectedPeer: MCPeerID?
-    @State private var currentIndex: Int = 0
+    //@State private var currentIndex: Int = 0
     @Environment(\.presentationMode) var presentationMode
     
     var peers: [MCPeerID] {
@@ -36,19 +37,17 @@ struct VotingView: View {
                 
                 HStack{
                     
-                    Text("Vote for your favorite one")
+                    Text("Read aloud your phrase")
                         .font(.title)
                         .bold()
                         .fontDesign(.rounded)
                     
                     Spacer()
                 }
-
-                
                 
                 Spacer()
 
-                TabView(selection: $currentIndex) {
+                /*TabView(selection: $currentIndex) {
                     ForEach(0..<peers.count, id: \.self) { index in
                         let peer = peers[index]
                         VStack {
@@ -73,29 +72,50 @@ struct VotingView: View {
                 }
                 .tabViewStyle(.page)
                 .indexViewStyle(PageIndexViewStyle(backgroundDisplayMode: .always))
+                */
                 
+                
+                if peers.indices.contains(multipeerManager.currentIndex) {
+                    let peer = peers[multipeerManager.currentIndex]
+                    VStack {
+                        Text("\(peer.displayName)'s phrase")
+                            .font(.title2)
+                            .bold()
+                            .fontDesign(.rounded)
+                        
+                        Text("\"\(multipeerManager.submittedSentences[peer] ?? "")\"")
+                            .font(.title3)
+                            .fontDesign(.rounded)
+                            .padding(.vertical, 2)
+                    }
+                    .padding(24)
+                    .background(Color.accentColor)
+                    .clipShape(RoundedRectangle(cornerRadius: 12))
+                    .overlay(RoundedRectangle(cornerRadius: 12).stroke(Color.black, lineWidth: 3))
+                    .padding()
+                } else {
+                    Text("No phrases available")
+                        .font(.title2)
+                        .bold()
+                        .fontDesign(.rounded)
+                        .foregroundColor(.gray)
+                }
                 Spacer()
 
-                // Vote button
-                if peers.indices.contains(currentIndex) {
-                    let peer = peers[currentIndex]
+                if multipeerManager.isHosting {
                     Button(action: {
-                        selectedPeer = peer
-                        multipeerManager.submitVote(for: peer)
-                        multipeerManager.hasVoted = true
+                        if multipeerManager.currentIndex < peers.count - 1 {
+                            multipeerManager.currentIndex += 1
+                            multipeerManager.broadcastPhraseIndex(multipeerManager.currentIndex)
+                        } else {
+                            multipeerManager.advanceToNextPhase()
+                        }
                     }) {
-                        ActionButton(title: "Vote", isDisabled: multipeerManager.hasVoted)
+                        ActionButton(
+                            title: multipeerManager.currentIndex < peers.count - 1 ? "Next Phrase" : "Continue",
+                            isDisabled: false
+                        )
                     }
-                    .disabled(multipeerManager.hasVoted)
-                }
-                
-                if multipeerManager.isHosting && multipeerManager.allVotesSubmitted {
-                    Button(action: {
-                        multipeerManager.advanceToNextPhase()
-                    }) {
-                        ActionButton(title: "See Results", isDisabled: !multipeerManager.allVotesSubmitted)
-                    }
-                    .disabled(!multipeerManager.allVotesSubmitted)
                 }
 
             }
@@ -106,11 +126,11 @@ struct VotingView: View {
     }
 }
 
-struct VotingView_Preview: View {
+struct SentenceRevealView_Preview: View {
     @StateObject private var multipeerManager = MultipeerManager(displayName: "PreviewUser")
 
     var body: some View {
-        VotingView(multipeerManager: multipeerManager)
+        SentenceRevealView(multipeerManager: multipeerManager)
             .onAppear {
                 let peer1 = MCPeerID(displayName: "Alice")
                 let peer2 = MCPeerID(displayName: "Bob")
@@ -129,9 +149,5 @@ struct VotingView_Preview: View {
 }
 
 #Preview {
-    VotingView_Preview()
+    SentenceRevealView_Preview()
 }
-
-
-
-
