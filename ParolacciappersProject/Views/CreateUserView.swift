@@ -27,96 +27,101 @@ struct CreateUserView: View {
     
     var body: some View {
         NavigationStack {
-            VStack {
-                //Back Button
-                HStack {
-                    Button(action: {
-                        //back action
-                        presentationMode.wrappedValue.dismiss()
-                    }) {
-                        BackButton()
-                    }
-                    Spacer()
-                }
+            ZStack {
                 
-                HStack {
-                    Text("Who the %@#! are you?")
-                        .font(.title)
-                        .fontDesign(.rounded)
-                        .fontWeight(.bold)
-                        .multilineTextAlignment(.leading)
-                        .accessibilityLabel("Who the fuck are you?")
-                    Spacer()
-                }
-                Spacer()
+                Image("Background")
+                    .resizable()
+                    .ignoresSafeArea()
                 
-                //User Profile Section
-                VStack(spacing: 10) {
-                    if let image = selectedImage {
+                VStack {
+                    //Back Button
+                    HStack {
                         Button(action: {
-                            isShowingCamera = true
-                        }, label: {
-                            Image(uiImage: image)
-                                .resizable()
-                                .scaledToFill()
-                                .frame(width: 200, height: 200)
-                                .clipShape(RoundedRectangle(cornerRadius: 12))
-                                .overlay(RoundedRectangle(cornerRadius: 12).stroke(Color.black, lineWidth: 3))
-                        })
-                    } else {
-                        Button(action: {
-                            isShowingCamera = true
-                        }, label: {
-                            AddPhotoButton()
-                        })
-                        
+                            //back action
+                            presentationMode.wrappedValue.dismiss()
+                        }) {
+                            BackButton()
+                        }
+                        Spacer()
                     }
                     
-                    //Input Fields
-                    VStack(alignment: .leading, spacing: 10) {
-                        CustomTextField(title: "Name", text: $name)
-                        // commented for TestFligth
-                        //CustomTextField(title: "Nationality", text: $nationality)
-                        //CustomTextField(title: "Language", text: $language)
+                    HStack {
+                        Text("Who the %@#! are you?")
+                            .font(.title)
+                            .fontDesign(.rounded)
+                            .fontWeight(.bold)
+                            .multilineTextAlignment(.leading)
+                            .accessibilityLabel("Who the fuck are you?")
+                        Spacer()
+                    }
+                    Spacer()
+                    
+                    //User Profile Section
+                    VStack(spacing: 10) {
+                        if let image = selectedImage {
+                            Button(action: {
+                                isShowingCamera = true
+                            }, label: {
+                                Image(uiImage: image)
+                                    .resizable()
+                                    .scaledToFill()
+                                    .frame(width: 200, height: 200)
+                                    .clipShape(RoundedRectangle(cornerRadius: 12))
+                                    .overlay(RoundedRectangle(cornerRadius: 12).stroke(Color.black, lineWidth: 3))
+                            })
+                        } else {
+                            Button(action: {
+                                isShowingCamera = true
+                            }, label: {
+                                AddPhotoButton()
+                            })
+                            
+                        }
+                        
+                        //Input Fields
+                        VStack(alignment: .leading, spacing: 10) {
+                            CustomTextField(title: "Name", text: $name)
+                            // commented for TestFligth
+                            //CustomTextField(title: "Nationality", text: $nationality)
+                            //CustomTextField(title: "Language", text: $language)
+                        }
+                        .padding()
                     }
                     .padding()
-                }
-                .padding()
-                .background(Color.accentColor)
-                .clipShape(RoundedRectangle(cornerRadius: 12))
-                .overlay(
-                    RoundedRectangle(cornerRadius: 12)
-                        .stroke(Color.black, lineWidth: 3)
-                )
-                .padding()
-                
-                Spacer()
-                
-                //Continue Button
-                Button(action: {
+                    .background(Color.accentColor)
+                    .clipShape(RoundedRectangle(cornerRadius: 12))
+                    .overlay(
+                        RoundedRectangle(cornerRadius: 12)
+                            .stroke(Color.black, lineWidth: 3)
+                    )
+                    .padding()
                     
-        
+                    Spacer()
                     
-                    multipeerManager.updateDisplayName(name)
+                    //Continue Button
+                    Button(action: {
+                        
+            
+                        
+                        multipeerManager.updateDisplayName(name)
 
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-                        if isHost {
-                            multipeerManager.startHosting()
-                        } else {
-                            multipeerManager.startBrowsing()
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                            if isHost {
+                                multipeerManager.startHosting()
+                            } else {
+                                multipeerManager.startBrowsing()
+                            }
+                            navigateToNextScreen = true
                         }
-                        navigateToNextScreen = true
+                    }) {
+                        ActionButton(title: "Continue", isDisabled: name.isEmpty)
                     }
-                }) {
-                    ActionButton(title: "Continue", isDisabled: name.isEmpty)
+                    .disabled(name.isEmpty) //disable when name is empty
+                    
+                    
                 }
-                .disabled(name.isEmpty) //disable when name is empty
-                //.opacity(name.isEmpty ? 0.5 : 1.0) //looks bad but i'll change it eventually
-                .padding(.bottom)
-                
+                .padding()
             }
-            .background(Image("Background"))
-            .padding()
             .navigationBarBackButtonHidden(true)
             .navigationDestination(isPresented: $navigateToNextScreen) {
                 if isHost {
