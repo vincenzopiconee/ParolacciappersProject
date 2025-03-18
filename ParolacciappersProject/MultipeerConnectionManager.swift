@@ -7,6 +7,7 @@ enum GamePhase: String {
     case scenarioReveal
     case sentenceSubmission
     case sentenceReveal
+    case definitionReveal
     case voting
     case roundResults
     case gameOver
@@ -31,12 +32,14 @@ class MultipeerManager: NSObject, ObservableObject {
     @Published var isGameStarted = false
     
     //For the sending of words part 1
-    @Published var submittedWords: [MCPeerID: String] = [:]
+    @Published var submittedWords: [MCPeerID: (word: String, definition: String)] = [:]
+    //@Published var submittedWords: [MCPeerID: String] = [:]
     @Published var allWordsSubmitted = false
    // @Published var shouldNavigateToWordReveal = false
     
     // For the showing of the chosen word part 1
     @Published var chosenWord: String? // The word selected for the round
+    @Published var chosenDefinition: String?
     
     // For the rounds of the game
     @Published var gamePhase: GamePhase = .wordSubmission
@@ -162,7 +165,7 @@ class MultipeerManager: NSObject, ObservableObject {
     }
     
     // Send word part 2
-    func sendWord(_ word: String) {
+    /*func sendWord(_ word: String) {
         guard !session.connectedPeers.isEmpty else { return }
         
         let message = "word:\(word)"
@@ -175,7 +178,23 @@ class MultipeerManager: NSObject, ObservableObject {
                 print("Error sending word: \(error.localizedDescription)")
             }
         }
+    }*/
+    
+    func sendWord(_ word: String, definition: String) {
+        guard !session.connectedPeers.isEmpty else { return }
+        
+        let message = "word:\(word)|\(definition)" // Send both word and definition
+        if let data = message.data(using: .utf8) {
+            do {
+                try session.send(data, toPeers: session.connectedPeers, with: .reliable)
+                submittedWords[peerID] = (word, definition) // Store locally
+                checkAllWordsSubmitted()
+            } catch {
+                print("⚠️ Error sending word: \(error.localizedDescription)")
+            }
+        }
     }
+
 
     //Send word part 2 2
     func checkAllWordsSubmitted() {
@@ -183,6 +202,48 @@ class MultipeerManager: NSObject, ObservableObject {
             self.allWordsSubmitted = self.submittedWords.count == self.connectedPeers.count + 1
         }
     }
+    
+    private func selectRandomWord() {
+        if let randomEntry = submittedWords.randomElement() {
+            let (peer, (randomWord, definition)) = randomEntry // Get the peer and their word + definition
+            chosenWord = randomWord
+            chosenDefinition = definition // Store definition
+
+            // Remove the word from the dictionary
+            submittedWords.removeValue(forKey: peer)
+
+            // Broadcast the new word and definition
+            let message = "chosenWord:\(randomWord)|\(definition)"
+            if let data = message.data(using: .utf8) {
+                try? session.send(data, toPeers: session.connectedPeers, with: .reliable)
+            }
+
+            print("New Word Selected: \(randomWord) with definition: \(definition) (Removed from list)")
+        } else {
+            print("No words left to select.")
+        }
+    }
+
+    /*private func selectRandomWord() {
+        if let randomEntry = submittedWords.randomElement() {
+            let (peer, randomWord) = randomEntry // Get the peer and their word
+            chosenWord = randomWord
+            
+            // Remove the word from the dictionary
+            submittedWords.removeValue(forKey: peer)
+
+            // Broadcast the new word
+            let message = "chosenWord:\(randomWord)"
+            if let data = message.data(using: .utf8) {
+                try? session.send(data, toPeers: session.connectedPeers, with: .reliable)
+            }
+
+            print("New Word Selected: \(randomWord) (Removed from list)")
+        } else {
+            print("No words left to select.")
+        }
+    }*/
+    
     
     // Send sentences part 2
     func sendSentence(_ sentence: String) {
@@ -302,8 +363,20 @@ class MultipeerManager: NSObject, ObservableObject {
             try? session.send(data, toPeers: session.connectedPeers, with: .reliable)
         }
         
-    }
+        // Send total wins to all players
+        broadcastTotalWins()
 
+        
+    }
+    
+    func broadcastTotalWins() {
+        let winsData = totalWins.map { "\($0.key.displayName):\($0.value)" }.joined(separator: ",")
+        let message = "totalWins:\(winsData)"
+        
+        if let data = message.data(using: .utf8) {
+            try? session.send(data, toPeers: session.connectedPeers, with: .reliable)
+        }
+    }
 
     // computed property to have the peerID in the dictionary without safety risks
     var myPeerID: MCPeerID {
@@ -347,7 +420,10 @@ class MultipeerManager: NSObject, ObservableObject {
                     self.gamePhase = .voting
                     self.broadcastPhaseChange()
                 }
-            case .sentenceReveal:
+            case .sentenceReveal: //THE ONE VINCENZO IS WORKING ON
+                self.gamePhase = .voting
+                self.broadcastPhaseChange()
+            case .definitionReveal:
                 self.gamePhase = .voting
                 self.broadcastPhaseChange()
             case .voting:
@@ -389,26 +465,6 @@ class MultipeerManager: NSObject, ObservableObject {
         let message = "resetRound"
         if let data = message.data(using: .utf8) {
             try? session.send(data, toPeers: session.connectedPeers, with: .reliable)
-        }
-    }
-    
-    private func selectRandomWord() {
-        if let randomEntry = submittedWords.randomElement() {
-            let (peer, randomWord) = randomEntry // Get the peer and their word
-            chosenWord = randomWord
-            
-            // Remove the word from the dictionary
-            submittedWords.removeValue(forKey: peer)
-
-            // Broadcast the new word
-            let message = "chosenWord:\(randomWord)"
-            if let data = message.data(using: .utf8) {
-                try? session.send(data, toPeers: session.connectedPeers, with: .reliable)
-            }
-
-            print("New Word Selected: \(randomWord) (Removed from list)")
-        } else {
-            print("No words left to select.")
         }
     }
 
@@ -455,6 +511,7 @@ class MultipeerManager: NSObject, ObservableObject {
             self.winner = []
             self.totalWins = [:] // Reset total wins
             self.chosenWord = nil
+            self.chosenDefinition = nil
             self.chosenScenario = nil
             //self.gamePhase = .wordSubmission // Reset to first phase
             //self.broadcastPhaseChange()
@@ -503,30 +560,53 @@ extension MultipeerManager: MCSessionDelegate, MCNearbyServiceAdvertiserDelegate
             DispatchQueue.main.async {
                 if message == "startGame" {
                     self.shouldNavigateToGame = true
-                } else if message.starts(with: "word:") {
+                }
+                else if message.starts(with: "word:") {
+                    let receivedData = String(message.dropFirst(5)).components(separatedBy: "|")
+                    if receivedData.count == 2 {
+                        let receivedWord = receivedData[0]
+                        let receivedDefinition = receivedData[1]
+                        self.submittedWords[peerID] = (receivedWord, receivedDefinition) // Store both word and definition
+                        self.checkAllWordsSubmitted()
+                        print("📩 Received word: \(receivedWord) with definition: \(receivedDefinition)")
+                    }
+                }
+                else if message.starts(with: "chosenWord:") {
+                    let receivedData = String(message.dropFirst(11)).components(separatedBy: "|")
+                    if receivedData.count == 2 {
+                        self.chosenWord = receivedData[0]
+                        self.chosenDefinition = receivedData[1]
+                        print("📩 Received chosen word: \(self.chosenWord ?? "") with definition: \(self.chosenDefinition ?? "")")
+                    }
+                }
+                /*else if message.starts(with: "word:") {
                     let word = String(message.dropFirst(5))
                     self.submittedWords[peerID] = word
                     self.checkAllWordsSubmitted()
                 } else if message.starts(with: "chosenWord:") {
                     let receivedWord = String(message.dropFirst(11))
                     self.chosenWord = receivedWord
-                } else if message.starts(with: "chosenScenario:") {
+                }*/
+                else if message.starts(with: "chosenScenario:") {
                     let receivedScenario = String(message.dropFirst(15))
                     self.chosenScenario = receivedScenario
-                } else if message.starts(with: "phase:") {
+                }
+                else if message.starts(with: "phase:") {
                     let newPhase = String(message.dropFirst(6))
                     if let phase = GamePhase(rawValue: newPhase) {
                         print("🔄 Changing phase to: \(phase.rawValue)") 
                         self.gamePhase = phase
                     }
-                } else if message.starts(with: "sentence:") {
+                }
+                else if message.starts(with: "sentence:") {
                     let sentence = String(message.dropFirst(9))
                     DispatchQueue.main.async {
                         self.submittedSentences[peerID] = sentence
                         print("📝 Received new sentence from \(peerID.displayName): \(sentence)")
                         self.checkAllSentencesSubmitted()
                     }
-                } else if message.starts(with: "vote:") {
+                }
+                else if message.starts(with: "vote:") {
                     print("✅ Vote message detected")
                     let votedPlayerName = String(message.dropFirst(5))
                     DispatchQueue.main.async {
@@ -547,13 +627,15 @@ extension MultipeerManager: MCSessionDelegate, MCNearbyServiceAdvertiserDelegate
                         } else {
                             print("❌ Could not find peer with name \(votedPlayerName) in connectedPeers OR as the host.")
                         }                    }
-                } else if message.starts(with: "winner:") {
+                }
+                else if message.starts(with: "winner:") {
                     let winnerNames = String(message.dropFirst(7)).components(separatedBy: ",")
                     DispatchQueue.main.async {
                         self.winner = self.connectedPeers.filter { winnerNames.contains($0.displayName) }
                         print("🎉 Winners updated: \(self.winner.map { $0.displayName }.joined(separator: ", "))")
                     }
-                } else if message.starts(with: "roundWinner:") {
+                }
+                else if message.starts(with: "roundWinner:") {
                     let winnerNames = String(message.dropFirst(12)).components(separatedBy: ",")
                     DispatchQueue.main.async {
                         var winnersFromPeers = self.connectedPeers.filter { winnerNames.contains($0.displayName) }
@@ -567,14 +649,24 @@ extension MultipeerManager: MCSessionDelegate, MCNearbyServiceAdvertiserDelegate
                         print("🎉 Round Winners Updated: \(self.winner.map { $0.displayName }.joined(separator: ", "))")
                     }
                 }
-
-                /*else if message.starts(with: "roundWinner:") {
-                    let winnerNames = String(message.dropFirst(12)).components(separatedBy: ",")
+                else if message.starts(with: "totalWins:") {
+                    let receivedData = String(message.dropFirst(10)).components(separatedBy: ",")
+                    
                     DispatchQueue.main.async {
-                        self.winner = self.connectedPeers.filter { winnerNames.contains($0.displayName) }
-                        print("🎉 Round Winners Updated: \(self.winner.map { $0.displayName }.joined(separator: ", "))")
+                        for entry in receivedData {
+                            let parts = entry.components(separatedBy: ":")
+                            if parts.count == 2, let wins = Int(parts[1]) {
+                                if let peer = self.connectedPeers.first(where: { $0.displayName == parts[0] }) {
+                                    self.totalWins[peer] = wins
+                                } else if parts[0] == self.myPeerID.displayName {
+                                    self.totalWins[self.myPeerID] = wins
+                                }
+                            }
+                        }
+                        print("🔄 Updated totalWins: \(self.totalWins.map { "\($0.key.displayName): \($0.value)" }.joined(separator: ", "))")
                     }
-                }*/ else if message == "resetRound" {
+                }
+                else if message == "resetRound" {
                     DispatchQueue.main.async {
                         print("🔄 Received resetRound message, resetting round data!")
                         self.resetRoundData() // All players reset round data now

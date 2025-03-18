@@ -18,6 +18,8 @@ struct GameView: View {
             case .sentenceReveal:
                 //SentenceRevealView(multipeerManager: multipeerManager)
                 ScenarioRevealView(multipeerManager: multipeerManager)
+            case .definitionReveal:
+                DefinitionRevealView(multipeerManager: multipeerManager)
             case .voting:
                 VotingView(multipeerManager: multipeerManager)
                 //ScenarioRevealView(multipeerManager: multipeerManager)

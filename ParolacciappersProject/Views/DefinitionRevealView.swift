@@ -32,7 +32,7 @@ struct DefinitionRevealView: View {
                 
                 HStack {
                     
-                    Text("Chosen curse word")
+                    Text("Definition")
                         .font(.title)
                         .bold()
                         .fontDesign(.rounded)
@@ -44,7 +44,7 @@ struct DefinitionRevealView: View {
                 
                 Spacer()
                 
-                Text(multipeerManager.chosenWord ?? "Waiting for word...")
+                Text(multipeerManager.chosenDefinition ?? "Waiting for definition...")
                     .font(.title)
                     .padding()
                     .bold()

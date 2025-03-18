@@ -11,15 +11,19 @@ struct GameOverView: View {
     @ObservedObject var multipeerManager: MultipeerManager
     @Environment(\.presentationMode) var presentationMode
 
-    var overallWinners: [MCPeerID] {
+    /*var overallWinners: [MCPeerID] {
         multipeerManager.determineOverallWinner()
-    }
+    }*/
+    
+     var overallWinners: [(MCPeerID, Int)] {
+         multipeerManager.totalWins
+             .filter { $0.value > 0 } // Exclude players with 0 wins
+             .sorted { $0.value > $1.value } // Sort descending by wins
+     }
 
     var body: some View {
         NavigationStack {
             VStack {
-                
-                
                 HStack {
                     Text("Final Results")
                         .font(.title)
@@ -29,15 +33,14 @@ struct GameOverView: View {
                     Spacer()
                 }
                 
-
                 if overallWinners.isEmpty {
                     Spacer()
-                    Text("No overall winner")
+                    Text("No winners")
                         .font(.title)
                         .bold()
                         .fontDesign(.rounded)
                 } else {
-                    ForEach(overallWinners, id: \.self) { peer in
+                    ForEach(overallWinners, id: \.0) { (peer,wins) in
                         
                         HStack {
                             
@@ -51,7 +54,7 @@ struct GameOverView: View {
                             
                             Spacer()
                             
-                            Text("\(multipeerManager.totalWins[peer] ?? 0)pt")
+                            Text("\(wins) pts")
                                 .font(.title3)
                                 .bold()
                                 .fontDesign(.rounded)
@@ -87,3 +90,4 @@ struct GameOverView: View {
 #Preview {
     GameOverView(multipeerManager: MultipeerManager(displayName: "Placeholder"))
 }
+
