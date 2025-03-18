@@ -4,9 +4,6 @@
 //
 //  Created by Martha Mendoza Alfaro on 17/03/25.
 //
-
-
-
 import SwiftUI
 
 struct DefinitionRevealView: View {
@@ -75,6 +72,7 @@ struct DefinitionRevealView: View {
                 }
                 .padding()
             }
+
             .navigationBarBackButtonHidden(true)
             
         }

@@ -49,6 +49,7 @@ struct VotingView: View {
                             Spacer()
                         }
 
+
                         
                         
                         Spacer()
@@ -102,7 +103,6 @@ struct VotingView: View {
                         }
                         
                         
-
                     }
                     .padding()
                     
@@ -148,4 +148,7 @@ struct VotingView_Preview: View {
 #Preview {
     VotingView_Preview()
 }
+
+
+
 

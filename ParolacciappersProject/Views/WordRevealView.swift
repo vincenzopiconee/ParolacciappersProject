@@ -68,6 +68,7 @@ struct WordRevealView: View {
                         }
                         
                     }
+
                     .padding()
                     
                 }
