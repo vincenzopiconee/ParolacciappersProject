@@ -12,6 +12,7 @@ struct SentenceSubmissionView: View {
     @ObservedObject var multipeerManager: MultipeerManager
     @State private var message = ""
     @Environment(\.presentationMode) var presentationMode
+    @State private var messageSent = "Sentence already submitted"
     
     var body: some View {
         NavigationStack {
@@ -60,19 +61,15 @@ struct SentenceSubmissionView: View {
                         .bold()
                         .fontDesign(.rounded)
                     
-                    if multipeerManager.submittedSentences[multipeerManager.myPeerID] == nil {
-                        
-                        
-                        
-                        CustomTextField(title: "Your sentence", text: $message)
+                    CustomTextField(title: "Your sentence", text: $message)
                             .padding(.top, 10)
                         
-                    } else if !multipeerManager.allSentencesSubmitted {
-                        Text("Waiting for other players to submit their sentences...")
+                    /*else {
+                        Text("Wait for other players to submit their sentences...")
+                            .font(.title)
                             .bold()
                             .fontDesign(.rounded)
-                            .padding()
-                    }
+                    }*/
                 }
                 .padding(30)
                 .background(Color.accentColor)
@@ -92,7 +89,6 @@ struct SentenceSubmissionView: View {
                         
                         if !message.isEmpty {
                             multipeerManager.sendSentence(message)
-                            message = ""
                         }
                         
                     }, label: {
@@ -100,7 +96,7 @@ struct SentenceSubmissionView: View {
                         ActionButton(title: "Submit", isDisabled: message.isEmpty)
                         
                     })
-                    .padding()
+                    .disabled(message.isEmpty)
                     
                     
                 } else if multipeerManager.isHosting {
@@ -110,12 +106,24 @@ struct SentenceSubmissionView: View {
                     }, label: {
                         ActionButton(title: "Continue", isDisabled: !multipeerManager.allSentencesSubmitted)
                     })
+                    .disabled(!multipeerManager.allSentencesSubmitted)
                     
+                    
+                } else {
+                    
+                    Button(action: {
+                        
+                        
+                    }, label: {
+                        
+                        ActionButton(title: "Wait for the host", isDisabled: true)
+                        
+                    })
                     
                 }
             }
             .padding()
-            .background(Image("background"))
+            .background(Image("Background"))
             .navigationBarBackButtonHidden(true)
         }
         
