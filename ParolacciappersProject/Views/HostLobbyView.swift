@@ -11,8 +11,10 @@ struct HostLobbyView: View {
                 
                 HStack {
                     Button (action: {
-                        multipeerManager.stopHosting()
-                        presentationMode.wrappedValue.dismiss()
+                        //multipeerManager.stopHosting()
+                        multipeerManager.resetGame()
+                        multipeerManager.disconnect()
+                        //presentationMode.wrappedValue.dismiss()
                     }, label: {
                         BackButton()
                     })

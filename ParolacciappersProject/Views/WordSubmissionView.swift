@@ -20,6 +20,7 @@ struct WordSubmissionView: View {
                     Spacer()
                     
                     Button(action: {
+                        multipeerManager.resetGame()
                         multipeerManager.disconnect()
                         presentationMode.wrappedValue.dismiss()
                     }) {
@@ -84,12 +85,11 @@ struct WordSubmissionView: View {
                         .fontDesign(.rounded)
                     Spacer()
                 } else if multipeerManager.isHosting {
-                    Button("Continue") {
+                    Button(action: {
                         multipeerManager.advanceToNextPhase()
-                        //multipeerManager.advanceToNextScreen()
-                    }
-                    .buttonStyle(.borderedProminent)
-                    .disabled(!multipeerManager.allWordsSubmitted)
+                    }, label: {
+                        ActionButton(title: "Continue", isDisabled: false)
+                    })
                 }
                 
                 /*

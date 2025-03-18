@@ -52,6 +52,7 @@ struct RoundResultsView: View {
                 .padding()
             }
         }
+        .navigationBarBackButtonHidden(true)
     }
 }
 

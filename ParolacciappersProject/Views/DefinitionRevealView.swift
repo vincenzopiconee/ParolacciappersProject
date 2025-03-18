@@ -1,12 +1,15 @@
 //
-//  WordRevealView.swift
+//  DefinitionRevealView.swift
 //  ParolacciappersProject
 //
-//  Created by Martha Mendoza Alfaro on 07/03/25.
+//  Created by Martha Mendoza Alfaro on 17/03/25.
 //
+
+
+
 import SwiftUI
 
-struct WordRevealView: View {
+struct DefinitionRevealView: View {
     @ObservedObject var multipeerManager: MultipeerManager
     @Environment(\.presentationMode) var presentationMode
 
@@ -29,7 +32,7 @@ struct WordRevealView: View {
                 
                 HStack {
                     
-                    Text("Chosen course word")
+                    Text("Chosen curse word")
                         .font(.title)
                         .bold()
                         .fontDesign(.rounded)
@@ -73,7 +76,7 @@ struct WordRevealView: View {
     }
 }
 
-struct WordRevealView_Preview: View {
+struct DefinitionRevealView_Preview: View {
     @StateObject private var multipeerManager = MultipeerManager(displayName: "Placeholder")
 
     var body: some View {
@@ -87,6 +90,5 @@ struct WordRevealView_Preview: View {
 
 
 #Preview {
-    WordRevealView_Preview()
+    DefinitionRevealView_Preview()
 }
-

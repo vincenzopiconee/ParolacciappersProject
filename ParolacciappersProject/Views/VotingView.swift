@@ -23,6 +23,7 @@ struct VotingView: View {
                     Spacer()
                     
                     Button(action: {
+                        multipeerManager.resetGame()
                         multipeerManager.disconnect()
                         presentationMode.wrappedValue.dismiss()
                     }) {
@@ -96,7 +97,7 @@ struct VotingView: View {
                 
                 Spacer()
 
-                if multipeerManager.isHosting {
+                if multipeerManager.isHosting && multipeerManager.allVotesSubmitted {
                     
                     Button(action: {
                         multipeerManager.advanceToNextPhase()
