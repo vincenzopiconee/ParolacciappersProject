@@ -301,6 +301,7 @@ class MultipeerManager: NSObject, ObservableObject {
         if let data = message.data(using: .utf8) {
             try? session.send(data, toPeers: session.connectedPeers, with: .reliable)
         }
+        
     }
 
 

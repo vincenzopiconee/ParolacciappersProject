@@ -18,6 +18,7 @@ struct WordRevealView: View {
                     Spacer()
                     
                     Button(action: {
+                        multipeerManager.resetGame()
                         multipeerManager.disconnect()
                         presentationMode.wrappedValue.dismiss()
                     }) {

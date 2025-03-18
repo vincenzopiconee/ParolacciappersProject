@@ -20,6 +20,7 @@ struct WaitStartGameView: View {
                 HStack {
                     Spacer()
                     Button(action: {
+                        multipeerManager.resetGame()
                         multipeerManager.disconnect()
                         presentationMode.wrappedValue.dismiss()
                     }) {
