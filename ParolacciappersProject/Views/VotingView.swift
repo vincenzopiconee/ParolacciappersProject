@@ -55,11 +55,11 @@ struct VotingView: View {
                                     .italic()
                                     .fontDesign(.rounded)
                             }
-                            .padding()
+                            .padding(.vertical, 5)
                             .background(selectedPeer == peer ? Color.blue.opacity(0.2) : Color.clear) // Highlight selected
-
-                            .cornerRadius(12)
-
+                            
+                            Spacer()
+                            
                             Button(action: {
                                 selectedPeer = peer // Select the chosen sentence
                             }) {
@@ -90,6 +90,7 @@ struct VotingView: View {
                     }, label: {
                         ActionButton(title: "Send vote", isDisabled: multipeerManager.hasVoted)
                     })
+                    .disabled(multipeerManager.hasVoted)
                     
                     
                 }
@@ -103,6 +104,7 @@ struct VotingView: View {
                     }, label: {
                         ActionButton(title: "See Results", isDisabled: !multipeerManager.allVotesSubmitted)
                     })
+                    .disabled(!multipeerManager.allVotesSubmitted)
                     
                 }
 
@@ -110,7 +112,7 @@ struct VotingView: View {
 
             }
             .padding()
-            .background(Image("background"))
+            .background(Image("Background"))
             .navigationBarBackButtonHidden(true)
         }
         

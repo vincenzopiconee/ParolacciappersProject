@@ -115,7 +115,7 @@ struct CreateUserView: View {
                 .padding(.bottom)
                 
             }
-            .background(Image("background"))
+            .background(Image("Background"))
             .padding()
             .navigationBarBackButtonHidden(true)
             .navigationDestination(isPresented: $navigateToNextScreen) {

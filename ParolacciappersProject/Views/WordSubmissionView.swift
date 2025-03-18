@@ -84,12 +84,21 @@ struct WordSubmissionView: View {
                         .fontDesign(.rounded)
                     Spacer()
                 } else if multipeerManager.isHosting {
-                    Button("Continue") {
+                    
+                    Button(action: {
                         multipeerManager.advanceToNextPhase()
-                        //multipeerManager.advanceToNextScreen()
-                    }
-                    .buttonStyle(.borderedProminent)
+                        
+                    }, label: {
+                        ActionButton(title: "Continue", isDisabled: !multipeerManager.allWordsSubmitted)
+                            
+                    })
                     .disabled(!multipeerManager.allWordsSubmitted)
+                } else {
+                    Text("Waiting for the host continue the game...")
+                        .font(.title3)
+                        .bold()
+                        .fontDesign(.rounded)
+                    Spacer()
                 }
                 
                 /*
@@ -108,7 +117,7 @@ struct WordSubmissionView: View {
             }
             .padding()
             .navigationBarBackButtonHidden(true)
-            .background(Image("background"))
+            .background(Image("Background"))
 
         }
         

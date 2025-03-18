@@ -39,7 +39,7 @@ struct WaitStartGameView: View {
                 Spacer()
             }
             .padding()
-            .background(Image("background"))
+            .background(Image("Background"))
             .navigationBarBackButtonHidden(true)
             
         }
