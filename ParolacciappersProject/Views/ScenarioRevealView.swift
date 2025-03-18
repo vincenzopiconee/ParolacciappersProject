@@ -57,6 +57,11 @@ struct ScenarioRevealView: View {
                             .frame(maxWidth: .infinity)
                             .background(Color.accentColor)
                             .cornerRadius(12)
+                            .clipShape(RoundedRectangle(cornerRadius: 12))
+                            .overlay(
+                                RoundedRectangle(cornerRadius: 12)
+                                    .stroke(Color.black, lineWidth: 3)
+                            )
                             .padding()
                         
                         Spacer()

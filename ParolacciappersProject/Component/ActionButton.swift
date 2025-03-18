@@ -31,7 +31,6 @@ struct ActionButton: View {
                 .bold()
                 .fontDesign(.rounded)
                 .foregroundColor(.black)
-                .cornerRadius(12)
         }
     }
 }

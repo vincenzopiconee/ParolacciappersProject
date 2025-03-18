@@ -99,7 +99,7 @@ struct JoinLobbySheetView: View {
     }
 }
 
-// MARK: - Preview
+
 #Preview {
     struct JoinLobbySheetView_Preview: View {
         @StateObject private var multipeerManager = MultipeerManager(displayName: "Test User")

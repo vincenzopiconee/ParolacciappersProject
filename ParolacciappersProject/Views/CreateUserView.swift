@@ -58,6 +58,8 @@ struct CreateUserView: View {
                     
                     //User Profile Section
                     VStack(spacing: 10) {
+                        
+                        /*
                         if let image = selectedImage {
                             Button(action: {
                                 isShowingCamera = true
@@ -77,6 +79,7 @@ struct CreateUserView: View {
                             })
                             
                         }
+                        */
                         
                         //Input Fields
                         VStack(alignment: .leading, spacing: 10) {
