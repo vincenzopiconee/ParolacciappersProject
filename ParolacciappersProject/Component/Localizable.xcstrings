@@ -1,0 +1,617 @@
+{
+  "sourceLanguage" : "en",
+  "strings" : {
+    "" : {
+
+    },
+    "\"%@\"" : {
+      "localizations" : {
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "\"%@\""
+          }
+        }
+      }
+    },
+    "\"Add photo\"" : {
+      "localizations" : {
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Añade tu foto"
+          }
+        }
+      }
+    },
+    "%@" : {
+      "localizations" : {
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@"
+          }
+        }
+      }
+    },
+    "%@'s Lobby" : {
+      "localizations" : {
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sala de %@"
+          }
+        }
+      }
+    },
+    "%@'s phrase" : {
+      "localizations" : {
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Frase de %@"
+          }
+        }
+      }
+    },
+    "%lld pts" : {
+      "localizations" : {
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%lld pts"
+          }
+        }
+      }
+    },
+    "4-digit Code. Tap to open keyboard." : {
+      "localizations" : {
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Código de 4 dígitos. Toca para abrir el teclado."
+          }
+        }
+      }
+    },
+    "Add your curse word!" : {
+      "localizations" : {
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "¡Añade tu mala palabra!"
+          }
+        }
+      }
+    },
+    "Ask the host for the code to make sure it is the correct one." : {
+
+    },
+    "Choose a Lobby" : {
+      "localizations" : {
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Elige una sala"
+          }
+        }
+      }
+    },
+    "Chosen course word" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mala palabra elegida"
+          }
+        }
+      }
+    },
+    "Chosen curse word" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mala palabra elegida"
+          }
+        }
+      }
+    },
+    "Connected players (%lld):" : {
+      "localizations" : {
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Jugadores conectados (%lld):"
+          }
+        }
+      }
+    },
+    "Continue" : {
+      "localizations" : {
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Continuar"
+          }
+        }
+      }
+    },
+    "Controller su iPhone" : {
+      "localizations" : {
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Control de celular"
+          }
+        }
+      }
+    },
+    "Create Game" : {
+      "localizations" : {
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Crea un juego"
+          }
+        }
+      }
+    },
+    "Current curse word\n" : {
+      "localizations" : {
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mala palabra actual"
+          }
+        }
+      }
+    },
+    "Definition" : {
+      "localizations" : {
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Definición"
+          }
+        }
+      }
+    },
+    "Enter Lobby Code" : {
+      "localizations" : {
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Introduce el código de la sala"
+          }
+        }
+      }
+    },
+    "Final Results" : {
+      "localizations" : {
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Resultados Finales"
+          }
+        }
+      }
+    },
+    "Gioco sulla TV!" : {
+      "localizations" : {
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "En la TV!"
+          }
+        }
+      }
+    },
+    "Go back home" : {
+      "localizations" : {
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Volver a menu"
+          }
+        }
+      }
+    },
+    "Hello, World!" : {
+      "localizations" : {
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hola, Mundo!"
+          }
+        }
+      }
+    },
+    "Invalid Code" : {
+      "localizations" : {
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Código inválido"
+          }
+        }
+      }
+    },
+    "Join Game" : {
+      "localizations" : {
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Unirse a un juego"
+          }
+        }
+      }
+    },
+    "Join Lobby" : {
+      "localizations" : {
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Unirse a Sala"
+          }
+        }
+      }
+    },
+    "Keep playing" : {
+      "localizations" : {
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Seguir jugando"
+          }
+        }
+      }
+    },
+    "Leave" : {
+      "localizations" : {
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Salir"
+          }
+        }
+      }
+    },
+    "Let's F*ing Play!" : {
+      "localizations" : {
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "¡A @!&% jugar!"
+          }
+        }
+      }
+    },
+    "Lobby of %@" : {
+      "localizations" : {
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : " Sala de %@"
+          }
+        }
+      }
+    },
+    "Name" : {
+      "localizations" : {
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nombre"
+          }
+        }
+      }
+    },
+    "Nessun display esterno" : {
+      "localizations" : {
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Display exteerno"
+          }
+        }
+      }
+    },
+    "Next Phrase" : {
+      "localizations" : {
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Siguiente frase"
+          }
+        }
+      }
+    },
+    "No phrases available" : {
+      "localizations" : {
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No hay frases disponibles"
+          }
+        }
+      }
+    },
+    "No votes cast!" : {
+      "localizations" : {
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "¡No hay votos emitidos!"
+          }
+        }
+      }
+    },
+    "No winners" : {
+      "localizations" : {
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No hay ganadores"
+          }
+        }
+      }
+    },
+    "Read aloud your phrase" : {
+      "localizations" : {
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Lee en voz alta tu frase"
+          }
+        }
+      }
+    },
+    "Required" : {
+      "localizations" : {
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Requerido"
+          }
+        }
+      }
+    },
+    "Round Results" : {
+      "localizations" : {
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Resultados de la ronda"
+          }
+        }
+      }
+    },
+    "Scenario\n" : {
+      "localizations" : {
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Escenario"
+          }
+        }
+      }
+    },
+    "Searching for lobbies..." : {
+      "localizations" : {
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Buscando salas disponibles…"
+          }
+        }
+      }
+    },
+    "See Results" : {
+      "localizations" : {
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ver resultados"
+          }
+        }
+      }
+    },
+    "Submit" : {
+      "localizations" : {
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Enviar"
+          }
+        }
+      }
+    },
+    "The code you entered is incorrect. Please try again." : {
+      "localizations" : {
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "El código que ha introducido es incorrecto."
+          }
+        }
+      }
+    },
+    "The Winner is:" : {
+      "localizations" : {
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "El ganador es:"
+          }
+        }
+      }
+    },
+    "Try Again" : {
+      "localizations" : {
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Intenta otra vez"
+          }
+        }
+      }
+    },
+    "TV Connessa ✅" : {
+      "localizations" : {
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "TV Conectada"
+          }
+        }
+      }
+    },
+    "Vote" : {
+      "localizations" : {
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vota"
+          }
+        }
+      }
+    },
+    "Vote for your favorite one" : {
+      "localizations" : {
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vota por tu frase favorita"
+          }
+        }
+      }
+    },
+    "Wait for the host" : {
+      "localizations" : {
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Espera al anfitrión"
+          }
+        }
+      }
+    },
+    "Wait for the host to start the game..." : {
+      "localizations" : {
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Espera que el anfitrión empiece el juego…"
+          }
+        }
+      }
+    },
+    "Waiting for other players to send their words..." : {
+      "localizations" : {
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Esperando que otros jugadores manden sus frases…"
+          }
+        }
+      }
+    },
+    "Waiting for the host continue the game..." : {
+      "localizations" : {
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Esperando a que el anfitrión continúe el juego..."
+          }
+        }
+      }
+    },
+    "Who the %@#! are you?" : {
+      "localizations" : {
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "¿Quién %@#! eres?"
+          }
+        }
+      }
+    },
+    "Who the fuck are you?" : {
+      "localizations" : {
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "¿Quién %@#! eres?"
+          }
+        }
+      }
+    },
+    "Why the #@%! are you leaving?" : {
+      "localizations" : {
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "¡Por qué  #@%! te vas?"
+          }
+        }
+      }
+    },
+    "Word" : {
+      "localizations" : {
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Palabra"
+          }
+        }
+      }
+    },
+    "Write a sentence using the word \"%@\" in this scenario:" : {
+      "localizations" : {
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Escribe una frase usando la palabra \"%@\" en este escenario:"
+          }
+        }
+      }
+    },
+    "Write your sentence" : {
+      "localizations" : {
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Escribe tu frase"
+          }
+        }
+      }
+    },
+    "Wrong Code!" : {
+
+    },
+    "You won’t partecipate to the game anymore. Are you sure?" : {
+      "localizations" : {
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ya no participarás en el juego. ¿Estás seguro?"
+          }
+        }
+      }
+    },
+    "Your sentence" : {
+      "localizations" : {
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tu frase"
+          }
+        }
+      }
+    }
+  },
+  "version" : "1.0"
+}

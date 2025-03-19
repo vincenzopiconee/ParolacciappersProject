@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct CustomTextField: View {
-    var title: String
+    var title: LocalizedStringResource
     @Binding var text: String
     
     var body: some View {
@@ -38,6 +38,7 @@ struct CustomTextField: View {
                         RoundedRectangle(cornerRadius: 12)
                             .stroke(Color.black, lineWidth: 1.5)
                     )
+                    .foregroundColor(.black)
                 
             }
             
@@ -46,6 +47,6 @@ struct CustomTextField: View {
 }
 
 #Preview {
-    @Previewable @State var text = "Vincenzo"
+    @Previewable @State var text = ""
     CustomTextField(title: "Name", text: $text)
 }

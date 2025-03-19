@@ -62,6 +62,7 @@ struct DefinitionRevealView: View {
                                     .stroke(Color.black, lineWidth: 3)
                             )
                             .padding()
+                            .foregroundColor(.black)
                         
                         
                         Spacer()

@@ -40,7 +40,7 @@ struct WaitStartGameView: View {
                             .font(.title3)
                             .bold()
                             .fontDesign(.rounded)
-                            .foregroundColor(.black)
+                        
                         
                         Spacer()
                     }

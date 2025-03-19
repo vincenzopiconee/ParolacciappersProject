@@ -9,8 +9,8 @@ import SwiftUI
 
 struct CustomExitAlert: View {
     @ObservedObject var multipeerManager: MultipeerManager
-    var title: String
-    var message: String
+    var title: LocalizedStringResource
+    var message: LocalizedStringResource
     @Binding var isPresented: Bool
     @Environment(\.presentationMode) var presentationMode
 

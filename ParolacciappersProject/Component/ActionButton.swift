@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct ActionButton: View {
-    var title: String
+    var title: LocalizedStringResource
     var isDisabled: Bool
     
     var body: some View {

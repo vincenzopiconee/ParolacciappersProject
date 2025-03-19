@@ -8,8 +8,8 @@
 import SwiftUI
 
 struct CustomAlert: View {
-    var title: String
-    var message: String
+    var title: LocalizedStringResource
+    var message: LocalizedStringResource
     var onDismiss: () -> Void
 
     var body: some View {

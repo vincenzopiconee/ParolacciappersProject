@@ -103,7 +103,7 @@ struct JoinLobbySheetView: View {
 #Preview {
     struct JoinLobbySheetView_Preview: View {
         @StateObject private var multipeerManager = MultipeerManager(displayName: "Test User")
-        @State private var enteredCode = ""
+        @State private var enteredCode = "2339"
         
         let testPeer = MCPeerID(displayName: "Test Lobby")
 
