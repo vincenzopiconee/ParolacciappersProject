@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct CustomTextField: View {
-    var title: String
+    var title: LocalizedStringResource
     @Binding var text: String
     
     var body: some View {

@@ -40,7 +40,7 @@ struct CreateUserView: View {
                 }
                 
                 HStack {
-                    Text("Who the %@#! are you?")
+                    Text(LocalizedStringResource("Who the %@#! are you?"))
                         .font(.title)
                         .fontDesign(.rounded)
                         .fontWeight(.bold)
