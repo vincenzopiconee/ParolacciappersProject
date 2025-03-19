@@ -47,6 +47,7 @@ struct HostLobbyView: View {
                                         .stroke(Color.black, lineWidth: 3)
                                 )
                                 .accessibilityHidden(true) // Prevents VoiceOver from reading each digit separately
+                                .foregroundColor(.black)
                         }
                     }
                     .contentShape(Rectangle())

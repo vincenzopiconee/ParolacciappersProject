@@ -25,6 +25,7 @@ struct ManualCodeEntryView: View {
                 .opacity(0.01) // Nearly invisible but still interactive
                 .padding(.bottom, -20) // Prevents UI interference
                 .accessibilityHidden(true) // Hide from VoiceOver
+                .foregroundColor(.black)
 
             // Tapable code entry UI
             HStack(spacing: 10) {
@@ -40,6 +41,7 @@ struct ManualCodeEntryView: View {
                                 .stroke(Color.black, lineWidth: 3)
                         )
                         .accessibilityHidden(true) // Prevents VoiceOver from reading each digit separately
+                        .foregroundColor(.black)
                 }
             }
             .contentShape(Rectangle()) // Expands tap area

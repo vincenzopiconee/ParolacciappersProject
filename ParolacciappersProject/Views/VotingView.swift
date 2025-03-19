@@ -62,11 +62,13 @@ struct VotingView: View {
                                         .font(.title2)
                                         .bold()
                                         .fontDesign(.rounded)
+                                        .foregroundColor(.black)
                                     
                                     Text("\"\(multipeerManager.submittedSentences[peer] ?? "")\"")
                                         .font(.title3)
                                         .fontDesign(.rounded)
                                         .padding(.vertical, 2)
+                                        .foregroundColor(.black)
                                     
                                 }
                                 .padding(24)

@@ -84,6 +84,9 @@
         }
       }
     },
+    "Ask the host for the code to make sure it is the correct one." : {
+
+    },
     "Choose a Lobby" : {
       "localizations" : {
         "es-419" : {
@@ -95,6 +98,7 @@
       }
     },
     "Chosen course word" : {
+      "extractionState" : "stale",
       "localizations" : {
         "es-419" : {
           "stringUnit" : {
@@ -584,6 +588,9 @@
           }
         }
       }
+    },
+    "Wrong Code!" : {
+
     },
     "You won’t partecipate to the game anymore. Are you sure?" : {
       "localizations" : {

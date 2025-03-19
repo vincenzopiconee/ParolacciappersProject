@@ -34,7 +34,7 @@ struct WordRevealView: View {
                         
                         HStack {
                             
-                            Text("Chosen course word")
+                            Text("Chosen curse word")
                                 .font(.title)
                                 .bold()
                                 .fontDesign(.rounded)
@@ -60,6 +60,7 @@ struct WordRevealView: View {
                                     .stroke(Color.black, lineWidth: 3)
                             )
                             .padding()
+                            .foregroundColor(.black)
                         
                         Spacer()
 
