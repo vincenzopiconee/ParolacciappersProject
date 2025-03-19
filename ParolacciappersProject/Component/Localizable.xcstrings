@@ -94,7 +94,18 @@
         }
       }
     },
+    "Chosen course word" : {
+      "localizations" : {
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mala palabra elegida"
+          }
+        }
+      }
+    },
     "Chosen curse word" : {
+      "extractionState" : "manual",
       "localizations" : {
         "es-419" : {
           "stringUnit" : {
@@ -240,6 +251,26 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Unirse a Sala"
+          }
+        }
+      }
+    },
+    "Keep playing" : {
+      "localizations" : {
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Seguir jugando"
+          }
+        }
+      }
+    },
+    "Leave" : {
+      "localizations" : {
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Salir"
           }
         }
       }
@@ -514,6 +545,16 @@
         }
       }
     },
+    "Why the #@%! are you leaving?" : {
+      "localizations" : {
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "¡Por qué  #@%! te vas?"
+          }
+        }
+      }
+    },
     "Word" : {
       "localizations" : {
         "es-419" : {
@@ -540,6 +581,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Escribe tu frase"
+          }
+        }
+      }
+    },
+    "You won’t partecipate to the game anymore. Are you sure?" : {
+      "localizations" : {
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ya no participarás en el juego. ¿Estás seguro?"
           }
         }
       }
