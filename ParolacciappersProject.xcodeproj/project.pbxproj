@@ -105,6 +105,7 @@
 				en,
 				Base,
 				"es-419",
+				it,
 			);
 			mainGroup = 946FF8012D68C2A200311AB3;
 			minimizedProjectReferenceProxies = 1;
@@ -272,7 +273,7 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = ParolacciappersProject/Info.plist;
-				INFOPLIST_KEY_CFBundleDisplayName = Swearful;
+				INFOPLIST_KEY_CFBundleDisplayName = "Beep!";
 				INFOPLIST_KEY_NSCameraUsageDescription = "Allow access to camera to take a picture";
 				INFOPLIST_KEY_NSLocalNetworkUsageDescription = "The app needs to access the local network for the AirPlay connection";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
@@ -305,7 +306,7 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = ParolacciappersProject/Info.plist;
-				INFOPLIST_KEY_CFBundleDisplayName = Swearful;
+				INFOPLIST_KEY_CFBundleDisplayName = "Beep!";
 				INFOPLIST_KEY_NSCameraUsageDescription = "Allow access to camera to take a picture";
 				INFOPLIST_KEY_NSLocalNetworkUsageDescription = "The app needs to access the local network for the AirPlay connection";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;

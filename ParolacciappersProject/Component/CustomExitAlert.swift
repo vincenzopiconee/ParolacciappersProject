@@ -82,7 +82,7 @@ struct CustomAlertView_Preview: View {
                 .edgesIgnoringSafeArea(.all)
             
             if showAlert {
-                CustomExitAlert(multipeerManager: multipeerManager, title: "Why the #@%! are you leaving?", message: "You won’t partecipate to the game anymore. Are you sure?", isPresented: $showAlert
+                CustomExitAlert(multipeerManager: multipeerManager, title: "Why the #@%! are you leaving?", message: "You won’t be able to join this game anymore. Are you sure?", isPresented: $showAlert
                 )
                 
             }

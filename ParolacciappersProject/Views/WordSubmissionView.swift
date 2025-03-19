@@ -95,6 +95,13 @@ struct WordSubmissionView: View {
                             Spacer()
                         } else if multipeerManager.isHosting {
                             
+                            Text("All players have submitted their words! Press continue...")
+                                .font( .title3)
+                                .bold()
+                                .fontDesign(.rounded)
+                            
+                            Spacer()
+                            
                             Button(action: {
                                 multipeerManager.advanceToNextPhase()
                                 
@@ -135,7 +142,7 @@ struct WordSubmissionView: View {
                 Color.black.opacity(0.5) // Sfondo scuro semi-trasparente
                     .edgesIgnoringSafeArea(.all)
                 
-                CustomExitAlert(multipeerManager: multipeerManager, title: "Why the #@%! are you leaving?", message: "You won’t partecipate to the game anymore. Are you sure?", isPresented: $showAlert
+                CustomExitAlert(multipeerManager: multipeerManager, title: "Why the #@%! are you leaving?", message: "You won’t be able to join this game anymore. Are you sure?", isPresented: $showAlert
                )
                 .transition(.scale)
                 .accessibilityAddTraits(.isModal)

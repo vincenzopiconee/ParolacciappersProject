@@ -11,6 +11,12 @@
             "state" : "translated",
             "value" : "\"%@\""
           }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "\"%@\""
+          }
         }
       }
     },
@@ -21,12 +27,24 @@
             "state" : "translated",
             "value" : "Añade tu foto"
           }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "\"Aggiungi foto\""
+          }
         }
       }
     },
     "%@" : {
       "localizations" : {
         "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@"
+          }
+        },
+        "it" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "%@"
@@ -41,6 +59,12 @@
             "state" : "translated",
             "value" : "Sala de %@"
           }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Lobby di %@"
+          }
         }
       }
     },
@@ -50,6 +74,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Frase de %@"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Frase di %@"
           }
         }
       }
@@ -61,6 +91,12 @@
             "state" : "translated",
             "value" : "%lld pts"
           }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%lld pt"
+          }
         }
       }
     },
@@ -70,6 +106,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Código de 4 dígitos. Toca para abrir el teclado."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Codice a 4 cifre. Tocca per aprire la tastiera."
           }
         }
       }
@@ -81,11 +123,30 @@
             "state" : "translated",
             "value" : "¡Añade tu mala palabra!"
           }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aggiungi la tua parolaccia!"
+          }
         }
       }
     },
-    "Ask the host for the code to make sure it is the correct one." : {
-
+    "All players have submitted their words! Press continue..." : {
+      "localizations" : {
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "¡Todos los jugadores han presentado sus palabras! Presione continuar..."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tutti i giocatori hanno inviato le loro parole! Premi continua..."
+          }
+        }
+      }
     },
     "Choose a Lobby" : {
       "localizations" : {
@@ -94,16 +155,11 @@
             "state" : "translated",
             "value" : "Elige una sala"
           }
-        }
-      }
-    },
-    "Chosen course word" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "es-419" : {
+        },
+        "it" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Mala palabra elegida"
+            "value" : "Scegli una lobby"
           }
         }
       }
@@ -116,6 +172,12 @@
             "state" : "translated",
             "value" : "Mala palabra elegida"
           }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Parolaccia scelta"
+          }
         }
       }
     },
@@ -125,6 +187,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Jugadores conectados (%lld):"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Giocatori connessi (%lld):"
           }
         }
       }
@@ -136,6 +204,12 @@
             "state" : "translated",
             "value" : "Continuar"
           }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Continua"
+          }
         }
       }
     },
@@ -145,6 +219,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Control de celular"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Controller su iPhone"
           }
         }
       }
@@ -156,6 +236,12 @@
             "state" : "translated",
             "value" : "Crea un juego"
           }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Crea una Partita"
+          }
         }
       }
     },
@@ -165,6 +251,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Mala palabra actual"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Parolaccia attuale"
           }
         }
       }
@@ -176,6 +268,12 @@
             "state" : "translated",
             "value" : "Definición"
           }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Definizione"
+          }
         }
       }
     },
@@ -185,6 +283,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Introduce el código de la sala"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Inserisci il Codice della Lobby"
           }
         }
       }
@@ -196,6 +300,12 @@
             "state" : "translated",
             "value" : "Resultados Finales"
           }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Risultati Finali"
+          }
         }
       }
     },
@@ -205,6 +315,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "En la TV!"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Gioco sulla TV!"
           }
         }
       }
@@ -216,6 +332,12 @@
             "state" : "translated",
             "value" : "Volver a menu"
           }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Torna alla Home"
+          }
         }
       }
     },
@@ -225,6 +347,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Hola, Mundo!"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hello, World!"
           }
         }
       }
@@ -236,6 +364,12 @@
             "state" : "translated",
             "value" : "Código inválido"
           }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Codice Errato"
+          }
         }
       }
     },
@@ -245,6 +379,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Unirse a un juego"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Unisciti alla Partita"
           }
         }
       }
@@ -256,6 +396,12 @@
             "state" : "translated",
             "value" : "Unirse a Sala"
           }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Unisciti alla Lobby"
+          }
         }
       }
     },
@@ -265,6 +411,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Seguir jugando"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Continua a giocare"
           }
         }
       }
@@ -276,6 +428,12 @@
             "state" : "translated",
             "value" : "Salir"
           }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Esci"
+          }
         }
       }
     },
@@ -285,6 +443,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "¡A @!&% jugar!"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Giochiamo C*zo!"
           }
         }
       }
@@ -296,6 +460,12 @@
             "state" : "translated",
             "value" : " Sala de %@"
           }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Lobby di %@"
+          }
         }
       }
     },
@@ -305,6 +475,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Nombre"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nome"
           }
         }
       }
@@ -316,6 +492,12 @@
             "state" : "translated",
             "value" : "Display exteerno"
           }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nessun display esterno"
+          }
         }
       }
     },
@@ -325,6 +507,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Siguiente frase"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Prossima Frase"
           }
         }
       }
@@ -336,6 +524,12 @@
             "state" : "translated",
             "value" : "No hay frases disponibles"
           }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nessuna frase disponibile"
+          }
         }
       }
     },
@@ -345,6 +539,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "¡No hay votos emitidos!"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nessun voto espresso!"
           }
         }
       }
@@ -356,6 +556,12 @@
             "state" : "translated",
             "value" : "No hay ganadores"
           }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nessun vincitore"
+          }
         }
       }
     },
@@ -365,6 +571,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Lee en voz alta tu frase"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Leggi ad alta voce la tua frase"
           }
         }
       }
@@ -376,6 +588,12 @@
             "state" : "translated",
             "value" : "Requerido"
           }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Richiesto"
+          }
         }
       }
     },
@@ -385,6 +603,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Resultados de la ronda"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Risultati del Round"
           }
         }
       }
@@ -396,6 +620,12 @@
             "state" : "translated",
             "value" : "Escenario"
           }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Scenario"
+          }
         }
       }
     },
@@ -405,6 +635,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Buscando salas disponibles…"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cercando una lobby..."
           }
         }
       }
@@ -416,6 +652,12 @@
             "state" : "translated",
             "value" : "Ver resultados"
           }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vedi i Risultati"
+          }
         }
       }
     },
@@ -425,6 +667,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Enviar"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Invia"
           }
         }
       }
@@ -436,6 +684,12 @@
             "state" : "translated",
             "value" : "El código que ha introducido es incorrecto."
           }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Il codice che hai inserito non è corretto. Per favore riprova."
+          }
         }
       }
     },
@@ -445,6 +699,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "El ganador es:"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Il Vincitore è:"
           }
         }
       }
@@ -456,6 +716,12 @@
             "state" : "translated",
             "value" : "Intenta otra vez"
           }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Riprova"
+          }
         }
       }
     },
@@ -466,12 +732,24 @@
             "state" : "translated",
             "value" : "TV Conectada"
           }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "TV Connessa ✅"
+          }
         }
       }
     },
     "Vote" : {
       "localizations" : {
         "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vota"
+          }
+        },
+        "it" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Vota"
@@ -486,6 +764,12 @@
             "state" : "translated",
             "value" : "Vota por tu frase favorita"
           }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vota per la tua preferita"
+          }
         }
       }
     },
@@ -495,6 +779,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Espera al anfitrión"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aspetta l’host"
           }
         }
       }
@@ -506,6 +796,12 @@
             "state" : "translated",
             "value" : "Espera que el anfitrión empiece el juego…"
           }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aspetta che l’host avvii la partita…"
+          }
         }
       }
     },
@@ -515,6 +811,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Esperando que otros jugadores manden sus frases…"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aspetta che altri giocatori inviino le loro parole..."
           }
         }
       }
@@ -526,6 +828,12 @@
             "state" : "translated",
             "value" : "Esperando a que el anfitrión continúe el juego..."
           }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aspetta che l’host continui la partita…"
+          }
         }
       }
     },
@@ -536,6 +844,12 @@
             "state" : "translated",
             "value" : "¿Quién %@#! eres?"
           }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Chi %@#! sei?"
+          }
         }
       }
     },
@@ -544,7 +858,13 @@
         "es-419" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "¿Quién %@#! eres?"
+            "value" : "¿Quién beep eres?"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Chi beep sei?"
           }
         }
       }
@@ -556,6 +876,12 @@
             "state" : "translated",
             "value" : "¡Por qué  #@%! te vas?"
           }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Perché #@%! te ne vai?"
+          }
         }
       }
     },
@@ -565,6 +891,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Palabra"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Parola"
           }
         }
       }
@@ -576,6 +908,12 @@
             "state" : "translated",
             "value" : "Escribe una frase usando la palabra \"%@\" en este escenario:"
           }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Scrivi una frase usando la parola \"%@\" in questo scenario:"
+          }
         }
       }
     },
@@ -586,18 +924,27 @@
             "state" : "translated",
             "value" : "Escribe tu frase"
           }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Scrivi la tua frase"
+          }
         }
       }
     },
-    "Wrong Code!" : {
-
-    },
-    "You won’t partecipate to the game anymore. Are you sure?" : {
+    "You won’t be able to join this game anymore. Are you sure?" : {
       "localizations" : {
         "es-419" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Ya no participarás en el juego. ¿Estás seguro?"
+            "value" : "Ya no podrás unirte a este juego. ¿Estás seguro?"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Non potrai più unirti a questa partita. Sei sicuro?"
           }
         }
       }
@@ -608,6 +955,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Tu frase"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "La tua frase"
           }
         }
       }
