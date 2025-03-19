@@ -13,96 +13,113 @@ struct VotingView: View {
     @State private var selectedPeer: MCPeerID?
     @State private var currentIndex: Int = 0
     @Environment(\.presentationMode) var presentationMode
+    @State private var showAlert: Bool = false
     
     var peers: [MCPeerID] {
         Array(multipeerManager.submittedSentences.keys).sorted(by: { $0.displayName < $1.displayName })
     }
 
     var body: some View {
-        NavigationStack {
-            VStack {
-                
-                HStack {
-                    Spacer()
+        ZStack {
+            NavigationStack {
+                ZStack {
+                    Image("Background")
+                        .resizable()
+                        .ignoresSafeArea()
                     
-                    Button(action: {
-                        multipeerManager.resetGame()
-                        multipeerManager.disconnect()
-                        presentationMode.wrappedValue.dismiss()
-                    }) {
-                        CancelButton()
-                    }
-                }
-                
-                HStack{
-                    
-                    Text("Vote for your favorite one")
-                        .font(.title)
-                        .bold()
-                        .fontDesign(.rounded)
-                    
-                    Spacer()
-                }
-
-                
-                
-                Spacer()
-
-                TabView(selection: $currentIndex) {
-                    ForEach(0..<peers.count, id: \.self) { index in
-                        let peer = peers[index]
-                        VStack {
-                            Text("\(peer.displayName)'s phrase")
-                                .font(.title2)
+                    VStack {
+                        
+                        HStack {
+                            Spacer()
+                            
+                            Button(action: {
+                                showAlert = true
+                            }) {
+                                CancelButton()
+                            }
+                        }
+                        
+                        HStack{
+                            
+                            Text("Vote for your favorite one")
+                                .font(.title)
                                 .bold()
                                 .fontDesign(.rounded)
                             
-                            Text("\"\(multipeerManager.submittedSentences[peer] ?? "")\"")
-                                .font(.title3)
-                                .fontDesign(.rounded)
-                                .padding(.vertical, 2)
-                            
+                            Spacer()
                         }
-                        .padding(24)
-                        .background(Color.accentColor)
-                        .clipShape(RoundedRectangle(cornerRadius: 12))
-                        .overlay(RoundedRectangle(cornerRadius: 12).stroke(Color.black, lineWidth: 3))
-                        .padding()
-                        .tag(index)
-                    }
-                }
-                .tabViewStyle(.page)
-                .indexViewStyle(PageIndexViewStyle(backgroundDisplayMode: .always))
-                
-                Spacer()
 
-                // Vote button
-                if peers.indices.contains(currentIndex) {
-                    let peer = peers[currentIndex]
-                    Button(action: {
-                        selectedPeer = peer
-                        multipeerManager.submitVote(for: peer)
-                        multipeerManager.hasVoted = true
-                    }) {
-                        ActionButton(title: "Vote", isDisabled: multipeerManager.hasVoted)
-                    }
-                    .disabled(multipeerManager.hasVoted)
-                }
-                
-                if multipeerManager.isHosting && multipeerManager.allVotesSubmitted {
-                    Button(action: {
-                        multipeerManager.advanceToNextPhase()
-                    }) {
-                        ActionButton(title: "See Results", isDisabled: !multipeerManager.allVotesSubmitted)
-                    }
-                    .disabled(!multipeerManager.allVotesSubmitted)
-                }
 
+                        
+                        
+                        Spacer()
+
+                        TabView(selection: $currentIndex) {
+                            ForEach(0..<peers.count, id: \.self) { index in
+                                let peer = peers[index]
+                                VStack {
+                                    Text("\(peer.displayName)'s phrase")
+                                        .font(.title2)
+                                        .bold()
+                                        .fontDesign(.rounded)
+                                    
+                                    Text("\"\(multipeerManager.submittedSentences[peer] ?? "")\"")
+                                        .font(.title3)
+                                        .fontDesign(.rounded)
+                                        .padding(.vertical, 2)
+                                    
+                                }
+                                .padding(24)
+                                .background(Color.accentColor)
+                                .clipShape(RoundedRectangle(cornerRadius: 12))
+                                .overlay(RoundedRectangle(cornerRadius: 12).stroke(Color.black, lineWidth: 3))
+                                .padding()
+                                .tag(index)
+                            }
+                        }
+                        .tabViewStyle(.page)
+                        .indexViewStyle(PageIndexViewStyle(backgroundDisplayMode: .always))
+                        
+                        Spacer()
+
+                        // Vote button
+                        if multipeerManager.isHosting && multipeerManager.allVotesSubmitted {
+                            Button(action: {
+                                multipeerManager.advanceToNextPhase()
+                            }) {
+                                ActionButton(title: "See Results", isDisabled: !multipeerManager.allVotesSubmitted)
+                            }
+                            .disabled(!multipeerManager.allVotesSubmitted)
+                        } else if peers.indices.contains(currentIndex) {
+                            let peer = peers[currentIndex]
+                            Button(action: {
+                                selectedPeer = peer
+                                multipeerManager.submitVote(for: peer)
+                                multipeerManager.hasVoted = true
+                            }) {
+                                ActionButton(title: "Vote", isDisabled: multipeerManager.hasVoted)
+                            }
+                            .disabled(multipeerManager.hasVoted)
+                        }
+                        
+                        
+                    }
+                    .padding()
+                    
+                }
+                .navigationBarBackButtonHidden(true)
             }
-            .padding()
-            .background(Image("Background"))
-            .navigationBarBackButtonHidden(true)
+            if showAlert {
+                Color.black.opacity(0.5) // Sfondo scuro semi-trasparente
+                    .edgesIgnoringSafeArea(.all)
+                
+                CustomExitAlert(multipeerManager: multipeerManager, title: "Why the #@%! are you leaving?", message: "You won’t partecipate to the game anymore. Are you sure?", isPresented: $showAlert
+               )
+                .transition(.scale)
+                .accessibilityAddTraits(.isModal)
+            }
         }
+        
     }
 }
 

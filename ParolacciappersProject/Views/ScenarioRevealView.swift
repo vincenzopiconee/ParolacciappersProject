@@ -11,65 +11,88 @@ import SwiftUI
 struct ScenarioRevealView: View {
     @ObservedObject var multipeerManager: MultipeerManager
     @Environment(\.presentationMode) var presentationMode
-
+    @State private var showAlert: Bool = false
+    
     var body: some View {
-        NavigationStack {
-            VStack {
+        ZStack {
+            NavigationStack {
                 
-                HStack {
-                    Spacer()
+                ZStack {
+                    Image("Background")
+                        .resizable()
+                        .ignoresSafeArea()
                     
-                    Button(action: {
-                        multipeerManager.resetGame()
-                        multipeerManager.disconnect()
-                        presentationMode.wrappedValue.dismiss()
-                    }) {
-                        CancelButton()
+                    VStack {
+                        
+                        HStack {
+                            Spacer()
+                            
+                            Button(action: {
+                                showAlert = true
+                            }) {
+                                CancelButton()
+                            }
+                            
+                        }
+                        
+                        HStack {
+                            
+                            Text("Write a sentence using the word \"\(multipeerManager.chosenWord ?? "no word selected")\" in this scenario:")
+                                .font(.title)
+                                .bold()
+                                .fontDesign(.rounded)
+                            
+                            Spacer()
+                            
+                        }
+                        
+                        Spacer()
+
+
+                        Text(multipeerManager.chosenScenario ?? "Selecting a scenario...")
+                            .font(.title)
+                            .padding()
+                            .bold()
+                            .fontDesign(.rounded)
+                            .frame(maxWidth: .infinity)
+                            .background(Color.accentColor)
+                            .cornerRadius(12)
+                            .clipShape(RoundedRectangle(cornerRadius: 12))
+                            .overlay(
+                                RoundedRectangle(cornerRadius: 12)
+                                    .stroke(Color.black, lineWidth: 3)
+                            )
+                            .padding()
+                        
+                        Spacer()
+                        
+                        if multipeerManager.isHosting {
+                            
+                            Button(action: {
+                                multipeerManager.advanceToNextPhase()
+                            }, label: {
+                                ActionButton(title: "Continue", isDisabled: false)
+                            })
+                            
+                        }
+                        
                     }
-                    
-                }
-                
-                HStack {
-                    
-                    Text("Write a sentence using the word \"\(multipeerManager.chosenWord ?? "no word selected")\" in this scenario:")
-                        .font(.title)
-                        .bold()
-                        .fontDesign(.rounded)
-                    
-                    Spacer()
-                    
-                }
-                
-                Spacer()
-
-
-                Text(multipeerManager.chosenScenario ?? "Selecting a scenario...")
-                    .font(.title)
                     .padding()
-                    .bold()
-                    .fontDesign(.rounded)
-                    .frame(maxWidth: .infinity)
-                    .background(Color.accentColor)
-                    .cornerRadius(12)
-                    .padding()
-                
-                Spacer()
-                
-                if multipeerManager.isHosting {
-                    
-                    Button(action: {
-                        multipeerManager.advanceToNextPhase()
-                    }, label: {
-                        ActionButton(title: "Continue", isDisabled: false)
-                    })
-                    
                 }
                 
+                .navigationBarBackButtonHidden(true)
             }
-            .padding()
-            .background(Image("Background"))
-            .navigationBarBackButtonHidden(true)
+            if showAlert {
+                Color.black.opacity(0.5) // Sfondo scuro semi-trasparente
+                    .edgesIgnoringSafeArea(.all)
+                
+                CustomExitAlert(multipeerManager: multipeerManager, title: "Why the #@%! are you leaving?", message: "You won’t partecipate to the game anymore. Are you sure?", isPresented: $showAlert
+               )
+                .transition(.scale)
+                .accessibilityAddTraits(.isModal)
+            }
         }
+        
         
     }
 }

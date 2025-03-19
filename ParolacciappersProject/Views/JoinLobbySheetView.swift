@@ -21,56 +21,63 @@ struct JoinLobbySheetView: View {
     var body: some View {
         ZStack {
             NavigationStack {
-                VStack (){
-                    HStack {
-                        Spacer()
-                        
-                        Button(action: {
-                            onDismiss()
-                        }) {
-                            CancelButton()
-                        }
-                        
-                    }
-
-                    Text("Enter Lobby Code")
-                        .font(.title)
-                        .bold()
-                        .fontDesign(.rounded)
-                        .padding(.top, 15)
+                
+                ZStack {
+                    Image("Background")
+                        .resizable()
+                        .ignoresSafeArea()
                     
-                    
-                    Spacer()
-
-                    ManualCodeEntryView(enteredCode: $enteredCode)
-                        .padding(.vertical)
-                        .focused($isTextFieldFocused)
-                    
-                    Spacer()
-
-                    Button(action: {
-                        
-                        isTextFieldFocused = false
-                        
-                        multipeerManager.joinLobbyWithCode(selectedLobby, code: enteredCode)
-                        
-                        
-                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
-                            if multipeerManager.shuldNavitgateToWaitScreen {
+                    VStack {
+                        HStack {
+                            Spacer()
+                            
+                            Button(action: {
                                 onDismiss()
-                            } else {
-                                showInvalidCodeAlert = true
+                            }) {
+                                CancelButton()
                             }
+                            
                         }
-                    }) {
-                        ActionButton(title: "Join Lobby", isDisabled: enteredCode.count < 4)
-                    }
-                    .disabled(enteredCode.count < 4)
 
+                        Text("Enter Lobby Code")
+                            .font(.title)
+                            .bold()
+                            .fontDesign(.rounded)
+                            .padding(.top, 15)
+                        
+                        
+                        Spacer()
+
+                        ManualCodeEntryView(enteredCode: $enteredCode)
+                            .padding(.vertical)
+                            .focused($isTextFieldFocused)
+                        
+                        Spacer()
+
+                        Button(action: {
+                            
+                            isTextFieldFocused = false
+                            
+                            multipeerManager.joinLobbyWithCode(selectedLobby, code: enteredCode)
+                            
+                            
+                            DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
+                                if multipeerManager.shuldNavitgateToWaitScreen {
+                                    onDismiss()
+                                } else {
+                                    showInvalidCodeAlert = true
+                                }
+                            }
+                        }) {
+                            ActionButton(title: "Join Lobby", isDisabled: enteredCode.count < 4)
+                        }
+                        .disabled(enteredCode.count < 4)
+
+                    }
+                    .padding()
                 }
-                .padding()
+                
                 .navigationBarBackButtonHidden(true)
-                .background(Image("Background"))
             }
             
             // Mostra l'alert personalizzato sopra la UI principale
@@ -92,7 +99,7 @@ struct JoinLobbySheetView: View {
     }
 }
 
-// MARK: - Preview
+
 #Preview {
     struct JoinLobbySheetView_Preview: View {
         @StateObject private var multipeerManager = MultipeerManager(displayName: "Test User")

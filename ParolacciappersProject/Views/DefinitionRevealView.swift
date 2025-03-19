@@ -9,67 +9,89 @@ import SwiftUI
 struct DefinitionRevealView: View {
     @ObservedObject var multipeerManager: MultipeerManager
     @Environment(\.presentationMode) var presentationMode
+    @State private var showAlert: Bool = false
 
     var body: some View {
-        NavigationStack {
-            VStack {
+        ZStack {
+            NavigationStack {
                 
-                HStack {
-                    Spacer()
+                ZStack {
                     
-                    Button(action: {
-                        multipeerManager.resetGame()
-                        multipeerManager.disconnect()
-                        presentationMode.wrappedValue.dismiss()
-                    }) {
-                        CancelButton()
-                    }
+                    Image("Background")
+                        .resizable()
+                        .ignoresSafeArea()
                     
-                }
-                
-                HStack {
-                    
-                    Text("Definition")
-                        .font(.title)
-                        .bold()
-                        .fontDesign(.rounded)
-                    
-                    Spacer()
-                    
-                }
-                
-                
-                Spacer()
-                
-                Text(multipeerManager.chosenDefinition ?? "Waiting for definition...")
-                    .font(.title)
-                    .padding()
-                    .bold()
-                    .fontDesign(.rounded)
-                    .frame(maxWidth: .infinity)
-                    .background(Color.accentColor)
-                    .cornerRadius(12)
-                    .padding()
-                
-                Spacer()
+                    VStack {
+                        
+                        HStack {
+                            Spacer()
+                            
+                            Button(action: {
+                                showAlert = true
+                            }) {
+                                CancelButton()
+                            }
+                            
+                        }
+                        
+                        HStack {
+                            
+                            Text("Definition")
+                                .font(.title)
+                                .bold()
+                                .fontDesign(.rounded)
+                            
+                            Spacer()
+                            
+                        }
+                        
+                        
+                        Spacer()
+                        
+                        Text(multipeerManager.chosenDefinition ?? "Waiting for definition...")
+                            .font(.title2)
+                            .padding()
+                            .bold()
+                            .fontDesign(.rounded)
+                            .frame(maxWidth: .infinity)
+                            .background(Color.accentColor)
+                            .cornerRadius(12)
+                            .clipShape(RoundedRectangle(cornerRadius: 12))
+                            .overlay(
+                                RoundedRectangle(cornerRadius: 12)
+                                    .stroke(Color.black, lineWidth: 3)
+                            )
+                            .padding()
+                        
+                        
+                        Spacer()
 
-                if multipeerManager.isHosting {
-                    
-                    Button(action: {
-                        multipeerManager.advanceToNextPhase()
-                    }, label: {
-                        ActionButton(title: "Continue", isDisabled: false)
-                    })
+                        if multipeerManager.isHosting {
+                            
+                            Button(action: {
+                                multipeerManager.advanceToNextPhase()
+                            }, label: {
+                                ActionButton(title: "Continue", isDisabled: false)
+                            })
+                        }
+                        
+                    }
+                    .padding()
                 }
+
+                .navigationBarBackButtonHidden(true)
                 
             }
-            .padding()
-            .background(Image("Background"))
-            .navigationBarBackButtonHidden(true)
-            
+            if showAlert {
+                Color.black.opacity(0.5) // Sfondo scuro semi-trasparente
+                    .edgesIgnoringSafeArea(.all)
+                
+                CustomExitAlert(multipeerManager: multipeerManager, title: "Why the #@%! are you leaving?", message: "You won’t partecipate to the game anymore. Are you sure?", isPresented: $showAlert
+               )
+                .transition(.scale)
+                .accessibilityAddTraits(.isModal)
+            }
         }
-        
-        
     }
 }
 
